@@ -26,10 +26,22 @@ export default new createRouter({
       component: Error
     },
     {
-      path: '/Home',
+      path: '/home',
       name: 'Home',
-      component: Home
-    }
+      component: Home,
+        children: [
+            // {
+            // path: '/Home',
+            // redirect: '/folder'
+            // },
+            {
+              path: 'privateDisk',
+              component: () => import('../views/PrivateDisk.vue')
+            },
+
+        ]
+    },
+
   ]
   
 })

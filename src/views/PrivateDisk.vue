@@ -16,7 +16,7 @@
 
 <script setup>
 import {onMounted, ref} from 'vue'
-
+import router from '@/router/index'
 const showMenu = ref(false)
 const menuPosition=ref({x:0,y:0})
 let items=ref([{ id: 1, name: '文件1' }, { id: 2, name: '文件夹1' }]) // 示例数据
@@ -27,10 +27,11 @@ let src=(item)=>{
     return require('../../public/file.png')
   }
 };
+
 const toNext = (item) => {
   console.log('点击'+item.name)
   items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
-  window.location.reload();
+  router.push('/disk')
   // request.get('api/file/getAllFiles',).then(res=>{
   //   items=res.data.data;
   //   console.log(res.data)

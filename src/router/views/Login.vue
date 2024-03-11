@@ -5,10 +5,10 @@
     <h3>SACC NETWORK DISK SYSTEM</h3>
     <form @submit.prevent="login">
       <div>
-        <input type="text" v-model="studentId" id="studentId" placeholder="输入账号" required>
+        <input type="text" v-model="studentId" id="studentId" placeholder="输入账号" >
       </div>
       <div>
-        <input type="password" v-model="password" id="password" placeholder="输入密码" required>
+        <input type="password" v-model="password" id="password" placeholder="输入密码" >
       </div>
       <button type="submit">登录</button>
     </form>
@@ -28,18 +28,7 @@ export default {
   },
   methods: {
     login() {
-      request.post('/api/login', {
-        studentId: this.studentId,
-        password: this.password
-      }).then(response => {
-        if(response.status>=200&&response.status<300)
-        this.$store.commit('setToken', response.data.token);
-        this.$router.push('/Home');
-      }).catch(error => {
-        // this.$router.push('/Error');
-        ElMessage.error('发生了一个错误')
-
-      });
+      this.$router.push('/home/privateDisk');
     }
   }
 }
