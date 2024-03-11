@@ -31,7 +31,6 @@ export default new createRouter({
       path: '/home',
       name: 'Home',
       component: Home,
-
       children: [
         {
           path: 'Recycle',
@@ -40,7 +39,13 @@ export default new createRouter({
         },
         {
           path: 'privateDisk',
-          component: () => import('../views/PrivateDisk.vue')
+          component: () => import('../views/PrivateDisk.vue'),
+          children:[
+            {
+              path: 'folder',
+              component: () => import('../views/Folder.vue')
+            }
+          ]
         },
         {
           path: 'publicDisk',

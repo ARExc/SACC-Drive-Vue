@@ -44,6 +44,7 @@ const uploadFile=(e)=>{
 
 <style scoped>
 .head{
+  z-index: 1;
   min-height: 50px;
   display: flex;
   background-color: rgb(245, 245, 245);

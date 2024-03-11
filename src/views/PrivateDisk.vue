@@ -33,7 +33,7 @@ let src=(item)=>{
 const toNext = (item) => {
   console.log('点击'+item.name)
   items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
-  router.push('/disk')
+  router.push('/home/privateDisk/folder')
   // request.get('api/file/getAllFiles',).then(res=>{
   //   items=res.data.data;
   //   console.log(res.data)

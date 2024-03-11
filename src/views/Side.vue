@@ -56,7 +56,8 @@ const toPublic = () => {
 .side{
   height:100%;
   background-color: rgb(15,44,84);
-
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
 }
 .title{
   color: whitesmoke;
