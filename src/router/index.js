@@ -28,15 +28,20 @@ export default new createRouter({
       component: Error
     },
     {
-      path: '/Home',
+      path: '/home',
       name: 'Home',
       component: Home,
+
       children: [
         {
           path: 'Recycle',
           name: 'Recycle',
           component: Recycle
-        }
+        },
+        {
+          path: 'privateDisk',
+          component: () => import('../views/PrivateDisk.vue')
+        },
       ]
     },
     {
@@ -45,6 +50,7 @@ export default new createRouter({
       component: ResetPwd
     },
     
+
   ]
   
 })

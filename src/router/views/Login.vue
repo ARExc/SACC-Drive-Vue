@@ -6,10 +6,10 @@
     <div class="form">
       <form @submit.prevent="login">
       <div>
-        <input type="text" v-model="studentId" id="studentId" placeholder="输入账号" required>
+        <input type="text" v-model="studentId" id="studentId" placeholder="输入账号" >
       </div>
       <div>
-        <input type="password" v-model="password" id="password" placeholder="输入密码" required>
+        <input type="password" v-model="password" id="password" placeholder="输入密码" >
       </div>
       <button type="submit">登录</button>
     </form>
@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     login() {
+<<<<<<< HEAD
       // request.post('/api/login', {
       //   studentId: this.studentId,
       //   password: this.password
@@ -45,6 +46,9 @@ export default {
       //   ElMessage.error('errorMessage')
       // });
       this.$router.push('/Home');
+=======
+      this.$router.push('/home/privateDisk');
+>>>>>>> e6995e0af2d8ba5b1a8814c1dfad1eb4e37a8092
     }
   }
 }
