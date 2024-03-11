@@ -4,6 +4,8 @@ import Login from './views/Login.vue'
 import Register from './views/Register.vue'
 import Error from './views/Error.vue'
 import Home from '../views/Home.vue'
+import ResetPwd from './views/ResetPwd.vue'
+import Recycle from '../views/Recycle.vue'
 export default new createRouter({
   history: createWebHistory(),
   routes: [
@@ -29,6 +31,16 @@ export default new createRouter({
       path: '/Home',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/ResetPwd',
+      name: 'ResetPwd',
+      component: ResetPwd
+    },
+    {
+      path:'/Recycle',
+      name:'Recycle',
+      component:Recycle
     }
   ]
   

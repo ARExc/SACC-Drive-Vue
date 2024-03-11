@@ -3,8 +3,8 @@
     <Side></Side>
     <div class="main">
       <Header></Header>
-      <Breadcrumb></Breadcrumb>
       <Folder>
+
       </Folder>
     </div>
   </div>
