@@ -61,7 +61,7 @@ export default {
                 type: 'success',
         })
             setTimeout(() => {
-              this.$router.push('/Login');
+              this.$router.push('/login');
             },3000);
           }
         }).catch(error => {
@@ -180,4 +180,4 @@ background: rgba(255, 255, 255, 1);
   text-align: center;
   vertical-align: top;
 }
-</style>./resetPwd.vue
+</style>./resetPwd.vue./resetPwd.vue

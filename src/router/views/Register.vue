@@ -56,7 +56,7 @@ export default {
           errorMessage:this.errorMessage
         }).then(response => {
           if (response.status >= 200 && response.status < 300) {
-            this.$router.push('/Login');
+            this.$router.push('/login');
           }
         }).catch(error => {
           ElMessage.error(errorMessage)
@@ -164,4 +164,4 @@ button {
   text-align: center;
   vertical-align: top;
 }
-</style>./register.vue
+</style>./register.vue./register.vue

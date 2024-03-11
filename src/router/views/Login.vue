@@ -14,8 +14,8 @@
       <button type="submit">登录</button>
     </form>
     </div>
-    <router-link to="/Register" class="register">注册</router-link>
-    <router-link to="/ResetPwd" class="resetpwd">忘记密码</router-link>
+    <router-link to="/register" class="register">注册</router-link>
+    <router-link to="/resetPwd" class="resetpwd">忘记密码</router-link>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     login() {
- HEAD
+ 
       // request.post('/api/login', {
       //   studentId: this.studentId,
       //   password: this.password
@@ -40,9 +40,9 @@ export default {
       // }).then(response => {
       //   if(response.status>=200&&response.status<300)
       //   this.$store.commit('setToken', response.data.token);
-      //   this.$router.push('/Home');
+      //   this.$router.push('/home');
       // }).catch(error => {
-      //   // this.$router.push('/Error');
+      //   // this.$router.push('/error');
       //   ElMessage.error('errorMessage')
       // });
 
@@ -160,4 +160,4 @@ vertical-align: top;
 a:hover{
   color: blue;
 }
-</style>./login.vue
+</style>./login.vue./login.vue

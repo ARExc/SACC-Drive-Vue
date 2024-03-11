@@ -13,12 +13,12 @@ export default new createRouter({
       path: '/',
       redirect: '/Login'},
     {
-      path: '/Login',
+      path: '/login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/Register',
+      path: '/register',
       name: 'Register',
       component: Register
     },
@@ -34,7 +34,7 @@ export default new createRouter({
 
       children: [
         {
-          path: 'Recycle',
+          path: 'recycle',
           name: 'Recycle',
           component: Recycle
         },
