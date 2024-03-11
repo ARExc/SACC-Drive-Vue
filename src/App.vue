@@ -1,6 +1,5 @@
 <template>
   <router-view></router-view> 
-  <Home class="home"></Home>
 </template>
 
 <script setup>
