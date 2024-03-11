@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     login() {
-<<<<<<< HEAD
+
       // request.post('/api/login', {
       //   studentId: this.studentId,
       //   password: this.password
@@ -45,10 +45,10 @@ export default {
       //   // this.$router.push('/Error');
       //   ElMessage.error('errorMessage')
       // });
-      this.$router.push('/Home');
-=======
+
+
       this.$router.push('/home/privateDisk');
->>>>>>> e6995e0af2d8ba5b1a8814c1dfad1eb4e37a8092
+
     }
   }
 }

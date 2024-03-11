@@ -42,6 +42,10 @@ export default new createRouter({
           path: 'privateDisk',
           component: () => import('../views/PrivateDisk.vue')
         },
+        {
+          path: 'publicDisk',
+            component: () => import('../views/PublicDisk.vue')
+        },
       ]
     },
     {

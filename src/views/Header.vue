@@ -23,6 +23,7 @@ img{
   min-height: 60px;
   display: flex;
   justify-content: flex-end;
+
 }
 span{
   margin:auto 10px;
