@@ -1,17 +1,61 @@
 <template>
-  <div class="folder">
-    <div class="folder-item">
+  <div class="folder" @contextmenu.prevent="showContextMenu($event)">
+    <div class="folder-item" v-for="item in items" :key="item.id">
       <img src="../../public/folder.png" alt="File Icon">
-      <span>文件1</span>
+      <span>{{ item.name }}</span>
     </div>
-    <div class="folder-item">
-      <img src="../../public/folder.png" alt="Folder Icon">
-      <span>文件夹1</span>
+    <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
+      <ul>
+        <li @click="downloadItem(e)">下载</li>
+        <li @click="moveFile">移动</li>
+        <li @click="deleteItem">删除</li>
+
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup>
+import {onMounted, ref} from 'vue'
+
+const showMenu = ref(false)
+const menuPosition=ref({x:0,y:0})
+let items=ref([{ id: 1, name: '文件1' }, { id: 2, name: '文件夹1' }]) // 示例数据
+
+function showContextMenu(e) {
+  e.preventDefault()
+  // if(e.innerHTML==null){
+  //   c
+  // }
+  showMenu.value = true
+  menuPosition.value = { x: e.pageX, y: e.pageY }//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
+}
+
+function moveFile() {
+  console.log('移动')
+  showMenu.value = false
+}
+
+function deleteItem() {
+  console.log('删除')
+  showMenu.value = false
+}
+
+function downloadItem(e) {
+  console.log('下载'+e)
+  showMenu.value = false
+}
+
+window.addEventListener('click', () => {
+  showMenu.value = false
+});
+
+// onMounted(()=>{
+//   request.get('api/file/getAllFiles').then(res=>{
+//     items=res.data.data;
+//     console.log(res.data)
+//   })
+// });
 
 </script>
 
@@ -44,7 +88,7 @@
 .folder-item:hover {
   background-color: #f9f9f9; /* 设置背景色 */
 
-  //transform: translateY(-5px); /* 悬停时上移 */
+  transform: translateY(-5px); /* 悬停时上移 */
   //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时增加阴影 */
 }
 
@@ -53,5 +97,29 @@
   max-width: 60px; /* 图标最大宽度 */
   height: auto; /* 保持图标的原始宽高比 */
 }
+.custom-context-menu {
+  position: fixed;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
 
+.custom-context-menu ul {
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-context-menu ul li {
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.custom-context-menu ul li:hover {
+  background-color: #f0f0f0;
+}
 </style>

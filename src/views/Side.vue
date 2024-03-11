@@ -14,8 +14,6 @@
         background-color="rgb(15,44,84)"
         :collapse="isCollapse"
         :style="{ width: isCollapse ? '' : '200px' }"
-        @open="handleOpen"
-        @close="handleClose"
     >
       <el-sub-menu index="1" >
         <template #title>
