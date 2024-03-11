@@ -1,10 +1,12 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <Sharding/>
+  <!-- <Sharding/> -->
+  <router-view></router-view> 
 </template>
 
 <script setup>
 import Sharding from './components/Sharding.vue'
+import router from './router';
+
 </script>
 
 <style>

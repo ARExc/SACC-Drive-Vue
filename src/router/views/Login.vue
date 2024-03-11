@@ -12,30 +12,34 @@
       </div>
       <button type="submit">登录</button>
     </form>
+    <router-link to="/Register">没有账号？点击这里注册</router-link>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import request from '@/utility/request.js';
 export default {
   data() {
     return {
-      studentId,
-      password
+      studentId:'',
+      password:''
     }
   },
   methods: {
     login() {
-      axios.post('http://127.0.0.1:4523/m1/4072730-0-default/api/login', {
+      request.post('/api/login', {
         studentId: this.studentId,
         password: this.password
       }).then(response => {
-        const isLogin = true;
+        if(response.status>=200&&response.status<300)
+        this.$store.commit('setToken', response.data.token);
         this.$router.push('/Home');
       }).catch(error => {
-       alert(error);
+        this.$router.push('/Error');
       });
     }
   }
 }
 </script>
+<style scoped>
+</style>

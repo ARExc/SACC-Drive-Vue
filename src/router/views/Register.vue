@@ -3,7 +3,7 @@
     <h2>注册</h2>
     <form @submit.prevent="submitForm">
       <div>
-        <label for="nickName">学号:</label>
+        <label for="nickName">昵称:</label>
         <input type="text" id="nickName" v-model="nickName" required>
       </div>
       <div>
@@ -20,40 +20,40 @@
 </template>
 
 <script>
+import request from '@/utility/request.js';
 export default {
   data() {
     return {
-      nickName: '',
-      studentId: '',
-      password: '',
-      errorMessage: ''
+      nickName:'',
+      studentId:'',
+      password:'',
+      errorMessage:''
     };
   },
   methods: {
     submitForm() {
       if (!this.studentId || !this.nickName || !this.password) {
-        this.errorMessage = '';
+        this.errorMessage = '您输入的注册信息有误';
         return;
       }
 
       this.registerUser();
     },
-    async registerUser() {
-      try {
-        const response = await axios.post('http://127.0.0.1:4523/m1/4072730-0-default/api/register', {
-          username: this.studentId,
+    registerUser() {
+      
+        const response = request.post('/api/register', {
+          studentId: this.studentId,
           password: this.password,
           nickName: this.nickName
+        }).then(response => {
+          if (response.status >= 200 && response.status < 300) {
+            this.$router.push('/Login');
+          }
+        }).catch(error => {
+          console.error(error);
         });
-        if (response.data.success) {
-          this.$router.push('/Login');
-        } else {
-          this.errorMessage = response.data.message;
-        }
-      } catch (error) {
-        console.error(error);
-        this.errorMessage = '注册失败';
-      }
+        
+     
     }
   }
 };
