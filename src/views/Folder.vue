@@ -1,7 +1,7 @@
 <template>
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
-    <div class="folder-item" v-for="item in items" :key="item.id">
-      <img src="../../public/folder.png" alt="File Icon">
+    <div class="folder-item" v-for="item in items" :key="item.id" @click="toNext(item)">
+      <img :src="src(item)" alt="File Icon">
       <span>{{ item.name }}</span>
     </div>
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
@@ -9,7 +9,6 @@
         <li @click="downloadItem(e)">下载</li>
         <li @click="moveFile">移动</li>
         <li @click="deleteItem">删除</li>
-
       </ul>
     </div>
   </div>
@@ -21,6 +20,23 @@ import {onMounted, ref} from 'vue'
 const showMenu = ref(false)
 const menuPosition=ref({x:0,y:0})
 let items=ref([{ id: 1, name: '文件1' }, { id: 2, name: '文件夹1' }]) // 示例数据
+let src=(item)=>{
+  if(item.name.includes('文件夹')){
+    return require('../../public/folder.png')
+  }else{
+    return require('../../public/file.png')
+  }
+};
+const toNext = (item) => {
+  console.log('点击'+item.name)
+  items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
+  window.location.reload();
+  // request.get('api/file/getAllFiles',).then(res=>{
+  //   items=res.data.data;
+  //   console.log(res.data)
+  // })
+}
+
 
 function showContextMenu(e) {
   e.preventDefault()
