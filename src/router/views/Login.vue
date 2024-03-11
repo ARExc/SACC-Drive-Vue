@@ -18,6 +18,7 @@
 
 <script>
 import request from '@/utility/request.js';
+import {ElMessage} from 'element-plus';
 export default {
   data() {
     return {
@@ -35,7 +36,9 @@ export default {
         this.$store.commit('setToken', response.data.token);
         this.$router.push('/Home');
       }).catch(error => {
-        this.$router.push('/Error');
+        // this.$router.push('/Error');
+        ElMessage.error('发生了一个错误')
+
       });
     }
   }

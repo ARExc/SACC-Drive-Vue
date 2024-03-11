@@ -1,18 +1,17 @@
 <template>
-  <div>
-    <h2>注册</h2>
+  <div class="register">
+    <img src="../../../public/sacc.png" alt="">
+    <h2>SACC网盘系统</h2>
+    <h3>SACC NETWORK DISK SYSTEM</h3>
     <form @submit.prevent="submitForm">
       <div>
-        <label for="nickName">昵称:</label>
-        <input type="text" id="nickName" v-model="nickName" required>
+        <input type="text" id="studentId" v-model="studentId" placeholder="账号" required>
       </div>
       <div>
-        <label for="studentId">学号:</label>
-        <input type="text" id="studentId" v-model="studentId" required>
+        <input type="password" id="password" v-model="password" placeholder="密码" required>
       </div>
       <div>
-        <label for="password">密码:</label>
-        <input type="password" id="password" v-model="password" required>
+        <input type="text" id="nickName" v-model="nickName" placeholder="想个酷酷的昵称吧" required>
       </div>
       <button type="submit">注册</button>
     </form>
@@ -21,6 +20,7 @@
 
 <script>
 import request from '@/utility/request.js';
+import {ElMessage} from 'element-plus';
 export default {
   data() {
     return {
@@ -32,15 +32,23 @@ export default {
   },
   methods: {
     submitForm() {
+      var password = document.getElementById("password").value; 
+      var upperCaseLetters = /[A-Z]/g;  
+      var lowerCaseLetters = /[a-z]/g;  
+      var numbers = /[0-9]/g;  
       if (!this.studentId || !this.nickName || !this.password) {
-        this.errorMessage = '您输入的注册信息有误';
-        return;
+        ElMessage.error('您输入的注册信息有误')
+        return
       }
-
+      
+      if(password.match(upperCaseLetters) && password.match(lowerCaseLetters) && password.match(numbers)) {  
+      } else {  
+        ElMessage.error('密码请包含大小写字母和数字')
+        return;
+      }  
       this.registerUser();
     },
     registerUser() {
-      
         const response = request.post('/api/register', {
           studentId: this.studentId,
           password: this.password,
@@ -50,14 +58,108 @@ export default {
             this.$router.push('/Login');
           }
         }).catch(error => {
-          console.error(error);
+          ElMessage.error('发生了一个错误')
         });
         
      
+    },
     }
   }
-};
+
 </script>
 
 <style scoped>
+.register {
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-image: url('../../../public/bg.png');  
+    background-repeat: no-repeat;  
+    background-size: cover;  
+    background-position: center; 
+}
+img{
+  position: absolute;
+  left: 475px;
+  top: 166px;
+  width: 101px;
+  height: 101px;
+  opacity: 1;
+}
+h2 {
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 62.4px;
+  font-family:'YouSheBiaoTiYuan';
+  position: absolute;
+  top: 174px;
+  left: 585px;
+}
+h3 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20.8px;
+  letter-spacing: 1px;
+  font-family: 'YouSheBiaoTiYuan';
+  position: absolute;
+  top: 237px;
+  left: 604px;
+}
+input {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  line-height: 18.47px;
+  color: rgba(166, 166, 166, 1);
+  vertical-align: top;
+}
+#studentId{
+position: absolute;
+left: 576px;
+top: 300px;
+width: 288px;
+height: 45px;
+opacity: 1;
+border-radius: 14px;
+background: rgba(255, 255, 255, 1);
+}
+#password{
+  position: absolute;
+  left: 576px;
+  top: 374px;
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 1);}
+#nickName{
+  position: absolute;
+  left: 577px;
+  top: 448px;
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 1);
+}
+button {
+  position: absolute;
+  left: 651px;
+  top: 522px;
+  width: 140px;
+  height: 46px;
+  opacity: 1;
+  border-radius: 23px;
+  background: rgba(0, 43, 255, 1);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0px;
+  line-height: 26.38px;
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+  vertical-align: top;
+}
 </style>
