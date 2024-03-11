@@ -164,4 +164,4 @@ button {
   text-align: center;
   vertical-align: top;
 }
-</style>
+</style>./register.vue

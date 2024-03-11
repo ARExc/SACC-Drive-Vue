@@ -180,4 +180,4 @@ background: rgba(255, 255, 255, 1);
   text-align: center;
   vertical-align: top;
 }
-</style>
+</style>./resetPwd.vue
