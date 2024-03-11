@@ -3,7 +3,7 @@
     <Side></Side>
     <div class="main">
       <Header></Header>
-      <Breadcrumb></Breadcrumb>
+
 
       <router-view></router-view>
 

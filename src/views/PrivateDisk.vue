@@ -1,4 +1,5 @@
 <template>
+  <Breadcrumb></Breadcrumb>
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
     <div class="folder-item" v-for="item in items" :key="item.id" @click="toNext(item)">
       <img :src="src(item)" alt="File Icon">
@@ -17,6 +18,7 @@
 <script setup>
 import {onMounted, ref} from 'vue'
 import router from '@/router/index'
+import Breadcrumb from "@/views/Breadcrumb.vue";
 const showMenu = ref(false)
 const menuPosition=ref({x:0,y:0})
 let items=ref([{ id: 1, name: '文件1' }, { id: 2, name: '文件夹1' }]) // 示例数据
