@@ -1,9 +1,10 @@
 <template>
-  <Home></Home>
+  <router-view></router-view> 
 </template>
 
 <script setup>
 import Sharding from './components/Sharding.vue'
+import router from './router';
 import Home from './views/Home.vue'
 import {onMounted} from "vue";
 
