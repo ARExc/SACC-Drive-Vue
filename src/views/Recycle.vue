@@ -1,12 +1,11 @@
 <template>
   <div class="container">
-    <Side></Side>
+    
     <div class="main">
-      <Header></Header>
-      <Breadcrumb></Breadcrumb>
+      
+      <Folder>
 
-      <router-view></router-view>
-
+      </Folder>
     </div>
   </div>
 </template>
@@ -14,7 +13,7 @@
 <script setup>
 import Side from "@/views/Side.vue";
 import Header from "@/views/Header.vue";
-import Disk from "@/views/PrivateDisk.vue";
+import Folder from "@/views/Folder.vue";
 import Breadcrumb from "@/views/Breadcrumb.vue";
 </script>
 
