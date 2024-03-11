@@ -11,10 +11,10 @@
         <input type="password" id="password" v-model="password" placeholder="请输入密码" required>
       </div>
       <div>
-        <input type="newpwd" id="newpwd" v-model="newpwd" placeholder="请输入新密码" required>
+        <input type="password" id="newpwd" v-model="newpwd" placeholder="请输入新密码" required>
       </div>
       <div>
-        <input type="check" id="check" placeholder="请确认新密码" required>
+        <input type="password" id="check" placeholder="请确认新密码" required>
       </div>
       <button type="submit">确认修改</button>
     </form>

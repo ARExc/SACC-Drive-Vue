@@ -4,6 +4,7 @@
     <div class="main">
       <Header></Header>
       <Breadcrumb></Breadcrumb>
+    <routerview></routerview>
       <Folder>
       </Folder>
     </div>

@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <Side></Side>
+    
     <div class="main">
-      <Header></Header>
+      
       <Folder>
 
       </Folder>

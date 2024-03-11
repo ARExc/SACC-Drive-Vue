@@ -24,7 +24,7 @@
         <el-menu-item index="1-1" class="menu-item">私有仓库</el-menu-item>
         <el-menu-item index="1-2" class="menu-item">公有仓库</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="/Recycle">
+      <el-menu-item index="/Home/Recycle">
         <el-icon><icon-menu /></el-icon>
         <template #title>回收站</template>
       </el-menu-item>

@@ -30,18 +30,21 @@ export default new createRouter({
     {
       path: '/Home',
       name: 'Home',
-      component: Home
+      component: Home,
+      children: [
+        {
+          path: 'Recycle',
+          name: 'Recycle',
+          component: Recycle
+        }
+      ]
     },
     {
       path: '/ResetPwd',
       name: 'ResetPwd',
       component: ResetPwd
     },
-    {
-      path:'/Recycle',
-      name:'Recycle',
-      component:Recycle
-    }
+    
   ]
   
 })
