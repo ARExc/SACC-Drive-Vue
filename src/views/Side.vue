@@ -14,16 +14,17 @@
         background-color="rgb(15,44,84)"
         :collapse="isCollapse"
         :style="{ width: isCollapse ? '' : '200px' }"
+        router
     >
       <el-sub-menu index="1" >
         <template #title>
           <el-icon><location /></el-icon>
           <span>Root</span>
         </template>
-        <el-menu-item index="1-1" class="menu-item">私有仓库</el-menu-item>
-        <el-menu-item index="1-2" class="menu-item">公有仓库</el-menu-item>
+        <el-menu-item index="1-1" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
+        <el-menu-item index="1-2" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="2">
+      <el-menu-item index="/Home/Recycle">
         <el-icon><icon-menu /></el-icon>
         <template #title>回收站</template>
       </el-menu-item>
@@ -41,16 +42,22 @@ import {
   Location,
   Setting,
 } from '@element-plus/icons-vue'
-
+import router from '@/router'
 const isCollapse = ref(false)
-
+const toPrivate = () => {
+  router.push('/home/privateDisk')
+}
+const toPublic = () => {
+  router.push('/home/publicDisk')
+}
 </script>
 
 <style scoped>
 .side{
   height:100%;
   background-color: rgb(15,44,84);
-
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
 }
 .title{
   color: whitesmoke;

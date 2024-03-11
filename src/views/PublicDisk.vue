@@ -1,7 +1,5 @@
 <template>
-  <div class="container">
-    <Breadcrumb></Breadcrumb>
-  </div>
+  <Breadcrumb></Breadcrumb>
 </template>
 
 <script setup>

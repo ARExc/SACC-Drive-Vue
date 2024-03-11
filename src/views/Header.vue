@@ -23,6 +23,7 @@ img{
   min-height: 60px;
   display: flex;
   justify-content: flex-end;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* 水平偏移，垂直偏移，模糊半径，颜色 */
 }
 span{
   margin:auto 10px;
