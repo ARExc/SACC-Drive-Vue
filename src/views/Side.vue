@@ -20,8 +20,8 @@
           <el-icon><location /></el-icon>
           <span>Root</span>
         </template>
-        <el-menu-item index="1-1" class="menu-item">私有仓库</el-menu-item>
-        <el-menu-item index="1-2" class="menu-item">公有仓库</el-menu-item>
+        <el-menu-item index="1-1" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
+        <el-menu-item index="1-2" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="2">
         <el-icon><icon-menu /></el-icon>
@@ -41,9 +41,14 @@ import {
   Location,
   Setting,
 } from '@element-plus/icons-vue'
-
+import router from '@/router'
 const isCollapse = ref(false)
-
+const toPrivate = () => {
+  router.push('/home/privateDisk')
+}
+const toPublic = () => {
+  router.push('/home/publicDisk')
+}
 </script>
 
 <style scoped>
