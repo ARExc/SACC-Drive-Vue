@@ -19,16 +19,30 @@ import { ref } from 'vue';
 import {ElMessage} from "element-plus";
 import instantaneousTransmission from "@/utility/instantaneous";
 import sliceFileAndCalculateMD5 from "@/utility/chunk";
+import store from "@/store/store";
+
 const inputFile = ref(null);
 const trigger=()=>{
   inputFile.value.click();
 }
 let file = ref(null);
+
 const uploadFile=(e)=>{
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
   if(file){
     instantaneousTransmission(file).then(result=>{
       if (result) {
+
+        if(/^image\//.test(result)){
+          store.commit('setFileType','image');
+          console.log('图片');
+        }else if(/^video\//.test(result)) {
+          store.commit('setFileType','video');
+          console.log('视频');
+        }else{
+          store.commit('setFileType','file');
+          console.log('文档');
+        }
         ElMessage.success('秒传成功');
       } else {
         // 在这里执行正常的文件上传逻辑

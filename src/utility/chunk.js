@@ -28,7 +28,9 @@ function sliceFileAndCalculateMD5(file) {
                             loadNext();
                         }else{
                             console.log('这个文件分片不存在');
-                            request.post('api/pub/file/uploadFile',{})
+                            request.post('api/pub/file/uploadFile',{
+
+                            })
                         }
 
                     }).catch(err=>{
@@ -45,4 +47,5 @@ function sliceFileAndCalculateMD5(file) {
     }
     loadNext();
 }
+
 export default sliceFileAndCalculateMD5;

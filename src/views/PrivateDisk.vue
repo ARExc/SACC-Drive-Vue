@@ -16,28 +16,43 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onMounted, ref , watch} from 'vue'
 import router from '@/router/index'
 import Breadcrumb from "@/views/Breadcrumb.vue";
+import store from "@/store/store";
+
+
 const showMenu = ref(false)
 const menuPosition=ref({x:0,y:0})
-let items=ref([{ id: 1, name: '文件1' }, { id: 2, name: '文件夹1' }]) // 示例数据
+let items=ref([{ id: 1, name: '文件1', type: 'file'}, { id: 2, name: '文件夹1', type: 'folder' }]) // 示例数据
+
+watch(()=>store.getters.isUpload,(newVal,oldVal)=>{
+  // console.log(newVal);
+  if(newVal){
+    items.value.push({ id: 3, name: '文件2', type: 'file' })
+    console.log('添加文件')
+    store.commit('setUpload',false)
+  }
+});
+
 let src=(item)=>{
   if(item.name.includes('文件夹')){
-    return require('../../public/folder.png')
+    return require('@/assets/icon/folder.png')
   }else{
-    return require('../../public/file.png')
+    return require('@/assets/icon/file.png')
   }
 };
 
 const toNext = (item) => {
-  console.log('点击'+item.name)
-  items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
-  router.push('/home/privateDisk/folder')
-  // request.get('api/file/getAllFiles',).then(res=>{
-  //   items=res.data.data;
-  //   console.log(res.data)
-  // })
+  if(item.type==='folder'){
+    console.log('点击'+item.name)
+    items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
+    router.push('/home/privateDisk/folder')
+    // request.get('api/file/getAllFiles',).then(res=>{
+    //   items=res.data.data;
+    //   console.log(res.data)
+    // })
+  }
 }
 
 
