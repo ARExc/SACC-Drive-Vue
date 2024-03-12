@@ -60,15 +60,12 @@ const uploadFile=(e)=>{
 }
 
 let breadcrumbs = ref(breadcrumb);
-// console.log(breadcrumbs.value);
-const updateBreadcrumbs = (path) => {
-  breadcrumbs.value.push({ name: path, path: path });
-  breadcrumb=breadcrumbs.value;
-  console.log(breadcrumb);
-};
+
 const navigateTo = (folderName) => {
+  console.log('点击', folderName);
+  const index = breadcrumbs.value.findIndex((crumb) => crumb.name === folderName);
+  breadcrumbs.value.splice(index + 1);
   router.push({ name: 'FolderDetail', params: { folderName } });
-  // breadcrumbs.value.splice(index + 1);
   // console.log(breadcrumbs.value);
 };
 </script>
