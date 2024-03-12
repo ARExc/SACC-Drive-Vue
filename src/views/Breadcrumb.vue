@@ -6,19 +6,27 @@
       </el-button>
 
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/error' }">homepage</el-breadcrumb-item>
-      <el-breadcrumb-item
-      ><a href="/">management</a></el-breadcrumb-item
-      >
+      <el-breadcrumb-item >root</el-breadcrumb-item>
+      <el-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index" @click="navigateTo(crumb.name)">
+        {{ crumb.name }}
+      </el-breadcrumb-item>
+
+<!--      <el-breadcrumb-item :to="{ path: '/home' }">root</el-breadcrumb-item>-->
+<!--      <el-breadcrumb-item :to="{ path: '/home/privateDisk' }">私有仓库</el-breadcrumb-item>-->
     </el-breadcrumb>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import instantaneousTransmission from "@/utility/instantaneous";
 import sliceFileAndCalculateMD5 from "@/utility/chunk";
+import store from "@/store/store";
+import router from "@/router/index";
+import breadcrumb from "@/utility/breadcrumb";
+
+
 const inputFile = ref(null);
 const trigger=()=>{
   inputFile.value.click();
@@ -29,6 +37,16 @@ const uploadFile=(e)=>{
   if(file){
     instantaneousTransmission(file).then(result=>{
       if (result) {
+        if(/^image\//.test(result)){
+          store.commit('setFileType','image');
+          console.log('图片');
+        }else if(/^video\//.test(result)) {
+          store.commit('setFileType','video');
+          console.log('视频');
+        }else{
+          store.commit('setFileType','file');
+          console.log('文档');
+        }
         ElMessage.success('秒传成功');
       } else {
         // 在这里执行正常的文件上传逻辑
@@ -40,6 +58,16 @@ const uploadFile=(e)=>{
   }
 //bug:上传成功后，无法再次连续上传相同文件
 }
+
+let breadcrumbs = ref(breadcrumb);
+
+const navigateTo = (folderName) => {
+  console.log('点击', folderName);
+  const index = breadcrumbs.value.findIndex((crumb) => crumb.name === folderName);
+  breadcrumbs.value.splice(index + 1);
+  router.push({ name: 'FolderDetail', params: { folderName } });
+  // console.log(breadcrumbs.value);
+};
 </script>
 
 <style scoped>
