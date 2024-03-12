@@ -18,6 +18,7 @@
       </div>
       <button type="submit">确认修改</button>
     </form>
+    <router-link to="/Login" class="login">返回登陆界面</router-link>
   </div>
 </template>
 
@@ -61,7 +62,7 @@ export default {
                 type: 'success',
         })
             setTimeout(() => {
-              this.$router.push('/Login');
+              this.$router.push('/login');
             },3000);
           }
         }).catch(error => {
@@ -180,4 +181,14 @@ background: rgba(255, 255, 255, 1);
   text-align: center;
   vertical-align: top;
 }
-</style>
+.login{
+  position: absolute;
+  font-size: 18px;
+  letter-spacing: 2px;
+  top: 3vh;
+  left: 90vw;
+}
+a:hover{
+  color: blue;
+}
+</style>./resetPwd.vue./resetPwd.vue

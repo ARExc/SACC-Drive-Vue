@@ -132,7 +132,7 @@ window.addEventListener('click', () => {
   align-items: center;
   justify-content: center;
   height: 100px; /* 设置固定高度 */
-  //box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+  
   transition: transform 0.3s ease; /* 平滑过渡效果 */
 }
 
@@ -140,7 +140,6 @@ window.addEventListener('click', () => {
   background-color: #f9f9f9; /* 设置背景色 */
 
   transform: translateY(-5px); /* 悬停时上移 */
-  //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 悬停时增加阴影 */
 }
 
 .folder-item img {
