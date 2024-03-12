@@ -2,7 +2,6 @@ import SparkMD5 from "spark-md5";
 import store from "@/store/store.js";
 
 
-
 const instantaneousTransmission=(file)=>{
     console.log(file);
     console.log('秒传');
