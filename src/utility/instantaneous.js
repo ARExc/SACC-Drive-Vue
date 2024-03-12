@@ -1,4 +1,7 @@
 import SparkMD5 from "spark-md5";
+import store from "@/store/store.js";
+
+
 
 const instantaneousTransmission=(file)=>{
     console.log(file);
@@ -13,8 +16,9 @@ const instantaneousTransmission=(file)=>{
             const spark =new SparkMD5.ArrayBuffer();
             spark.append(arrayBuffer);//不能传入file类型，只能传入ArrayBuffer，否则md5永远是一样的
             let hash= spark.end(false);
+            store.commit('setUpload',true);
             //在这里发起hash检查请求
-            resolve(true);
+            resolve(file.type);
             console.log('文件MD5:', hash);
         };
         reader.onerror=(e)=>{
