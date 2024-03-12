@@ -6,33 +6,37 @@
       </el-button>
 
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/error' }">homepage</el-breadcrumb-item>
-      <el-breadcrumb-item
-      ><a href="/">management</a></el-breadcrumb-item
-      >
+      <el-breadcrumb-item >root</el-breadcrumb-item>
+      <el-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index" @click="navigateTo(crumb.name)">
+        {{ crumb.name }}
+      </el-breadcrumb-item>
+
+<!--      <el-breadcrumb-item :to="{ path: '/home' }">root</el-breadcrumb-item>-->
+<!--      <el-breadcrumb-item :to="{ path: '/home/privateDisk' }">私有仓库</el-breadcrumb-item>-->
     </el-breadcrumb>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import {ElMessage} from "element-plus";
+import { ElMessage } from "element-plus";
 import instantaneousTransmission from "@/utility/instantaneous";
 import sliceFileAndCalculateMD5 from "@/utility/chunk";
 import store from "@/store/store";
+import router from "@/router/index";
+import breadcrumb from "@/utility/breadcrumb";
+
 
 const inputFile = ref(null);
 const trigger=()=>{
   inputFile.value.click();
 }
 let file = ref(null);
-
 const uploadFile=(e)=>{
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
   if(file){
     instantaneousTransmission(file).then(result=>{
       if (result) {
-
         if(/^image\//.test(result)){
           store.commit('setFileType','image');
           console.log('图片');
@@ -54,6 +58,19 @@ const uploadFile=(e)=>{
   }
 //bug:上传成功后，无法再次连续上传相同文件
 }
+
+let breadcrumbs = ref(breadcrumb);
+// console.log(breadcrumbs.value);
+const updateBreadcrumbs = (path) => {
+  breadcrumbs.value.push({ name: path, path: path });
+  breadcrumb=breadcrumbs.value;
+  console.log(breadcrumb);
+};
+const navigateTo = (folderName) => {
+  router.push({ name: 'FolderDetail', params: { folderName } });
+  // breadcrumbs.value.splice(index + 1);
+  // console.log(breadcrumbs.value);
+};
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
     <div class="folder-item" v-for="item in items" :key="item.id" @click="toNext(item)">
       <img :src="src(item)" alt="File Icon">
-      <span>{{ item.name }}</span>
+      <span>{{ item.fileName }}</span>
     </div>
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
@@ -16,42 +16,57 @@
 </template>
 
 <script setup>
-import {onMounted, ref , watch} from 'vue'
+import {onMounted, reactive, ref, watch} from 'vue'
 import router from '@/router/index'
 import Breadcrumb from "@/views/Breadcrumb.vue";
 import store from "@/store/store";
+import breadcrumb from "@/utility/breadcrumb";
+import request from "@/utility/request";
 
-
+const state = reactive({breadcrumbs: breadcrumb});
 const showMenu = ref(false)
-const menuPosition=ref({x:0,y:0})
-let items=ref([{ id: 1, name: '文件1', type: 'file'}, { id: 2, name: '文件夹1', type: 'folder' }]) // 示例数据
+const menuPosition = ref({x: 0, y: 0})
+let items = ref([])
 
-watch(()=>store.getters.isUpload,(newVal,oldVal)=>{
+watch(() => store.getters.isUpload, (newVal) => {
   // console.log(newVal);
-  if(newVal){
-    items.value.push({ id: 3, name: '文件2', type: 'file' })
+  if (newVal) {
+    items.value.push({id: 3, fileName: '文件2', type: 'file'})
     console.log('添加文件')
-    store.commit('setUpload',false)
+    store.commit('setUpload', false)
   }
 });
 
-let src=(item)=>{
-  if(item.name.includes('文件夹')){
-    return require('@/assets/icon/folder.png')
-  }else{
+let src = (item) => {
+  if (item.folderType === 1) {
+    return require('@/assets/icon/folder.png')//这里的require函数调用告诉构建工具（比如Webpack），它需要处理（即包含在最终的构建结果中）这些图片资源。
+  } else if (item.folderType===0) {
+    //1：视频 2：音频 3：文档 4：图片 5：其他
+    if (item.fileCategory === 1) {
+      return require('@/assets/icon/video.png')
+    } else if (item.fileCategory === 2) {
+      return require('@/assets/icon/music.png')
+    } else if(item.fileCategory === 3){
+      return require('@/assets/icon/document.png')
+    }else if(item.fileCategory === 4){
+      return require('@/assets/icon/picture.png')
+    } else{
+      return require('@/assets/icon/file.png')
+    }
+  } else{
     return require('@/assets/icon/file.png')
   }
 };
 
 const toNext = (item) => {
-  if(item.type==='folder'){
-    console.log('点击'+item.name)
-    items=[{ id: 1, name: '文件2' }, { id: 2, name: '文件夹2' }]
-    router.push('/home/privateDisk/folder')
-    // request.get('api/file/getAllFiles',).then(res=>{
-    //   items=res.data.data;
-    //   console.log(res.data)
-    // })
+  if (item.folderType === 1) {
+    console.log('点击' + item.fileName)
+    state.breadcrumbs.push({name: item.fileName, path: '/home/privateDisk/' + item.name});
+    console.log('跳转URL:', '/home/privateDisk/' + item.fileName);
+    console.log('参数folderName:', item.fileName);
+
+    // router.push({name: 'FolderDetail', params: {folderName: item.fileName}})
+    router.push('/home/privateDisk/' + item.fileName)
   }
 }
 
@@ -62,8 +77,14 @@ function showContextMenu(e) {
   //   c
   // }
   showMenu.value = true
-  menuPosition.value = { x: e.pageX, y: e.pageY }//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
+  menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
+onMounted(() => {
+  request.get('/api/priv/file/getFileList').then(res => {
+    items.value = res.data.data.records;
+    // console.log(items.value)
+  })
+});
 
 function moveFile() {
   console.log('移动')
@@ -76,20 +97,13 @@ function deleteItem() {
 }
 
 function downloadItem(e) {
-  console.log('下载'+e)
+  console.log('下载' + e)
   showMenu.value = false
 }
 
 window.addEventListener('click', () => {
   showMenu.value = false
 });
-
-// onMounted(()=>{
-//   request.get('api/file/getAllFiles').then(res=>{
-//     items=res.data.data;
-//     console.log(res.data)
-//   })
-// });
 
 </script>
 
@@ -130,6 +144,7 @@ window.addEventListener('click', () => {
   max-width: 60px; /* 图标最大宽度 */
   height: auto; /* 保持图标的原始宽高比 */
 }
+
 .custom-context-menu {
   position: fixed;
   border: 1px solid #ccc;
