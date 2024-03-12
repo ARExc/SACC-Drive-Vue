@@ -15,7 +15,7 @@
     </form>
     </div>
     <router-link to="/register" class="register">注册</router-link>
-    <router-link to="/resetPwd" class="resetpwd">忘记密码</router-link>
+    <!-- <router-link to="/resetPwd" class="resetpwd">修改密码</router-link> -->
   </div>
 </template>
 
@@ -145,10 +145,10 @@ vertical-align: top;
 }
 .register{
   position: absolute;
-  font-size: 10px;
+  font-size: 20px;
   letter-spacing: 2px;
-  top: 72vh;
-  left: 52vw;
+  top: 3vh;
+  left: 95vw;
 }
 .resetpwd{
   position: absolute;

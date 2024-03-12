@@ -59,7 +59,7 @@ export default {
             this.$router.push('/login');
           }
         }).catch(error => {
-          ElMessage.error(errorMessage)
+          ElMessage.error('errorMessage')
         });
         
      
