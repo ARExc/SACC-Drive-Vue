@@ -15,7 +15,7 @@ const instantaneousTransmission = (file) => {
             const spark = new SparkMD5.ArrayBuffer();
             spark.append(arrayBuffer);//不能传入file类型，只能传入ArrayBuffer，否则md5永远是一样的
             let hash = spark.end(false);
-            store.commit('setUpload', true);
+            store.commit('file/setUpload', true);
             //在这里发起hash检查请求
             resolve(file.type);
             console.log('文件MD5:', hash);

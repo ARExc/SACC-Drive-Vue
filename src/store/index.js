@@ -1,13 +1,15 @@
 import file from './modules/file';
 import user from './modules/user';
 import getters from './getters';
-import { createStore } from 'vuex';
+import breadcrumb from './modules/breadcrumb';
+import {createStore} from 'vuex';
 
-const store=createStore({
+const store = createStore({
+    getters,
     modules: {
         file,
-        user
+        user,
+        breadcrumb
     },
-    getters
 })
 export default store;

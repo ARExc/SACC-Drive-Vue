@@ -1,87 +1,62 @@
 <template>
   <el-breadcrumb separator="/">
-    <el-breadcrumb-item >root</el-breadcrumb-item>
-    <el-breadcrumb-item v-for="(crumb, index) in breadcrumbs" :key="index" @click="openFolder(crumb)">
-      {{ crumb.name }}
+    <el-breadcrumb-item>root</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPrivate">私有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPublic">公有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-for="(crumb, index) in breadcrumbStore" :key="index" @click="toFolder(crumb)">
+      {{ crumb.fileName }}
     </el-breadcrumb-item>
-
-<!--      <el-breadcrumb-item :to="{ path: '/home' }">root</el-breadcrumb-item>-->
-<!--      <el-breadcrumb-item :to="{ path: '/home/privateDisk' }">私有仓库</el-breadcrumb-item>-->
   </el-breadcrumb>
-
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import router from "@/router/index";
-import breadcrumb from "@/utility/breadcrumb";
 import {useRoute} from "vue-router";
+import store from "@/store";
 
-const route=useRoute();
+const route = useRoute();
+let isPrivate = ref(store.getters.isPrivate);
+let isPublic = ref(store.getters.isPublic);
+
+//bug1:刷新之后面包屑导航消失
+//bug2:无法导航到私有仓库和公有仓库下
+
+
 //实现动态面包屑导航并与路径绑定
-
-const props=defineProps({
-  watchPath:{
-    type:Boolean,
-    default:true,//默认是要监听路由变化的
-  },
-})
-
-let breadcrumbs = ref([]);
-let current=ref({fileId:0,fileName:''});
-
-const openFolder=(data)=>{
-  const folder={
-    fileName:data.fileName,
-    fileId:data.fileId
+let breadcrumbStore = ref(store.getters.breadcrumb);
+//点击面包屑导航中的某个文件夹
+const toFolder = (data) => {
+  const folder = {
+    fileName: data.fileName,
+    id: data.id,
   };
-  console.log('点击',folder);
-  breadcrumbs.value.push(folder);
-  current.value=folder;
+  let index = breadcrumbStore.value.findIndex((crumb) => crumb.id === folder.id);
+  store.commit('breadcrumb/removeBreadcrumb', index)
   setPath()
 }
-defineExpose({
-  openFolder
-})
-const setPath=()=>{
-  if(!props.watchPath){
-    //TODO:这里需要一个判断，如果不监听路由变化，就不需要设置路径
-    return;
-  }
-  let pathArray=[];
-  breadcrumbs.value.forEach(item=>{
+//监听store中的breadcrumb变化
+watch(() => store.getters.breadcrumb, (newVal) => {
+  breadcrumbStore.value = newVal;
+  setPath();
+}, {deep: true});
+//设置URL路径
+const setPath = () => {
+  console.log('setPath');
+  let pathArray = [''];
+  breadcrumbStore.value.forEach(item => {
     pathArray.push(item.fileName);
   })
   router.push({
-      path:route.path,
-      query:pathArray.length===0?"":{path:pathArray.join('/')}
-    }
+        path: route.path,
+        query: pathArray.length === 0 ? "" : {path: pathArray.join('/')}
+      }
   );
-}
-
-
-
-const navigateTo = (folderName) => {
-  console.log('点击', folderName);
-  const index = breadcrumbs.value.findIndex((crumb) => crumb.name === folderName);
-  breadcrumbs.value.splice(index + 1);
-  router.push({ name: 'FolderDetail', params: { folderName } });
-  // console.log(breadcrumbs.value);
 };
-
-
-onMounted(()=>{
-  // console.log('mounted');
-  // console.log(route);
-  // console.log(router.currentRoute.value);
-  // console.log(router.currentRoute.value.params);
-  // console.log(router.currentRoute.value.params.folderName);
-
-})
 </script>
 
 <style scoped>
-.head{
+.head {
   z-index: 1;
   min-height: 50px;
   display: flex;
@@ -89,5 +64,4 @@ onMounted(()=>{
   align-items: center;
   justify-content: flex-start;
 }
-
 </style>

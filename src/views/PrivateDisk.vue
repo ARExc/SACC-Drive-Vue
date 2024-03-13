@@ -1,7 +1,7 @@
 <template>
   <HeaderBar></HeaderBar>
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
-    <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)">
+    <div class="folder-item" v-for="item in items" :key="item.fileId" @click="preview(item)">
       <img :src="src(item)" alt="File Icon">
       <span>{{ item.fileName }}</span>
     </div>
@@ -18,29 +18,34 @@
 <script setup>
 import {onMounted, reactive, ref, watch} from 'vue'
 import router from '@/router/index'
-import Breadcrumb from "@/views/Breadcrumb.vue";
 import store from "@/store";
-import breadcrumb from "@/utility/breadcrumb";
 import request from "@/utility/request";
-import {useRoute} from "vue-router";
-import ActionArea from "@/views/ActionArea.vue";
 import HeaderBar from "@/views/HeaderBar.vue";
 
-const state = reactive({breadcrumbs: breadcrumb});
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
 let items = ref([])
 
 
-watch(() => store.getters.isUpload, (newVal) => {
-  // console.log(newVal);
+watch(() => store.getters.breadcrumb, (newVal) => {
+  console.log(newVal);
   if (newVal) {
     items.value.push({id: 3, fileName: '文件2', type: 'file'})
-    // console.log('添加文件')
-    store.commit('setUpload', false)
+    store.commit('file/setUpload', false)
   }
-});
+}, {deep: true});
 
+
+//点击文件夹进入下一级
+const preview = (item) => {
+  if (item.folderType === 1) {
+    console.log('点击' + item.fileName)
+    // debugger;
+    store.commit('breadcrumb/addBreadcrumb', item);
+  }
+}
+
+//根据类型显示不同的图标
 let src = (item) => {
   if (item.folderType === 1) {
     return require('@/assets/icon/folder.png')//这里的require函数调用告诉构建工具（比如Webpack），它需要处理（即包含在最终的构建结果中）这些图片资源。
@@ -62,33 +67,10 @@ let src = (item) => {
   }
 };
 
-//点击文件夹进入下一级
-const breadcrumbRef=ref(null);
-const preview=(item)=>{
-  if(item.folderType===1){
-    debugger;
-    console.log(breadcrumbRef.value)
-    breadcrumbRef.value.openFolder(item);
-  }
-}
-
-const toNext = (item) => {
-  if (item.folderType === 1) {
-    // console.log('点击' + item.fileName)
-    state.breadcrumbs.push({name: item.fileName, path: '/home/privateDisk/' + item.name});
-    // console.log('跳转URL:', '/home/privateDisk/' + item.fileName);
-    // console.log('参数folderName:', item.fileName);
-
-    router.push({name: 'FolderDetail', params: {folderName: item.fileName}})
-    // router.push('/home/privateDisk/' + item.fileName)
-  }
-}
-
-
 function showContextMenu(e) {
   e.preventDefault()
   // if(e.innerHTML==null){
-  //   c
+  //   return;
   // }
   showMenu.value = true
   menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置

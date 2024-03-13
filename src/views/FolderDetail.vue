@@ -19,21 +19,20 @@
 import Breadcrumb from "@/views/Breadcrumb.vue";
 import {computed, onMounted} from "vue";
 import {useRoute} from "vue-router";
-import request from "@/utility/request";
 
 const route = useRoute();
 const breadcrumbs = computed(() => {
   const pathArray = route.params.pathMartch ? route.params.pathMartch.split('/') : [];
-  let path='/home/privateDisk';
-  return pathArray.map((folder,index)=>{
-    path+=`/${folder}`;
+  let path = '/home/privateDisk';
+  return pathArray.map((folder, index) => {
+    path += `/${folder}`;
     return {
-      name:folder,
-      path:path
+      name: folder,
+      path: path
     }
   })
 })
-onMounted(()=>{
+onMounted(() => {
   console.log('mounted');
   console.log(route.params);
 })

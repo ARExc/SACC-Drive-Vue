@@ -1,8 +1,8 @@
 <template>
-<div class="head">
-  <ActionArea></ActionArea>
-  <Breadcrumb ref="breadcrumbRef"></Breadcrumb>
-</div>
+  <div class="head">
+    <ActionArea></ActionArea>
+    <Breadcrumb ref="breadcrumbRef"></Breadcrumb>
+  </div>
 </template>
 
 <script setup>
@@ -12,7 +12,7 @@ import Breadcrumb from "@/views/Breadcrumb.vue";
 </script>
 
 <style scoped>
-.head{
+.head {
   z-index: 1;
   min-height: 50px;
   display: flex;

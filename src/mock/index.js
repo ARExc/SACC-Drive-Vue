@@ -2,7 +2,7 @@
 import Mock from 'mockjs';
 
 // 使用Mock.mock方法模拟数据
-Mock.mock('http://localhost:8080/api/priv/file/getFileList','get',{
+Mock.mock('http://localhost:8080/api/priv/file/getFileList', 'get', {
     "code": 1,
     "errorMsg": "null",
     "data": {
