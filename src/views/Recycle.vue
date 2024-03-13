@@ -5,11 +5,7 @@
   </div>
 </template>
 
-<script setup>
-import Side from "@/views/Side.vue";
-import Header from "@/views/Header.vue";
-import Breadcrumb from "@/views/Breadcrumb.vue";
-</script>
+<script setup></script>
 
 <style scoped>
 .container {

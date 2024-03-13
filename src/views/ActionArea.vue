@@ -14,23 +14,23 @@ import {ElMessage} from "element-plus";
 import sliceFileAndCalculateMD5 from "@/utility/chunk";
 
 const inputFile = ref(null);
-const trigger=()=>{
+const trigger = () => {
   inputFile.value.click();
 }
 let file = ref(null);
-const uploadFile=(e)=>{
+const uploadFile = (e) => {
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
-  if(file){
-    instantaneousTransmission(file).then(result=>{
+  if (file) {
+    instantaneousTransmission(file).then(result => {
       if (result) {
-        if(/^image\//.test(result)){
-          store.commit('setFileType','image');
+        if (/^image\//.test(result)) {
+          store.commit('setFileType', 'image');
           console.log('图片');
-        }else if(/^video\//.test(result)) {
-          store.commit('setFileType','video');
+        } else if (/^video\//.test(result)) {
+          store.commit('setFileType', 'video');
           console.log('视频');
-        }else{
-          store.commit('setFileType','file');
+        } else {
+          store.commit('setFileType', 'file');
           console.log('文档');
         }
         ElMessage.success('秒传成功');
@@ -47,9 +47,9 @@ const uploadFile=(e)=>{
 </script>
 
 <style scoped>
-.el-button{
+.el-button {
   transform: scale(0.9);
-  margin:auto 10px;
+  margin: auto 10px;
 }
 
 </style>

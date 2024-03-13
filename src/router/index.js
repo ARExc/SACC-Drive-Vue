@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
@@ -8,7 +7,7 @@ import ResetPwd from './views/ResetPwd.vue'
 import Recycle from '../views/Recycle.vue'
 import FolderDetail from "@/views/FolderDetail.vue";
 
-const router= createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
