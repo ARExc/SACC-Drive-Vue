@@ -1,5 +1,5 @@
 import SparkMD5 from "spark-md5";
-import store from "@/store/store.js";
+import store from "@/store";
 
 
 const instantaneousTransmission = (file) => {

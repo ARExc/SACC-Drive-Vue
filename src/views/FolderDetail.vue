@@ -17,20 +17,26 @@
 
 <script setup>
 import Breadcrumb from "@/views/Breadcrumb.vue";
-import {onMounted} from "vue";
+import {computed, onMounted} from "vue";
 import {useRoute} from "vue-router";
 import request from "@/utility/request";
 
-// let items=[];
-//
-// const route = useRoute();
-// onMounted(() => {
-//   request.get('/api/priv/file/getFileList').then(res => {
-//     items = res.data.records;
-//     console.log(res.data)
-//   })
-//   console.log(route.params.folderName);
-// });
+const route = useRoute();
+const breadcrumbs = computed(() => {
+  const pathArray = route.params.pathMartch ? route.params.pathMartch.split('/') : [];
+  let path='/home/privateDisk';
+  return pathArray.map((folder,index)=>{
+    path+=`/${folder}`;
+    return {
+      name:folder,
+      path:path
+    }
+  })
+})
+onMounted(()=>{
+  console.log('mounted');
+  console.log(route.params);
+})
 </script>
 
 <style scoped>

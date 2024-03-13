@@ -1,7 +1,7 @@
 <template>
-  <Breadcrumb></Breadcrumb>
+  <HeaderBar></HeaderBar>
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
-    <div class="folder-item" v-for="item in items" :key="item.id" @click="toNext(item)">
+    <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)">
       <img :src="src(item)" alt="File Icon">
       <span>{{ item.fileName }}</span>
     </div>
@@ -19,10 +19,12 @@
 import {onMounted, reactive, ref, watch} from 'vue'
 import router from '@/router/index'
 import Breadcrumb from "@/views/Breadcrumb.vue";
-import store from "@/store/store";
+import store from "@/store";
 import breadcrumb from "@/utility/breadcrumb";
 import request from "@/utility/request";
 import {useRoute} from "vue-router";
+import ActionArea from "@/views/ActionArea.vue";
+import HeaderBar from "@/views/HeaderBar.vue";
 
 const state = reactive({breadcrumbs: breadcrumb});
 const showMenu = ref(false)
@@ -59,6 +61,16 @@ let src = (item) => {
     return require('@/assets/icon/file.png')
   }
 };
+
+//点击文件夹进入下一级
+const breadcrumbRef=ref(null);
+const preview=(item)=>{
+  if(item.folderType===1){
+    debugger;
+    console.log(breadcrumbRef.value)
+    breadcrumbRef.value.openFolder(item);
+  }
+}
 
 const toNext = (item) => {
   if (item.folderType === 1) {
