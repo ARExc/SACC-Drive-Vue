@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <div class="file-item"   @contextmenu.prevent="showContextMenu($event)" style="height: 100px; width: 100px;"> 
+      <div class="file-item"   @contextmenu.prevent="showContextMenu($event, file.id)" style="height: 100px; width: 100px;"> 
         <!-- v-for="file in records"  -->
         <!-- :key="file.id" -->
         <!-- <img :src="src(file)" alt="文件封面"> 
@@ -11,7 +11,7 @@
       <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
         <li>恢复</li>
-        <li>彻底删除</li>
+        <li @click="deleteItem(selectedFileId)">彻底删除</li>
       </ul>
     </div>
   </div>
@@ -21,7 +21,6 @@
 
 import {onMounted, reactive, ref, watch} from 'vue'
 import router from '@/router/index'
-import store from "@/store/store";
 import request from '@/utility/request';
 import {ElMessage} from 'element-plus';
  
@@ -29,11 +28,10 @@ import {ElMessage} from 'element-plus';
     const showMenu = ref(false)
     const menuPosition = ref({x: 0, y: 0})
     let records = ref([]);
-
      let pageNo ='';
      let pageSize='';
      let total = '';
-
+    const selectedFileId = '';
 
      // created(){
   //   getRecycleList()
@@ -53,11 +51,12 @@ import {ElMessage} from 'element-plus';
         ElMessage.error('errorMessage')
       });
     }
-   function showContextMenu(e) {
+   function showContextMenu(e,id) {
       e.preventDefault()
   // if(e.innerHTML==null){
   //   c
   // }
+      selectedFileId = id
       showMenu.value = true
       menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
@@ -86,13 +85,15 @@ let src = (file) => {
   }
 };
 
-function deleteItem(){
+function deleteItem(id){
   request.delete('/api/recycle/delFile', {
-    id:this.$route.params.id
+    fileIds:id
   }).then(response => {
     if(response.code === 1){
-      ElMessage.success('删除成功')
-      this.getRecycleList()
+      let numId = Number(id);
+      records.splice(numId,1);
+      ElMessage.success('删除成功');
+      getRecycleList();
     }else{
       ElMessage.error('删除失败')
     }

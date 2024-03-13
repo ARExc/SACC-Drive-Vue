@@ -19,7 +19,7 @@
 import {onMounted, reactive, ref, watch} from 'vue'
 import router from '@/router/index'
 import Breadcrumb from "@/views/Breadcrumb.vue";
-import store from "@/store";
+import store from "@/store/index";
 import breadcrumb from "@/utility/breadcrumb";
 import request from "@/utility/request";
 import {useRoute} from "vue-router";
