@@ -1,9 +1,9 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import Login from './views/Login.vue'
-import Register from './views/Register.vue'
-import Error from './views/Error.vue'
+import Register from './views/register.vue'
+import Error from './views/error.vue'
+import Login from './views/login.vue'
 import Home from '../views/Home.vue'
-import ResetPwd from './views/ResetPwd.vue'
+import ResetPwd from './views/resetPwd.vue'
 import Recycle from '../views/Recycle.vue'
 import FolderDetail from "@/views/FolderDetail.vue";
 
@@ -65,9 +65,7 @@ const router = createRouter({
             name: 'ResetPwd',
             component: ResetPwd
         },
-
-
-    ]
+      ],
 
 })
 export default router;

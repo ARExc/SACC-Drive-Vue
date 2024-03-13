@@ -15,6 +15,7 @@
       </div>
       <button type="submit">注册</button>
     </form>
+    <router-link to="/Login" class="login">返回登陆界面</router-link>
   </div>
 </template>
 
@@ -62,8 +63,6 @@ export default {
       }).catch(error => {
         ElMessage.error(errorMessage)
       });
-
-
     },
   }
 }
@@ -175,4 +174,14 @@ button {
   text-align: center;
   vertical-align: top;
 }
-</style>
+.login{
+  position: absolute;
+  font-size: 18px;
+  letter-spacing: 2px;
+  top: 3vh;
+  left: 90vw;
+}
+a:hover{
+  color: blue;
+}
+</style>./register.vue./register.vue
