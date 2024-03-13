@@ -15,7 +15,7 @@ Mock.mock('http://localhost:8080/api/priv/file/getFileList','get',{
                 "createTime": "@datetime", // 生成随机日期时间
                 "lastUpdateTime": "@datetime",
                 "fileCover": "@image('200x100', '#50B347', '#FFF', 'Mock.js')", // 生成示例图片
-                "fileName": "文件名@integer(1, 5)", // 生成文件名后跟随1到5之间的数字
+                "fileName": "test@integer(1, 5)", // 生成文件名后跟随1到5之间的数字
                 "fileSize": "@integer(20, 100)", // 随机生成20到100之间的整数
                 "filePid": "@guid",
                 "fileCategory|1-5": 1 //1：视频 2：音频 3：文档 4：图片 5：其他

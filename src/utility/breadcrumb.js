@@ -1,7 +1,6 @@
-
-let breadcrumb =[
+let breadcrumb = [
     {
-        name:'私有仓库',
+        name: '私有仓库',
         path: '/privateDisk',
     },
 ]

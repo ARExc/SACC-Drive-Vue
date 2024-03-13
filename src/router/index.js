@@ -8,7 +8,7 @@ import ResetPwd from './views/resetPwd.vue'
 import Recycle from '../views/Recycle.vue'
 import FolderDetail from "@/views/FolderDetail.vue";
 
-export default new createRouter({
+const router= createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -69,3 +69,5 @@ export default new createRouter({
       ],
 
 })
+export default router;
+// router.beforeEach()
