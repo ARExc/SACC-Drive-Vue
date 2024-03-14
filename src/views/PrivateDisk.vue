@@ -1,16 +1,19 @@
 <template>
   <HeaderBar></HeaderBar>
   <div class="folder" @contextmenu.prevent="showContextMenu($event)">
-    <div class="folder-item" v-for="item in items" :key="item.fileId" @click="preview(item)">
+    <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
+         @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
+      <span>{{ item.id }}</span>
       <span>{{ item.fileName }}</span>
-    </div>
-    <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
-      <ul>
-        <li @click="downloadItem(e)">下载</li>
-        <li @click="moveFile">移动</li>
-        <li @click="deleteItem">删除</li>
-      </ul>
+      <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
+        <ul>
+          <li @click="downloadItem">下载</li>
+          <li @click="moveFile">移动</li>
+          <li @click="rename">重命名</li>
+          <li @click="deleteItem">删除</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +27,7 @@ import HeaderBar from "@/views/HeaderBar.vue";
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
 let items = ref([])
+let currentItem = ref(null)
 
 
 watch(() => store.getters.file, (newVal) => {
@@ -37,8 +41,9 @@ watch(() => store.getters.file, (newVal) => {
 
 //点击文件夹进入下一级
 const preview = (item) => {
+  // console.log('点击' + item.fileName)
   if (item.folderType === 1) {
-    console.log('点击' + item.fileName)
+    // console.log('点击' + item.fileName)
     // debugger;
     store.commit('breadcrumb/addBreadcrumb', item);
   }
@@ -67,7 +72,8 @@ let src = (item) => {
 };
 
 function showContextMenu(e) {
-  e.preventDefault()
+  e.preventDefault();
+  currentItem.value = e
   // if(e.innerHTML==null){
   //   return;
   // }
@@ -82,8 +88,27 @@ onMounted(() => {
   })
 });
 
+function downloadItem() {
+  console.log('下载' + currentItem.value)
+  let code = '';
+  request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
+    // console.log(res)
+    code = res.data.data.code;
+  });
+  request.get(`/api/priv/file/download/${code}`).then(res => {
+    console.log(res)
+  });
+
+  showMenu.value = false
+}
+
 function moveFile() {
   console.log('移动')
+  showMenu.value = false
+}
+
+function rename() {
+  console.log('重命名')
   showMenu.value = false
 }
 
@@ -92,10 +117,6 @@ function deleteItem() {
   showMenu.value = false
 }
 
-function downloadItem(e) {
-  console.log('下载' + e)
-  showMenu.value = false
-}
 
 window.addEventListener('click', () => {
   showMenu.value = false

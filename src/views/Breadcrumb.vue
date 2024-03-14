@@ -20,7 +20,7 @@ let isPrivate = ref(store.getters.isPrivate);
 let isPublic = ref(store.getters.isPublic);
 
 //bug1:刷新之后面包屑导航消失
-//bug2:无法导航到私有仓库和公有仓库下
+//bug2:刷新之后面包屑导航不能正确显示
 
 
 //实现动态面包屑导航并与路径绑定
@@ -36,12 +36,12 @@ const toFolder = (data) => {
   setPath()
 }
 //监听store中的breadcrumb变化
-watch(() => store.state.breadcrumb.breadcrumbVersion, (newVal) => {
+watch(() => store.state.breadcrumb.breadcrumbVersion, () => {
   breadcrumbStore.value = store.getters.breadcrumb;
-  setPath('watch');
+  setPath();
 }, {deep: true});
 //设置URL路径
-const setPath = (from) => {
+const setPath = () => {
   // console.log('Breadcrumb.vue中的setPath,from:', from);
   let pathArray = [''];
   breadcrumbStore.value.forEach(item => {
@@ -55,11 +55,11 @@ const setPath = (from) => {
   );
 };
 
-const toPrivate=()=>{
+const toPrivate = () => {
   store.commit('breadcrumb/clearBreadcrumb')
   router.push('/home/privateDisk')
 }
-const toPublic=()=>{
+const toPublic = () => {
   store.commit('breadcrumb/clearBreadcrumb')
   router.push('/home/publicDisk')
 }

@@ -72,7 +72,7 @@ const router = createRouter({
             name: 'ResetPwd',
             component: ResetPwd
         },
-      ],
+    ],
 
 })
 export default router;

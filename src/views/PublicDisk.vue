@@ -16,8 +16,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch} from 'vue'
-import router from '@/router/index'
+import {onMounted, ref, watch} from 'vue'
 import store from "@/store";
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";

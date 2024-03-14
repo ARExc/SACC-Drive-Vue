@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     login() {
- 
+
       // request.post('/api/login', {
       //   studentId: this.studentId,
       //   password: this.password

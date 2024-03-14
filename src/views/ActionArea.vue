@@ -23,7 +23,7 @@ const uploadFile = (e) => {
   if (file) {
     instantaneousTransmission(file).then(result => {
       if (result) {
-        console.log('result:',result);
+        console.log('result:', result);
         if (/^image\//.test(result)) {
           store.commit('file/setFileType', 'image');
           console.log('图片');

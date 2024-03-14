@@ -23,6 +23,20 @@ Mock.mock('http://localhost:8080/api/priv/file/getFileList', 'get', {
         ]
     }
 });
+Mock.mock(RegExp('/api/priv/file/createDownloadUrl/*'), 'get', {
+    // console.log('url:',options.url);
+    "code": 1,
+    "errorMsg": "null",
+    "data": {
+        "code": "@guid",
+    }
+});
+Mock.mock(RegExp('/api/priv/file/download/*'), 'get', {
+    "code": 1,
+    "errorMsg": "null",
+    "data": {}
+});
+
 
 // 输出模拟的数据，实际使用时可以根据需要进行调用
 // console.log(JSON.stringify(data, null, 2));

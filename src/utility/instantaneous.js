@@ -3,8 +3,8 @@ import store from "@/store";
 
 
 const instantaneousTransmission = (file) => {
-    console.log(file);
-    console.log('秒传');
+    // console.log(file);
+    // console.log('秒传');
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         //当FileReader成功完成对文件的读取操作时，触发onload事件，并传递事件对象e给事件处理函数
@@ -17,16 +17,16 @@ const instantaneousTransmission = (file) => {
             let hash = spark.end(false);
             store.commit('file/setUpload', true);
             store.commit('file/setFile', file);
+
             //在这里发起hash检查请求
+
             resolve(file.type);
             console.log('文件MD5:', hash);
         };
         reader.onerror = (e) => {
-            console.error(e);
-
+            reject(e);
         };
         reader.readAsArrayBuffer(file);//开始异步读取文件内容。这个方法会立即返回，而文件的读取操作将在后台进行
-
     });
 };
 export default instantaneousTransmission;

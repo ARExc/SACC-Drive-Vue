@@ -174,14 +174,16 @@ button {
   text-align: center;
   vertical-align: top;
 }
-.login{
+
+.login {
   position: absolute;
   font-size: 18px;
   letter-spacing: 2px;
   top: 3vh;
   left: 90vw;
 }
-a:hover{
+
+a:hover {
   color: blue;
 }
 </style>./register.vue./register.vue
