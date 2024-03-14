@@ -1,8 +1,8 @@
 <template>
   <el-breadcrumb separator="/">
     <el-breadcrumb-item>root</el-breadcrumb-item>
-    <el-breadcrumb-item v-if="isPrivate">私有仓库</el-breadcrumb-item>
-    <el-breadcrumb-item v-if="isPublic">公有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPrivate" @click="toPrivate">私有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPublic" @click="toPublic">公有仓库</el-breadcrumb-item>
     <el-breadcrumb-item v-for="(crumb, index) in breadcrumbStore" :key="index" @click="toFolder(crumb)">
       {{ crumb.fileName }}
     </el-breadcrumb-item>
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import router from "@/router/index";
 import {useRoute} from "vue-router";
 import store from "@/store";
@@ -36,23 +36,33 @@ const toFolder = (data) => {
   setPath()
 }
 //监听store中的breadcrumb变化
-watch(() => store.getters.breadcrumb, (newVal) => {
-  breadcrumbStore.value = newVal;
-  setPath();
+watch(() => store.state.breadcrumb.breadcrumbVersion, (newVal) => {
+  breadcrumbStore.value = store.getters.breadcrumb;
+  setPath('watch');
 }, {deep: true});
 //设置URL路径
-const setPath = () => {
-  console.log('setPath');
+const setPath = (from) => {
+  // console.log('Breadcrumb.vue中的setPath,from:', from);
   let pathArray = [''];
   breadcrumbStore.value.forEach(item => {
     pathArray.push(item.fileName);
   })
+  // console.log('route.path:', route.path)
   router.push({
         path: route.path,
-        query: pathArray.length === 0 ? "" : {path: pathArray.join('/')}
+        query: {path: pathArray.length === 0 ? "" : pathArray.join('/')}
       }
   );
 };
+
+const toPrivate=()=>{
+  store.commit('breadcrumb/clearBreadcrumb')
+  router.push('/home/privateDisk')
+}
+const toPublic=()=>{
+  store.commit('breadcrumb/clearBreadcrumb')
+  router.push('/home/publicDisk')
+}
 </script>
 
 <style scoped>

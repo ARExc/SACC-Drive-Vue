@@ -16,8 +16,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch} from 'vue'
-import router from '@/router/index'
+import {onMounted, ref, watch} from 'vue'
 import store from "@/store";
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
@@ -27,10 +26,10 @@ const menuPosition = ref({x: 0, y: 0})
 let items = ref([])
 
 
-watch(() => store.getters.breadcrumb, (newVal) => {
-  console.log(newVal);
+watch(() => store.getters.file, (newVal) => {
+  console.log('私有仓库中的newVal:', newVal);
   if (newVal) {
-    items.value.push({id: 3, fileName: '文件2', type: 'file'})
+    items.value.push({id: 0, fileName: newVal.name, type: newVal.type})
     store.commit('file/setUpload', false)
   }
 }, {deep: true});
@@ -126,7 +125,7 @@ window.addEventListener('click', () => {
   align-items: center;
   justify-content: center;
   height: 100px; /* 设置固定高度 */
-  
+
   transition: transform 0.3s ease; /* 平滑过渡效果 */
 }
 

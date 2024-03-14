@@ -23,14 +23,15 @@ const uploadFile = (e) => {
   if (file) {
     instantaneousTransmission(file).then(result => {
       if (result) {
+        console.log('result:',result);
         if (/^image\//.test(result)) {
-          store.commit('setFileType', 'image');
+          store.commit('file/setFileType', 'image');
           console.log('图片');
         } else if (/^video\//.test(result)) {
-          store.commit('setFileType', 'video');
+          store.commit('file/setFileType', 'video');
           console.log('视频');
         } else {
-          store.commit('setFileType', 'file');
+          store.commit('file/setFileType', 'file');
           console.log('文档');
         }
         ElMessage.success('秒传成功');
