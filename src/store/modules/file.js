@@ -2,6 +2,7 @@ const state = {
     isUpload: false,
     file: null,
     fileType: '',
+    isNew: false,
 }
 
 const mutations = {
@@ -11,9 +12,10 @@ const mutations = {
     setFile(state, file) {
         state.file = file;
     },
-    setFileType(state, fileType) {
-        state.fileType = fileType;
-    },
+    setIsNew(state, isNew) {
+        console.log('isNew:', isNew);
+        state.isNew = isNew;
+    }
 }
 
 export default {

@@ -29,10 +29,6 @@ const router = createRouter({
             name: 'Error',
             component: Error
         },
-        // {
-        //     path: '/home',
-        //     redirect: '/home/privateDisk'
-        // },
         {
             path: '/home',
             name: 'Home',
@@ -76,4 +72,3 @@ const router = createRouter({
 
 })
 export default router;
-// router.beforeEach()

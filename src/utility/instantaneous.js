@@ -15,13 +15,32 @@ const instantaneousTransmission = (file) => {
             const spark = new SparkMD5.ArrayBuffer();
             spark.append(arrayBuffer);//不能传入file类型，只能传入ArrayBuffer，否则md5永远是一样的
             let hash = spark.end(false);
+            console.log('文件MD5:', hash);
+
+            const newFile = {
+                fileName: file.name,
+                folderType: 0,
+                fileCategory: 5,
+                fileSize: file.size,
+            };
+            const result = file.type;
+            console.log(result);
+            //1：视频 2：音频 3：文档 4：图片 5：其他
+            if (/^video\//.test(result)) {
+                newFile.fileCategory = 1;
+            } else if (/^audio\//.test(result)) {
+                newFile.fileCategory = 2;
+            } else if (/^text\//.test(result)) {
+                newFile.fileCategory = 3;
+            } else if (/^image\//.test(result)) {
+                newFile.fileCategory = 4;
+            }
             store.commit('file/setUpload', true);
-            store.commit('file/setFile', file);
+            store.commit('file/setFile', newFile);
 
             //在这里发起hash检查请求
 
-            resolve(file.type);
-            console.log('文件MD5:', hash);
+            resolve(newFile);
         };
         reader.onerror = (e) => {
             reject(e);

@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import router from "@/router/index";
 import {useRoute} from "vue-router";
 import store from "@/store";
@@ -63,6 +63,22 @@ const toPublic = () => {
   store.commit('breadcrumb/clearBreadcrumb')
   router.push('/home/publicDisk')
 }
+// M
+// onMounted(()=>{
+//   let query = route.query.path;
+//   if(query === undefined){
+//     return;
+//   }
+//   let pathArray=query.split('/');
+//   for(let i=1;i<pathArray.length;i++){
+//     let folder = {
+//       fileName: pathArray[i],
+//       // id: i,
+//     };
+//     store.commit('breadcrumb/setBreadcrumb', folder);
+//   }
+//   console.log('route.path:', pathArray)
+// })
 </script>
 
 <style scoped>

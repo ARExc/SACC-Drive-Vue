@@ -1,19 +1,18 @@
 <template>
   <HeaderBar></HeaderBar>
-  <div class="folder" @contextmenu.prevent="showContextMenu($event)">
+  <div class="folder">
     <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
          @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
-      <span>{{ item.id }}</span>
       <span>{{ item.fileName }}</span>
-      <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
-        <ul>
-          <li @click="downloadItem">下载</li>
-          <li @click="moveFile">移动</li>
-          <li @click="rename">重命名</li>
-          <li @click="deleteItem">删除</li>
-        </ul>
-      </div>
+    </div>
+    <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
+      <ul>
+        <li @click="downloadItem">下载</li>
+        <li @click="moveFile">移动</li>
+        <li @click="rename">重命名</li>
+        <li @click="deleteItem">删除</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -33,12 +32,23 @@ let currentItem = ref(null)
 watch(() => store.getters.file, (newVal) => {
   console.log('私有仓库中的newVal:', newVal);
   if (newVal) {
-    items.value.push({id: 0, fileName: newVal.name, type: newVal.type})
+    items.value.push({
+      id: newVal.id,
+      fileName: newVal.fileName,
+      fileCategory: newVal.fileCategory,
+      folderType: newVal.folderType
+    })
     store.commit('file/setUpload', false)
   }
 }, {deep: true});
 
-
+watch(() => store.state.file.isNew, (newVal) => {
+  console.log(newVal)
+  if (newVal) {
+    console.log('新建文件夹')
+    // state
+  }
+}, {deep: true})
 //点击文件夹进入下一级
 const preview = (item) => {
   // console.log('点击' + item.fileName)
@@ -72,11 +82,11 @@ let src = (item) => {
 };
 
 function showContextMenu(e) {
+  // console.log('右键菜单' + e)
+  console.log()
   e.preventDefault();
   currentItem.value = e
-  // if(e.innerHTML==null){
-  //   return;
-  // }
+
   showMenu.value = true
   menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
@@ -117,7 +127,7 @@ function deleteItem() {
   showMenu.value = false
 }
 
-
+//点击其他地方时隐藏右键菜单
 window.addEventListener('click', () => {
   showMenu.value = false
 });
@@ -152,7 +162,6 @@ window.addEventListener('click', () => {
 
 .folder-item:hover {
   background-color: #f9f9f9; /* 设置背景色 */
-
   transform: translateY(-5px); /* 悬停时上移 */
 }
 
@@ -172,7 +181,6 @@ window.addEventListener('click', () => {
 }
 
 .custom-context-menu ul {
-
   list-style: none;
   margin: 0;
   padding: 0;
