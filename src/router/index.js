@@ -1,9 +1,9 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import Register from './views/register.vue'
-import Error from './views/error.vue'
-import Login from './views/login.vue'
+import Register from './views/Register.vue'
+import Error from './views/Error.vue'
+import Login from './views/Login.vue'
 import Home from '../views/Home.vue'
-import ResetPwd from './views/resetPwd.vue'
+import ResetPwd from './views/ResetPwd.vue'
 import Recycle from '../views/Recycle.vue'
 import FolderDetail from "@/views/FolderDetail.vue";
 
@@ -31,10 +31,6 @@ const router = createRouter({
         },
         {
             path: '/home',
-            redirect: '/home/privateDisk'
-        },
-        {
-            path: '/home',
             name: 'Home',
             component: Home,
             children: [
@@ -49,14 +45,21 @@ const router = createRouter({
                     children: [
                         {
                             path: ':folderName',
-                            name: 'FolderDetail', // 给子路由指定一个名字
+                            name: 'privateFolderDetail', // 给子路由指定一个名字
                             component: FolderDetail
                         }
                     ]
                 },
                 {
                     path: 'publicDisk',
-                    component: () => import('../views/PublicDisk.vue')
+                    component: () => import('../views/PublicDisk.vue'),
+                    children: [
+                        {
+                            path: ':folderName',
+                            name: 'publicFolderDetail', // 给子路由指定一个名字
+                            component: FolderDetail
+                        }
+                    ]
                 },
             ]
         },
@@ -65,8 +68,7 @@ const router = createRouter({
             name: 'ResetPwd',
             component: ResetPwd
         },
-      ],
+    ],
 
 })
 export default router;
-// router.beforeEach()

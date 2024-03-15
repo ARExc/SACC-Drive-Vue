@@ -1,8 +1,8 @@
 <template>
   <el-breadcrumb separator="/">
     <el-breadcrumb-item>root</el-breadcrumb-item>
-    <el-breadcrumb-item v-if="isPrivate">私有仓库</el-breadcrumb-item>
-    <el-breadcrumb-item v-if="isPublic">公有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPrivate" @click="toPrivate">私有仓库</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isPublic" @click="toPublic">公有仓库</el-breadcrumb-item>
     <el-breadcrumb-item v-for="(crumb, index) in breadcrumbStore" :key="index" @click="toFolder(crumb)">
       {{ crumb.fileName }}
     </el-breadcrumb-item>
@@ -20,7 +20,7 @@ let isPrivate = ref(store.getters.isPrivate);
 let isPublic = ref(store.getters.isPublic);
 
 //bug1:刷新之后面包屑导航消失
-//bug2:无法导航到私有仓库和公有仓库下
+//bug2:刷新之后面包屑导航不能正确显示
 
 
 //实现动态面包屑导航并与路径绑定
@@ -36,23 +36,49 @@ const toFolder = (data) => {
   setPath()
 }
 //监听store中的breadcrumb变化
-watch(() => store.getters.breadcrumb, (newVal) => {
-  breadcrumbStore.value = newVal;
+watch(() => store.state.breadcrumb.breadcrumbVersion, () => {
+  breadcrumbStore.value = store.getters.breadcrumb;
   setPath();
 }, {deep: true});
 //设置URL路径
 const setPath = () => {
-  console.log('setPath');
+  // console.log('Breadcrumb.vue中的setPath,from:', from);
   let pathArray = [''];
   breadcrumbStore.value.forEach(item => {
     pathArray.push(item.fileName);
   })
+  // console.log('route.path:', route.path)
   router.push({
         path: route.path,
-        query: pathArray.length === 0 ? "" : {path: pathArray.join('/')}
+        query: {path: pathArray.length === 0 ? "" : pathArray.join('/')}
       }
   );
 };
+
+const toPrivate = () => {
+  store.commit('breadcrumb/clearBreadcrumb')
+  router.push('/home/privateDisk')
+}
+const toPublic = () => {
+  store.commit('breadcrumb/clearBreadcrumb')
+  router.push('/home/publicDisk')
+}
+// M
+// onMounted(()=>{
+//   let query = route.query.path;
+//   if(query === undefined){
+//     return;
+//   }
+//   let pathArray=query.split('/');
+//   for(let i=1;i<pathArray.length;i++){
+//     let folder = {
+//       fileName: pathArray[i],
+//       // id: i,
+//     };
+//     store.commit('breadcrumb/setBreadcrumb', folder);
+//   }
+//   console.log('route.path:', pathArray)
+// })
 </script>
 
 <style scoped>

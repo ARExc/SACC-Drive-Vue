@@ -1,14 +1,16 @@
 <template>
   <HeaderBar></HeaderBar>
-  <div class="folder" @contextmenu.prevent="showContextMenu($event)">
-    <div class="folder-item" v-for="item in items" :key="item.fileId" @click="preview(item)">
+  <div class="folder">
+    <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
+         @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
       <span>{{ item.fileName }}</span>
     </div>
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
-        <li @click="downloadItem(e)">下载</li>
+        <li @click="downloadItem">下载</li>
         <li @click="moveFile">移动</li>
+        <li @click="rename">重命名</li>
         <li @click="deleteItem">删除</li>
       </ul>
     </div>
@@ -16,8 +18,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive, ref, watch} from 'vue'
-import router from '@/router/index'
+import {onMounted, ref, watch} from 'vue'
 import store from "@/store";
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
@@ -25,21 +26,34 @@ import HeaderBar from "@/views/HeaderBar.vue";
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
 let items = ref([])
+let currentItem = ref(null)
 
 
-watch(() => store.getters.breadcrumb, (newVal) => {
-  console.log(newVal);
+watch(() => store.getters.file, (newVal) => {
+  console.log('私有仓库中的newVal:', newVal);
   if (newVal) {
-    items.value.push({id: 3, fileName: '文件2', type: 'file'})
+    items.value.push({
+      id: newVal.id,
+      fileName: newVal.fileName,
+      fileCategory: newVal.fileCategory,
+      folderType: newVal.folderType
+    })
     store.commit('file/setUpload', false)
   }
 }, {deep: true});
 
-
+watch(() => store.state.file.isNew, (newVal) => {
+  console.log(newVal)
+  if (newVal) {
+    console.log('新建文件夹')
+    // state
+  }
+}, {deep: true})
 //点击文件夹进入下一级
 const preview = (item) => {
+  // console.log('点击' + item.fileName)
   if (item.folderType === 1) {
-    console.log('点击' + item.fileName)
+    // console.log('点击' + item.fileName)
     // debugger;
     store.commit('breadcrumb/addBreadcrumb', item);
   }
@@ -68,10 +82,11 @@ let src = (item) => {
 };
 
 function showContextMenu(e) {
-  e.preventDefault()
-  // if(e.innerHTML==null){
-  //   return;
-  // }
+  // console.log('右键菜单' + e)
+  console.log()
+  e.preventDefault();
+  currentItem.value = e
+
   showMenu.value = true
   menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
@@ -83,8 +98,27 @@ onMounted(() => {
   })
 });
 
+function downloadItem() {
+  console.log('下载' + currentItem.value)
+  let code = '';
+  request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
+    // console.log(res)
+    code = res.data.data.code;
+  });
+  request.get(`/api/priv/file/download/${code}`).then(res => {
+    console.log(res)
+  });
+
+  showMenu.value = false
+}
+
 function moveFile() {
   console.log('移动')
+  showMenu.value = false
+}
+
+function rename() {
+  console.log('重命名')
   showMenu.value = false
 }
 
@@ -93,11 +127,7 @@ function deleteItem() {
   showMenu.value = false
 }
 
-function downloadItem(e) {
-  console.log('下载' + e)
-  showMenu.value = false
-}
-
+//点击其他地方时隐藏右键菜单
 window.addEventListener('click', () => {
   showMenu.value = false
 });
@@ -126,13 +156,12 @@ window.addEventListener('click', () => {
   align-items: center;
   justify-content: center;
   height: 100px; /* 设置固定高度 */
-  
+
   transition: transform 0.3s ease; /* 平滑过渡效果 */
 }
 
 .folder-item:hover {
   background-color: #f9f9f9; /* 设置背景色 */
-
   transform: translateY(-5px); /* 悬停时上移 */
 }
 
@@ -152,7 +181,6 @@ window.addEventListener('click', () => {
 }
 
 .custom-context-menu ul {
-
   list-style: none;
   margin: 0;
   padding: 0;

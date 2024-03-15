@@ -1,18 +1,22 @@
 <template>
-  <el-button type="primary" round @click="trigger">
+  <el-button type="primary" round @click="trigger" class="upload">
     上传文件
-    <input type="file" ref="inputFile" style="display: none;" @change="uploadFile">
+    <input type="file" ref="inputFile" style="display: none;" @change="uploadFile" >
   </el-button>
+  <el-button round class="new" @click="newFolder">新建文件夹</el-button>
 </template>
 
 <script setup>
 
 import {ref} from "vue";
 import instantaneousTransmission from "@/utility/instantaneous";
-import store from "@/store";
+import {useStore} from "vuex";
 import {ElMessage} from "element-plus";
 import sliceFileAndCalculateMD5 from "@/utility/chunk";
 
+const store = useStore();
+
+//上传文件
 const inputFile = ref(null);
 const trigger = () => {
   inputFile.value.click();
@@ -23,16 +27,7 @@ const uploadFile = (e) => {
   if (file) {
     instantaneousTransmission(file).then(result => {
       if (result) {
-        if (/^image\//.test(result)) {
-          store.commit('setFileType', 'image');
-          console.log('图片');
-        } else if (/^video\//.test(result)) {
-          store.commit('setFileType', 'video');
-          console.log('视频');
-        } else {
-          store.commit('setFileType', 'file');
-          console.log('文档');
-        }
+        // console.log('result:', result);
         ElMessage.success('秒传成功');
       } else {
         // 在这里执行正常的文件上传逻辑
@@ -44,12 +39,28 @@ const uploadFile = (e) => {
   }
 //bug:上传成功后，无法再次连续上传相同文件
 }
+
+
+//新建文件夹
+const newFolder = () => {
+  console.log('新建文件夹:', store.state.file.isNew);
+  store.commit('file/setIsNew', true);
+  console.log('setIsNew:', store.state.file.isNew);
+}
+
+
+
 </script>
 
 <style scoped>
 .el-button {
   transform: scale(0.9);
-  margin: auto 10px;
+  margin: auto 1px;
 }
-
+.upload{
+  margin-left: 10px;
+}
+.new{
+  margin-right: 10px;
+}
 </style>
