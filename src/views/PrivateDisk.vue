@@ -29,8 +29,10 @@
 </template>
 
 <script setup>
+
 import {onMounted, ref, watch, watchEffect} from 'vue'
-import store from "@/store";
+import store from "@/store"
+
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
 
