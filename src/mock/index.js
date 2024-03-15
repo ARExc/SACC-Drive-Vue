@@ -36,6 +36,11 @@ Mock.mock(RegExp('/api/priv/file/download/*'), 'get', {
     "errorMsg": "null",
     "data": {}
 });
+Mock.mock(RegExp('/api/priv/file/newFolder'), 'post', {
+    "code": 1,
+    "errorMsg": "null",
+    "data": {}
+});
 
 
 // 输出模拟的数据，实际使用时可以根据需要进行调用

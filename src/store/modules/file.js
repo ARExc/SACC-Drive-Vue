@@ -13,7 +13,6 @@ const mutations = {
         state.file = file;
     },
     setIsNew(state, isNew) {
-        console.log('isNew:', isNew);
         state.isNew = isNew;
     }
 }

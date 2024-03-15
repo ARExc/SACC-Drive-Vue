@@ -1,7 +1,7 @@
 <template>
   <el-button type="primary" round @click="trigger" class="upload">
     上传文件
-    <input type="file" ref="inputFile" style="display: none;" @change="uploadFile" >
+    <input type="file" ref="inputFile" style="display: none;" @change="uploadFile">
   </el-button>
   <el-button round class="new" @click="newFolder">新建文件夹</el-button>
 </template>
@@ -12,7 +12,7 @@ import {ref} from "vue";
 import instantaneousTransmission from "@/utility/instantaneous";
 import {useStore} from "vuex";
 import {ElMessage} from "element-plus";
-import sliceFileAndCalculateMD5 from "@/utility/chunk";
+import sliceFile from "@/utility/sliceFile";
 
 const store = useStore();
 
@@ -32,7 +32,7 @@ const uploadFile = (e) => {
       } else {
         // 在这里执行正常的文件上传逻辑
         console.log('秒传失败,开始分片上传');
-        sliceFileAndCalculateMD5(file);
+        sliceFile(file);
         ElMessage.success('上传成功');
       }
     });
@@ -42,12 +42,10 @@ const uploadFile = (e) => {
 
 
 //新建文件夹
+//bug:无法更改store中的isNew
 const newFolder = () => {
-  console.log('新建文件夹:', store.state.file.isNew);
   store.commit('file/setIsNew', true);
-  console.log('setIsNew:', store.state.file.isNew);
 }
-
 
 
 </script>
@@ -57,10 +55,12 @@ const newFolder = () => {
   transform: scale(0.9);
   margin: auto 1px;
 }
-.upload{
+
+.upload {
   margin-left: 10px;
 }
-.new{
+
+.new {
   margin-right: 10px;
 }
 </style>
