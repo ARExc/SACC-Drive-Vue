@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import router from "@/router/index";
 import {useRoute} from "vue-router";
 import store from "@/store";
@@ -18,10 +18,6 @@ import store from "@/store";
 const route = useRoute();
 let isPrivate = ref(store.getters.isPrivate);
 let isPublic = ref(store.getters.isPublic);
-
-//bug1:刷新之后面包屑导航消失
-//bug2:刷新之后面包屑导航不能正确显示
-
 
 //实现动态面包屑导航并与路径绑定
 let breadcrumbStore = ref(store.getters.breadcrumb);
@@ -63,22 +59,7 @@ const toPublic = () => {
   store.commit('breadcrumb/clearBreadcrumb')
   router.push('/home/publicDisk')
 }
-// M
-// onMounted(()=>{
-//   let query = route.query.path;
-//   if(query === undefined){
-//     return;
-//   }
-//   let pathArray=query.split('/');
-//   for(let i=1;i<pathArray.length;i++){
-//     let folder = {
-//       fileName: pathArray[i],
-//       // id: i,
-//     };
-//     store.commit('breadcrumb/setBreadcrumb', folder);
-//   }
-//   console.log('route.path:', pathArray)
-// })
+
 </script>
 
 <style scoped>

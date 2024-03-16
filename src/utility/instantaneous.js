@@ -1,5 +1,6 @@
 import SparkMD5 from "spark-md5";
 import store from "@/store";
+import request from "@/utility/request";
 
 
 const instantaneousTransmission = (file) => {
@@ -38,9 +39,14 @@ const instantaneousTransmission = (file) => {
             store.commit('file/setUpload', true);
             store.commit('file/setFile', newFile);
 
-            //在这里发起hash检查请求
-
-            resolve(newFile);
+            request.post('/api/priv/file/checkChunks', {
+                md5: hash
+            }).then(res => {
+                resolve(newFile);
+                resolve();
+            }).catch(err => {
+                console.log(err);
+            })
         };
         reader.onerror = (e) => {
             reject(e);

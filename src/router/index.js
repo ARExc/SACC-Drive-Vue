@@ -5,7 +5,6 @@ import Login from './views/Login.vue'
 import Home from '../views/Home.vue'
 import ResetPwd from './views/ResetPwd.vue'
 import Recycle from '../views/Recycle.vue'
-import FolderDetail from "@/views/FolderDetail.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -42,24 +41,10 @@ const router = createRouter({
                 {
                     path: 'privateDisk',
                     component: () => import('../views/PrivateDisk.vue'),
-                    children: [
-                        {
-                            path: ':folderName',
-                            name: 'privateFolderDetail', // 给子路由指定一个名字
-                            component: FolderDetail
-                        }
-                    ]
                 },
                 {
                     path: 'publicDisk',
                     component: () => import('../views/PublicDisk.vue'),
-                    children: [
-                        {
-                            path: ':folderName',
-                            name: 'publicFolderDetail', // 给子路由指定一个名字
-                            component: FolderDetail
-                        }
-                    ]
                 },
             ]
         },
@@ -70,5 +55,8 @@ const router = createRouter({
         },
     ],
 
+})
+router.afterEach((to, from) => {
+    // console.log('路由切换', to, from)
 })
 export default router;

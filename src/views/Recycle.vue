@@ -1,105 +1,135 @@
 <template>
   <div class="container">
-    <div class="file-item" @contextmenu.prevent="showContextMenu($event)" style="height: 100px; width: 100px;">
-      <!-- v-for="file in records"  -->
-      <!-- :key="file.id" -->
-      <!-- <img :src="src(file)" alt="文件封面">
-      <h3>{{ file.fileName }}</h3>
-      <p>大小: {{ file.fileSize }}</p>
-      <p>创建时间: {{ file.createTime }}</p>   -->
+    <div
+      class="file-item"
+      v-for="file in records" 
+      :key="file.id"
+      @contextmenu.prevent="showContextMenu($event, file.id)"
+    >
+      <img :src="src(file)" alt="文件封面"> 
+        <h3>{{ file.fileName }}</h3>  
+        <p>大小: {{ file.fileSize }}</p>  
+        <p>创建时间: {{ file.createTime }}</p>  
     </div>
-    <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
+    <div
+      v-if="showMenu"
+      class="custom-context-menu"
+      :style="{ top: menuPosition.y + 'px', left: menuPosition.x + 'px' }"
+    >
       <ul>
-        <li>恢复</li>
-        <li>彻底删除</li>
+        <li @click="recoverItem()">恢复</li>
+        <li @click="deleteItem()">彻底删除</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script setup>
+import { onMounted, reactive, ref, watch } from "vue";
+import router from "@/router/index";
+import request from "@/utility/request";
+import { ElMessage } from "element-plus";
 
-import {ref} from 'vue'
-import request from '@/utility/request';
-import {ElMessage} from 'element-plus';
-
-
-const showMenu = ref(false)
-const menuPosition = ref({x: 0, y: 0})
+const showMenu = ref(false);
+const menuPosition = ref({ x: 0, y: 0 });
 let records = ref([]);
+let pageNo = "";
+let pageSize = "";
+let total = "";
+const selectedFileId = "";
 
-let pageNo = '';
-let pageSize = '';
-let total = '';
-
-
+// created(){
+//   getRecycleList()
 // created(){
 //   getRecycleList()
 // }，
 
-
 function getRecycleList() {
-  request.get('/api/recycle/getRecycleList', {
-    pageNo: this.pageNo,
-    pageSize: this.pageSize
-  }).then(response => {
-    if (response.code === 1)
-      this.total = response.data.total
-    records.value = response.data.records
-  }).catch(error => {
-    // this.$router.push('/error');
-    ElMessage.error('errorMessage')
-  });
+  request
+    .get("/api/recycle/getRecycleList", {
+      pageNo: "",
+      pageSize: "",
+    })
+    .then((response) => {
+      if (response.code === 1) this.total = response.data.total;
+      records.value = response.data.records;
+    })
+    .catch((error) => {
+      // this.$router.push('/error');
+      ElMessage.error("errorMessage");
+    });
 }
-
-function showContextMenu(e) {
-  e.preventDefault()
+function showContextMenu(e, id) {
+  e.preventDefault();
   // if(e.innerHTML==null){
   //   c
   // }
-  showMenu.value = true
-  menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
+  selectedFileId = id;
+  showMenu.value = true;
+  menuPosition.value = { x: e.pageX, y: e.pageY }; //event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
 
-window.addEventListener('click', () => {
-  showMenu.value = false
+window.addEventListener("click", () => {
+  showMenu.value = false;
 });
 let src = (file) => {
   if (file.folderType === 1) {
-    return require('@/assets/icon/folder.png')//这里的require函数调用告诉构建工具（比如Webpack），它需要处理（即包含在最终的构建结果中）这些图片资源。
+    return require("@/assets/icon/folder.png"); //这里的require函数调用告诉构建工具（比如Webpack），它需要处理（即包含在最终的构建结果中）这些图片资源。
   } else if (file.folderType === 0) {
     //1：视频 2：音频 3：文档 4：图片 5：其他
     if (file.fileCategory === 1) {
-      return require('@/assets/icon/video.png')
+      return require("@/assets/icon/video.png");
     } else if (file.fileCategory === 2) {
-      return require('@/assets/icon/music.png')
+      return require("@/assets/icon/music.png");
     } else if (file.fileCategory === 3) {
-      return require('@/assets/icon/document.png')
+      return require("@/assets/icon/document.png");
     } else if (file.fileCategory === 4) {
-      return require('@/assets/icon/picture.png')
+      return require("@/assets/icon/picture.png");
     } else {
-      return require('@/assets/icon/file.png')
+      return require("@/assets/icon/file.png");
     }
   } else {
-    return require('@/assets/icon/file.png')
+    return require("@/assets/icon/file.png");
   }
 };
 
 function deleteItem() {
-  request.delete('/api/recycle/delFile', {
-    id: this.$route.params.id
-  }).then(response => {
-    if (response.code === 1) {
-      ElMessage.success('删除成功')
-      this.getRecycleList()
-    } else {
-      ElMessage.error('删除失败')
-    }
-  }).catch(error => {
-    // this.$router.push('/error');
-    ElMessage.error('errorMessage')
-  })
+  request
+    .delete("/api/recycle/delFile", {
+      fileIds: selectedFileId,
+    })
+    .then((response) => {
+      if (response.code === 1) {
+        ElMessage.success("删除成功");
+        getRecycleList();
+      } else {
+        ElMessage.error("删除失败");
+      }
+    })
+    .catch((error) => {
+      // this.$router.push('/error');
+      ElMessage.error("errorMessage");
+    });
 }
+function recoverItem() {
+  request
+    .post("/api/recycle/recoverFile", {
+      fileIds: selectedFileId,
+    })
+    .then((response) => {
+      if (response.code === 1) {
+        ElMessage.success("恢复成功");
+        getRecycleList();
+      } else {
+        ElMessage.error("恢复失败");
+      }
+    })
+    .catch((error) => {
+      // this.$router.push('/error');
+      ElMessage.error("errorMessage");
+    });
+}
+
 </script>
 
 <style scoped>
@@ -111,7 +141,7 @@ function deleteItem() {
 .main {
   display: flex;
   flex-direction: column;
-  flex: 1
+  flex: 1;
 }
 
 .custom-context-menu {
@@ -124,7 +154,6 @@ function deleteItem() {
 }
 
 .custom-context-menu ul {
-
   list-style: none;
   margin: 0;
   padding: 0;
@@ -138,5 +167,33 @@ function deleteItem() {
 
 .custom-context-menu ul li:hover {
   background-color: #f0f0f0;
+}
+.file-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px; /* 设置固定高度 */
+  
+  transition: transform 0.3s ease; /* 平滑过渡效果 */
+}
+
+.file-item:hover {
+  background-color: #f9f9f9; /* 设置背景色 */
+
+  transform: translateY(-5px); /* 悬停时上移 */
+}
+
+.file-item img {
+  width: 100%; /* 图标宽度 */
+  max-width: 60px; /* 图标最大宽度 */
+  height: auto; /* 保持图标的原始宽高比 */
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 创建多列，每列最小宽度120px，最大1fr */
+  grid-gap: 20px; /* 设置网格间的间隙 */
+  padding: 20px; /* 设置内边距 */
+  background-color: #FFF; /* 设置背景色为白色 */
 }
 </style>
