@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import {createRouter, createWebHistory} from 'vue-router';
-import Register from './views/register.vue'
-import Error from './views/error.vue'
-import Login from './views/login.vue'
+import Register from './views/Register.vue'
+import Error from './views/Error.vue'
+import Login from './views/Login.vue'
 import Home from '../views/Home.vue'
-import ResetPwd from './views/resetPwd.vue'
+import ResetPwd from './views/ResetPwd.vue'
 import Recycle from '../views/Recycle.vue'
 import FolderDetail from "@/views/FolderDetail.vue";
 
