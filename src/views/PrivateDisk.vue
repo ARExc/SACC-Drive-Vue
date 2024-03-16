@@ -4,14 +4,25 @@
     <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
          @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
-      <span>{{ item.fileName }}</span>
+      <span class="fileName" v-if="editingItemId!==item.id">{{ item.fileName }}</span>
+      <el-input v-else
+                class="input"
+                size='small'
+                type="text"
+                v-model="item.fileName"
+                :ref="el => setInputRef(el, item)"
+                @blur="editingItemId= null"
+                @keyup.enter="handleRename"
+      />
+      <span>{{ item.id }}</span>
+      <!--      <span>{{ item.createTime }}</span>-->
     </div>
     <div class="folder-item" v-if="isNewFolder">
       <img src="@/assets/icon/folder.png" alt="Folder icon">
       <el-input size="small"
                 class="input"
                 v-model="input"
-                ref="inputRef"
+                ref="inputCreateNewFolderRef"
                 @keyup.enter="handleSubmit"
                 @blur="isNewFolder = false"
                 placeholder="name"
@@ -29,7 +40,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch, watchEffect} from 'vue'
+import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
 import store from "@/store";
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
@@ -39,18 +50,20 @@ const menuPosition = ref({x: 0, y: 0})
 let items = ref([])
 let currentItem = ref(null)
 const isNewFolder = ref(false)
-const inputRef = ref(null)
+const inputCreateNewFolderRef = ref(null)
+const inputRenameRef = ref({})
+let editingItemId = ref(null); // null 表示没有项正在被编辑
 const input = ref('')
 
 //按下新建的按钮时，对焦输入框
 watchEffect(() => {
-  if (isNewFolder.value && inputRef.value) {
-    inputRef.value.focus();
+  if (isNewFolder.value && inputCreateNewFolderRef.value) {
+    inputCreateNewFolderRef.value.focus();
   }
 });
 //上传文件成功后，将文件添加到私有仓库中
 watch(() => store.getters.file, (newVal) => {
-  console.log('私有仓库中的newVal:', newVal);
+  // console.log('私有仓库中的newVal:', newVal);
   if (newVal) {
     items.value.push({
       id: newVal.id,
@@ -61,7 +74,6 @@ watch(() => store.getters.file, (newVal) => {
     store.commit('file/setUpload', false)
   }
 }, {deep: true});
-
 
 //新建文件夹
 watch(() => store.state.file.isNew, (newVal) => {
@@ -74,10 +86,14 @@ watch(() => store.state.file.isNew, (newVal) => {
 }, {deep: true})
 //按下回车时，处理新建文件夹的逻辑
 const handleSubmit = () => {
-  console.log(input.value)
-  console.log(isNewFolder.value)
+  // console.log(input.value)
+  let filePid = 0;
+  if (store.getters.currentFolder) {
+    filePid = store.getters.currentFolder.id;
+  } else {
+  }
   request.post('/api/priv/file/newFolder', {
-    filePid: store.getters.currentFolder.id,
+    filePid: filePid,
     fileName: input.value
   }).then(res => {
     // console.log(res)
@@ -86,7 +102,6 @@ const handleSubmit = () => {
     console.log(err)
   })
 }
-
 
 //点击文件夹进入下一级
 const preview = (item) => {
@@ -119,11 +134,12 @@ let src = (item) => {
     return require('@/assets/icon/file.png')
   }
 };
+let tempId = ref(null)
 
 //右键菜单
-function showContextMenu(e) {
-  // console.log('右键菜单' + e)
-  console.log()
+function showContextMenu(e, item) {
+  // console.log('右键菜单:' + item.id)
+  tempId.value = item.id
   e.preventDefault();
   currentItem.value = e
   showMenu.value = true
@@ -140,31 +156,54 @@ onMounted(() => {
 
 //下载文件
 function downloadItem() {
-  console.log('下载' + currentItem.value)
+  // console.log('下载' + currentItem.value)
   let code = '';
   request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
     // console.log(res)
     code = res.data.data.code;
   });
   request.get(`/api/priv/file/download/${code}`).then(res => {
-    console.log(res)
+    // console.log(res)
   });
 
   showMenu.value = false
 }
 
 function moveFile() {
-  console.log('移动')
+  // console.log('移动')
   showMenu.value = false
 }
 
+//点击右键菜单中的重命名选项
 function rename() {
-  console.log('重命名')
+  editingItemId.value = tempId.value
+  // console.log('rename', inputRenameRef.value)
+  nextTick(() => {//确保在DOM更新之后再尝试聚焦输入框
+    if (inputRenameRef.value[editingItemId.value]) {
+      // console.log('设置焦点')
+      inputRenameRef.value[editingItemId.value].focus();
+    }
+  })
   showMenu.value = false
 }
+
+//动态绑定v-for中的循环项的ref
+function setInputRef(el, item) {
+  if (el && item) {
+    inputRenameRef.value[item.id] = el;
+  }
+}
+
+//重命名完成后，清除编辑状态
+function handleRename() {
+  // console.log("重命名为:", item.fileName);
+  editingItemId.value = null;
+  window.location.reload()
+}
+
 
 function deleteItem() {
-  console.log('删除')
+  // console.log('删除')
   showMenu.value = false
 }
 
@@ -244,5 +283,11 @@ window.addEventListener('click', () => {
 
 img {
   margin: 10px 0;
+}
+
+.fileName {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 </style>
