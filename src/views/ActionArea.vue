@@ -42,7 +42,6 @@ const uploadFile = (e) => {
 
 
 //新建文件夹
-//bug:无法更改store中的isNew
 const newFolder = () => {
   store.commit('file/setIsNew', true);
 }
