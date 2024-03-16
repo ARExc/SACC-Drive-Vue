@@ -53,7 +53,8 @@
 
 <script setup>
 import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
-import store from "@/store";
+import store from "@/store"
+
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";
