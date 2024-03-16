@@ -14,7 +14,7 @@
                 @blur="editingItemId= null"
                 @keyup.enter="handleRename"
       />
-      <span>{{ item.id }}</span>
+      <!--      <span>{{ item.id }}</span>-->
       <!--      <span>{{ item.createTime }}</span>-->
     </div>
     <div class="folder-item" v-if="isNewFolder">
@@ -30,10 +30,22 @@
     </div>
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
-        <li @click="downloadItem">下载</li>
-        <li @click="moveFile">移动</li>
-        <li @click="rename">重命名</li>
-        <li @click="deleteItem">删除</li>
+        <li @click="downloadItem">
+          <el-icon><Download /></el-icon>
+          下载
+        </li>
+        <li @click="moveFile">
+          <el-icon><Switch /></el-icon>
+          移动
+        </li>
+        <li @click="rename">
+          <el-icon><Edit /></el-icon>
+          重命名
+        </li>
+        <li @click="deleteItem">
+          <el-icon><Delete /></el-icon>
+          删除
+        </li>
       </ul>
     </div>
   </div>
@@ -44,6 +56,7 @@ import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
 import store from "@/store";
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
+import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";
 
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
@@ -220,7 +233,6 @@ window.addEventListener('click', () => {
   display: block;
 }
 
-
 .folder {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 创建多列，每列最小宽度120px，最大1fr */
@@ -257,6 +269,7 @@ window.addEventListener('click', () => {
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  padding: 5px;
 }
 
 .custom-context-menu ul {
@@ -269,6 +282,10 @@ window.addEventListener('click', () => {
   border-radius: 10px;
   padding: 8px 12px;
   cursor: pointer;
+}
+
+.el-icon {
+  margin-right: 10px;
 }
 
 .custom-context-menu ul li:hover {
