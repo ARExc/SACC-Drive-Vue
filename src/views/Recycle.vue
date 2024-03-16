@@ -40,6 +40,8 @@ const selectedFileId = "";
 
 // created(){
 //   getRecycleList()
+// created(){
+//   getRecycleList()
 // }，
 
 function getRecycleList() {
@@ -141,6 +143,7 @@ function recoverItem() {
   flex-direction: column;
   flex: 1;
 }
+
 .custom-context-menu {
   position: fixed;
   border: 1px solid #ccc;

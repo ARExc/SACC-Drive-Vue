@@ -1,21 +1,24 @@
-
 const state = {
     isUpload: false,
-    fileType: null,
-
+    file: null,
+    fileType: '',
+    isNew: false,
 }
 
 const mutations = {
     setUpload(state, isUpload) {
         state.isUpload = isUpload;
     },
-    setFileType(state, fileType) {
-        state.fileType = fileType;
+    setFile(state, file) {
+        state.file = file;
+    },
+    setIsNew(state, isNew) {
+        state.isNew = isNew;
     }
 }
 
 export default {
-    namespace: true,
+    namespaced: true,
     state,
     mutations
 }

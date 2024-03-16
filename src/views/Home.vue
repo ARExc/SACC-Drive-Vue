@@ -11,8 +11,6 @@
 <script setup>
 import Side from "@/views/Side.vue";
 import Header from "@/views/Header.vue";
-import Disk from "@/views/PrivateDisk.vue";
-import Breadcrumb from "@/views/Breadcrumb.vue";
 </script>
 
 <style scoped>

@@ -23,8 +23,8 @@
           </el-icon>
           <span>Root</span>
         </template>
-        <el-menu-item index="1-1" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
-        <el-menu-item index="1-2" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
+        <el-menu-item index="/home/privateDisk" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
+        <el-menu-item index="/home/publicDisk" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="/Home/Recycle">
         <el-icon>
@@ -40,19 +40,24 @@
 
 <script setup>
 import {ref} from 'vue'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-import router from '@/router'
+import {Location, Menu as IconMenu,} from '@element-plus/icons-vue'
+import {useStore} from 'vuex'
+import router from '@/router/index'
+
+const store = useStore()
+// const router=useRouter()
 
 const isCollapse = ref(false)
 const toPrivate = () => {
+  store.commit('breadcrumb/clearBreadcrumb')
+  store.commit('breadcrumb/setIsPrivate', true);
+  store.commit('breadcrumb/setIsPublic', false);
   router.push('/home/privateDisk')
 }
 const toPublic = () => {
+  store.commit('breadcrumb/clearBreadcrumb')
+  store.commit('breadcrumb/setIsPublic', true);
+  store.commit('breadcrumb/setIsPrivate', false);
   router.push('/home/publicDisk')
 }
 </script>

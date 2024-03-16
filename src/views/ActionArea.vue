@@ -1,55 +1,66 @@
 <template>
-  <el-button type="primary" round @click="trigger">
+  <el-button type="primary" round @click="trigger" class="upload">
     上传文件
     <input type="file" ref="inputFile" style="display: none;" @change="uploadFile">
   </el-button>
+  <el-button round class="new" @click="newFolder">新建文件夹</el-button>
 </template>
 
 <script setup>
 
 import {ref} from "vue";
 import instantaneousTransmission from "@/utility/instantaneous";
-import store from "@/store";
+import {useStore} from "vuex";
 import {ElMessage} from "element-plus";
-import sliceFileAndCalculateMD5 from "@/utility/chunk";
+import sliceFile from "@/utility/sliceFile";
 
+const store = useStore();
+
+//上传文件
 const inputFile = ref(null);
-const trigger=()=>{
+const trigger = () => {
   inputFile.value.click();
 }
 let file = ref(null);
-const uploadFile=(e)=>{
+const uploadFile = (e) => {
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
-  if(file){
-    instantaneousTransmission(file).then(result=>{
+  if (file) {
+    instantaneousTransmission(file).then(result => {
       if (result) {
-        if(/^image\//.test(result)){
-          store.commit('setFileType','image');
-          console.log('图片');
-        }else if(/^video\//.test(result)) {
-          store.commit('setFileType','video');
-          console.log('视频');
-        }else{
-          store.commit('setFileType','file');
-          console.log('文档');
-        }
+        // console.log('result:', result);
         ElMessage.success('秒传成功');
       } else {
         // 在这里执行正常的文件上传逻辑
         console.log('秒传失败,开始分片上传');
-        sliceFileAndCalculateMD5(file);
+        sliceFile(file);
         ElMessage.success('上传成功');
       }
     });
   }
 //bug:上传成功后，无法再次连续上传相同文件
 }
+
+
+//新建文件夹
+//bug:无法更改store中的isNew
+const newFolder = () => {
+  store.commit('file/setIsNew', true);
+}
+
+
 </script>
 
 <style scoped>
-.el-button{
+.el-button {
   transform: scale(0.9);
-  margin:auto 10px;
+  margin: auto 1px;
 }
 
+.upload {
+  margin-left: 10px;
+}
+
+.new {
+  margin-right: 10px;
+}
 </style>

@@ -1,13 +1,23 @@
 import file from './modules/file';
 import user from './modules/user';
 import getters from './getters';
-import { createStore } from 'vuex';
+import breadcrumb from './modules/breadcrumb';
+import {createStore} from 'vuex';
+import VuexPersistence from "vuex-persist";
 
-const store=createStore({
+const vuexLocal = new VuexPersistence({
+    key: 'vuex',
+    storage: window.localStorage,
+    modules: ['breadcrumb']
+});
+
+const store = createStore({
+    getters,
     modules: {
         file,
-        user
+        user,
+        breadcrumb
     },
-    getters
+    plugins: [vuexLocal.plugin]
 })
 export default store;

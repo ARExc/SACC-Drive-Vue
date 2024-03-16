@@ -25,70 +25,70 @@
 <script>
 import request from '@/utility/request.js';
 import {ElMessage} from 'element-plus';
+
 export default {
-    data() {
-      return {
-      studentId:'',
-      password:'',
-      newpwd:'',
-      errorMessage:''
+  data() {
+    return {
+      studentId: '',
+      password: '',
+      newpwd: '',
+      errorMessage: ''
     };
   },
-    methods: {
-      submitForm() {
+  methods: {
+    submitForm() {
       if (!this.studentId || !this.newpwd || !this.password) {
         ElMessage.error('您输入的注册信息有误')
         return
       }
-      var input1 = document.getElementById('newpwd').value;  
-      var input2 = document.getElementById('check').value;  
-    if (input1 === input2) {   
-    } else {  
-      ElMessage.error('您两次输入的新密码不一致') 
-      return; 
-    }  
+      var input1 = document.getElementById('newpwd').value;
+      var input2 = document.getElementById('check').value;
+      if (input1 === input2) {
+      } else {
+        ElMessage.error('您两次输入的新密码不一致')
+        return;
+      }
       this.registerUser();
     },
     registerUser() {
-        const response = request.post('/api/resetPwd', {
-          studentId: this.studentId,
-          password: this.password,
-          newpwd:this.newpwd,
-          errorMessage:this.errorMessage
-        }).then(response => {
-          if (response.status >= 200 && response.status < 300) {
-            ElMessage({
-                message: '修改密码成功，三秒后为您跳转登录界面',
-                type: 'success',
-        })
-            setTimeout(() => {
-              this.$router.push('/login');
-            },3000);
-          }
-        }).catch(error => {
-          ElMessage.error(errorMessage)
-        });
-        
-     
+      const response = request.post('/api/resetPwd', {
+        studentId: this.studentId,
+        password: this.password,
+        newpwd: this.newpwd,
+        errorMessage: this.errorMessage
+      }).then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          ElMessage({
+            message: '修改密码成功，三秒后为您跳转登录界面',
+            type: 'success',
+          })
+          setTimeout(() => {
+            this.$router.push('/Login');
+          }, 3000);
+        }
+      }).catch(error => {
+        ElMessage.error(errorMessage)
+      });
     },
-    }
   }
+}
 
 </script>
 
 <style scoped>
 .resetpwd {
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    background-image: url('../../../public/bg.png');  
-    background-repeat: no-repeat;  
-    background-size: cover;  
-    background-position: center; 
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-image: url('../../../public/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
-img{
+
+img {
   position: absolute;
   top: 23vh;
   left: 33vw;
@@ -96,15 +96,17 @@ img{
   height: 101px;
   opacity: 1;
 }
+
 h2 {
   font-size: 48px;
   font-weight: 400;
   line-height: 62.4px;
-  font-family:'YouSheBiaoTiYuan';
+  font-family: 'YouSheBiaoTiYuan';
   position: absolute;
   top: 25vh;
   left: 40vw;
 }
+
 h3 {
   font-size: 16px;
   font-weight: 400;
@@ -115,6 +117,7 @@ h3 {
   top: 32vh;
   left: 41vw;
 }
+
 input {
   text-align: center;
   font-size: 14px;
@@ -124,22 +127,25 @@ input {
   color: rgba(166, 166, 166, 1);
   vertical-align: top;
 }
+
 form {
   position: absolute;
   top: 40vh;
   left: 40vw;
   text-align: center;
 }
-#studentId{
-width: 288px;
-height: 45px;
-opacity: 1;
-border-radius: 14px;
-border: none;
-margin-bottom: 3vh;
-background: rgba(255, 255, 255, 1);
+
+#studentId {
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 14px;
+  border: none;
+  margin-bottom: 3vh;
+  background: rgba(255, 255, 255, 1);
 }
-#password{
+
+#password {
   width: 288px;
   height: 45px;
   opacity: 1;
@@ -147,26 +153,29 @@ background: rgba(255, 255, 255, 1);
   border: none;
   margin-bottom: 3vh;
   background: rgba(255, 255, 255, 1);
-  }
-  #newpwd{
-    width: 288px;
+}
+
+#newpwd {
+  width: 288px;
   height: 45px;
   opacity: 1;
   border-radius: 16px;
   border: none;
   margin-bottom: 3vh;
   background: rgba(255, 255, 255, 1);
-  }
-  #check{
-    width: 288px;
+}
+
+#check {
+  width: 288px;
   height: 45px;
   opacity: 1;
   border-radius: 16px;
   border: none;
   margin-bottom: 3vh;
   background: rgba(255, 255, 255, 1);
-  }
-  button {
+}
+
+button {
   width: 140px;
   height: 46px;
   opacity: 1;
@@ -181,14 +190,16 @@ background: rgba(255, 255, 255, 1);
   text-align: center;
   vertical-align: top;
 }
-.login{
+
+.login {
   position: absolute;
   font-size: 18px;
   letter-spacing: 2px;
   top: 3vh;
   left: 90vw;
 }
-a:hover{
+
+a:hover {
   color: blue;
 }
 </style>./resetPwd.vue./resetPwd.vue

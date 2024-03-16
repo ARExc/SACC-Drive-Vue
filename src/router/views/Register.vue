@@ -22,67 +22,67 @@
 <script>
 import request from '@/utility/request.js';
 import {ElMessage} from 'element-plus';
+
 export default {
   data() {
     return {
-      nickName:'',
-      studentId:'',
-      password:'',
-      errorMessage:''
+      nickName: '',
+      studentId: '',
+      password: '',
+      errorMessage: ''
     };
   },
   methods: {
     submitForm() {
-      var password = document.getElementById("password").value; 
-      var upperCaseLetters = /[A-Z]/g;  
-      var lowerCaseLetters = /[a-z]/g;  
-      var numbers = /[0-9]/g;  
+      var password = document.getElementById("password").value;
+      var upperCaseLetters = /[A-Z]/g;
+      var lowerCaseLetters = /[a-z]/g;
+      var numbers = /[0-9]/g;
       if (!this.studentId || !this.nickName || !this.password) {
         ElMessage.error('您输入的注册信息有误')
         return
       }
-      
-      if(password.match(upperCaseLetters) && password.match(lowerCaseLetters) && password.match(numbers)) {  
-      } else {  
+
+      if (password.match(upperCaseLetters) && password.match(lowerCaseLetters) && password.match(numbers)) {
+      } else {
         ElMessage.error('密码请包含大小写字母和数字')
         return;
-      }  
+      }
       this.registerUser();
     },
     registerUser() {
-        const response = request.post('/api/register', {
-          studentId: this.studentId,
-          password: this.password,
-          nickName: this.nickName,
-          errorMessage:this.errorMessage
-        }).then(response => {
-          if (response.status >= 200 && response.status < 300) {
-            this.$router.push('/login');
-          }
-        }).catch(error => {
-          ElMessage.error('errorMessage')
-        });
-        
-     
+      const response = request.post('/api/register', {
+        studentId: this.studentId,
+        password: this.password,
+        nickName: this.nickName,
+        errorMessage: this.errorMessage
+      }).then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          this.$router.push('/Login');
+        }
+      }).catch(error => {
+        ElMessage.error(errorMessage)
+      });
     },
-    }
   }
+}
 
 </script>
 
 <style scoped>
 .register {
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    background-image: url('../../../public/bg.png');  
-    background-repeat: no-repeat;  
-    background-size: cover;  
-    background-position: center; 
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  background-image: url('../../../public/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
-img{
+
+img {
   position: absolute;
   top: 23vh;
   left: 33vw;
@@ -90,15 +90,17 @@ img{
   height: 101px;
   opacity: 1;
 }
+
 h2 {
   font-size: 48px;
   font-weight: 400;
   line-height: 62.4px;
-  font-family:'YouSheBiaoTiYuan';
+  font-family: 'YouSheBiaoTiYuan';
   position: absolute;
   top: 25vh;
   left: 40vw;
 }
+
 h3 {
   font-size: 16px;
   font-weight: 400;
@@ -109,6 +111,7 @@ h3 {
   top: 32vh;
   left: 41vw;
 }
+
 input {
   text-align: center;
   font-size: 14px;
@@ -118,38 +121,44 @@ input {
   color: rgba(166, 166, 166, 1);
   vertical-align: top;
 }
+
 form {
   position: absolute;
   top: 40vh;
   left: 40vw;
   text-align: center;
 }
-#studentId{
-width: 288px;
-height: 45px;
-opacity: 1;
-border-radius: 14px;
-border: none;
-margin-bottom: 3vh;
-background: rgba(255, 255, 255, 1);
-}
-#password{
+
+#studentId {
   width: 288px;
   height: 45px;
   opacity: 1;
-  border-radius: 16px;
+  border-radius: 14px;
   border: none;
-margin-bottom: 3vh;
-  background: rgba(255, 255, 255, 1);}
-#nickName{
-  width: 288px;
-  height: 45px;
-  opacity: 1;
-  border-radius: 16px;
-  border: none;
-margin-bottom: 3vh;
+  margin-bottom: 3vh;
   background: rgba(255, 255, 255, 1);
 }
+
+#password {
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 16px;
+  border: none;
+  margin-bottom: 3vh;
+  background: rgba(255, 255, 255, 1);
+}
+
+#nickName {
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 16px;
+  border: none;
+  margin-bottom: 3vh;
+  background: rgba(255, 255, 255, 1);
+}
+
 button {
   width: 140px;
   height: 46px;
@@ -165,14 +174,16 @@ button {
   text-align: center;
   vertical-align: top;
 }
-.login{
+
+.login {
   position: absolute;
   font-size: 18px;
   letter-spacing: 2px;
   top: 3vh;
   left: 90vw;
 }
-a:hover{
+
+a:hover {
   color: blue;
 }
 </style>./register.vue./register.vue
