@@ -136,7 +136,7 @@ input {
 }
 
 button {
-  margin: 0, auto;
+  margin: 0 auto;
   width: 140px;
   height: 46px;
   opacity: 1;

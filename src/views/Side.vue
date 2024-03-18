@@ -15,21 +15,18 @@
         :collapse="isCollapse"
         :style="{ width: isCollapse ? '' : '200px' }"
         router
+        default-active="/home/privateDisk"
     >
       <el-sub-menu index="1">
         <template #title>
-          <el-icon>
-            <location/>
-          </el-icon>
-          <span>Root</span>
+          <el-icon><HomeFilled /></el-icon>
+          <span>根目录</span>
         </template>
         <el-menu-item index="/home/privateDisk" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
         <el-menu-item index="/home/publicDisk" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
       </el-sub-menu>
       <el-menu-item index="/Home/Recycle">
-        <el-icon>
-          <icon-menu/>
-        </el-icon>
+        <el-icon><DeleteFilled /></el-icon>
         <template #title>回收站</template>
       </el-menu-item>
 
@@ -40,7 +37,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import {Location, Menu as IconMenu,} from '@element-plus/icons-vue'
+import {DeleteFilled, HomeFilled } from '@element-plus/icons-vue'
 import {useStore} from 'vuex'
 import router from '@/router/index'
 
@@ -63,6 +60,12 @@ const toPublic = () => {
 </script>
 
 <style scoped>
+
+@font-face {
+  font-family: 'YouSheBiaoTiYuan';
+  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
+}
+
 .side {
   height: 100%;
   background-color: rgb(15, 44, 84);
@@ -72,14 +75,15 @@ const toPublic = () => {
 
 .title {
   color: whitesmoke;
-  font-size: 13px;
+  font-size: 18px;
+  font-weight:1;
 }
 
 .sign {
   padding: 10px 10px 20px;
   display: flex;
   gap: 10px;
-
+  font-family: 'YouSheBiaoTiYuan',serif;
 }
 
 .el-menu {
