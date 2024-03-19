@@ -25,8 +25,11 @@ let file = ref(null);
 const uploadFile = (e) => {
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
   if (file) {
+    store.commit('file/setStartUpload',true)
+    // console.log('store.state.file.isStartUpload:', store.state.file.isStartUpload);
     instantaneousTransmission(file).then(result => {
       if (result) {
+        store.commit('file/setStartUpload',false)
         // console.log('result:', result);
         ElMessage.success('秒传成功');
       } else {
@@ -40,12 +43,10 @@ const uploadFile = (e) => {
 //bug:上传成功后，无法再次连续上传相同文件
 }
 
-
 //新建文件夹
 const newFolder = () => {
   store.commit('file/setIsNew', true);
 }
-
 
 </script>
 

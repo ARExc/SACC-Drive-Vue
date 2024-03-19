@@ -31,19 +31,27 @@
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
         <li @click="downloadItem">
-          <el-icon><Download /></el-icon>
+          <el-icon>
+            <Download/>
+          </el-icon>
           下载
         </li>
         <li @click="moveFile">
-          <el-icon><Switch /></el-icon>
+          <el-icon>
+            <Switch/>
+          </el-icon>
           移动
         </li>
         <li @click="rename">
-          <el-icon><Edit /></el-icon>
+          <el-icon>
+            <Edit/>
+          </el-icon>
           重命名
         </li>
         <li @click="deleteItem">
-          <el-icon><Delete /></el-icon>
+          <el-icon>
+            <Delete/>
+          </el-icon>
           删除
         </li>
       </ul>
@@ -270,7 +278,7 @@ window.addEventListener('click', () => {
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  padding:5px;
+  padding: 5px;
 }
 
 .custom-context-menu ul {
@@ -284,9 +292,11 @@ window.addEventListener('click', () => {
   padding: 8px 12px;
   cursor: pointer;
 }
-.el-icon{
+
+.el-icon {
   margin-right: 10px;
 }
+
 .custom-context-menu ul li:hover {
   background-color: #f0f0f0;
 }

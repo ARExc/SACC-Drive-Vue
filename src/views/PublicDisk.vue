@@ -31,19 +31,27 @@
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
         <li @click="downloadItem">
-          <el-icon><Download /></el-icon>
+          <el-icon>
+            <Download/>
+          </el-icon>
           下载
         </li>
         <li @click="moveFile">
-          <el-icon><Switch /></el-icon>
+          <el-icon>
+            <Switch/>
+          </el-icon>
           移动
         </li>
         <li @click="rename">
-          <el-icon><Edit /></el-icon>
+          <el-icon>
+            <Edit/>
+          </el-icon>
           重命名
         </li>
         <li @click="deleteItem">
-          <el-icon><Delete /></el-icon>
+          <el-icon>
+            <Delete/>
+          </el-icon>
           删除
         </li>
       </ul>

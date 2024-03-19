@@ -1,13 +1,17 @@
 const state = {
-    isUpload: false,
+    isStartUpload: false,
+    isUploaded: false,
     file: null,
     fileType: '',
     isNew: false,
 }
 
 const mutations = {
+    setStartUpload(state, isStartUpload) {
+        state.isStartUpload = isStartUpload;
+    },
     setUpload(state, isUpload) {
-        state.isUpload = isUpload;
+        state.isUploaded = isUpload;
     },
     setFile(state, file) {
         state.file = file;
