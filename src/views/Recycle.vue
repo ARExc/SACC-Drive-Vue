@@ -22,7 +22,7 @@
       </ul>
     </div>
   </div>
-  <el-pagination background layout="prev, pager, next" :total=total hide-on-single-page :default-page-size="elmPageSize" />
+  <el-pagination background layout="prev, pager, next" :total=total hide-on-single-page  :default-page-size="elmPageSize" />
 </template>
 
 <script setup>
@@ -45,9 +45,7 @@ onMounted(
 function getRecycleList() {
   request.get("/api/recycle/getRecycleList")
     .then((response) => {
-      console.log('1');
       if (response.data.code === 1) {
-        console.log('1');
       records.value = response.data.data.records;
       total.value = response.data.data.total;}
     })

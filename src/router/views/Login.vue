@@ -20,7 +20,8 @@
 </template>
 
 <script>
-
+import request from "@/utility/request";
+import router from "@/router/index";
 export default {
   data() {
     return {
@@ -34,11 +35,13 @@ export default {
 
       // request.post('/api/login', {
       //   studentId: this.studentId,
-      //   password: this.password
+      //   password: this.password,
       // errorMessage:this.errorMessage
       // }).then(response => {
       //   if(response.status>=200&&response.status<300)
       //   this.$store.commit('setToken', response.data.token);
+      //   this.$store.state.username = response.data.data.nickname;
+        
       //   this.$router.push('/home');
       // }).catch(error => {
       //   // this.$router.push('/error');

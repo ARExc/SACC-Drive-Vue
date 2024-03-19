@@ -1,7 +1,7 @@
 const state = {
     token: null,
     isLoggedIn: false,
-
+    username:null,
 }
 const mutations = {
     setToken(state, token) {
@@ -11,6 +11,9 @@ const mutations = {
     logout(state) {
         state.token = null;
         state.isLoggedIn = false;
+    },
+    getUsername(state, username) {
+        state.username = username;
     },
 }
 export default {

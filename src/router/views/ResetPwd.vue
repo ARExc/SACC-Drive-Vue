@@ -18,7 +18,7 @@
       </div>
       <button type="submit">确认修改</button>
     </form>
-    <router-link to="/Login" class="login">返回登陆界面</router-link>
+    <router-link to="/home/privateDisk" class="login">返回</router-link>
   </div>
 </template>
 
@@ -193,10 +193,10 @@ button {
 
 .login {
   position: absolute;
-  font-size: 18px;
+  font-size: 14px;
   letter-spacing: 2px;
-  top: 3vh;
-  left: 90vw;
+  top: 79vh;
+  left: 56vw;
 }
 
 a:hover {
