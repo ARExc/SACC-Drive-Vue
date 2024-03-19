@@ -22,14 +22,12 @@
 <script>
 import request from '@/utility/request.js';
 import {ElMessage} from 'element-plus';
-
 export default {
   data() {
     return {
       nickName: '',
       studentId: '',
       password: '',
-      errorMessage: ''
     };
   },
   methods: {
@@ -61,7 +59,7 @@ export default {
           this.$router.push('/Login');
         }
       }).catch(error => {
-        ElMessage.error(errorMessage)
+        ElMessage.error('errorMessage')
       });
     },
   }

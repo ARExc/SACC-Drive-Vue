@@ -1,20 +1,52 @@
 <template>
   <header class="header">
     <div class="round">
-      <img src="../../public/sacc.png" alt="user avatar">
+      <img src="../../public/sacc.png" alt="user avatar" />
     </div>
-    <span>
+    <div id="username" @mouseenter="showMenu" @mouseleave="hideMenu">
       {{ username }}
-    </span>
+      <ul v-show="isMenuVisible" class="menu">
+        <router-link to="/resetPwd" class="item">修改密码</router-link>
+        <!-- <li class="item" @click="logout">退出登录</li> -->
+        <router-link to="/Login" class="item" @click="logout">退出登录</router-link
+        >
+      </ul>
+    </div>
   </header>
-
 </template>
 
-
 <script setup>
-localStorage.setItem('username', 'admin');
+import { computed, ref } from "vue";
+import request from "@/utility/request";
+import { ElMessage } from "element-plus";
+localStorage.setItem("username", "admin");
+let username = localStorage.getItem("username");
+let isMenuVisible = ref(false);
+function showMenu() {
+  isMenuVisible.value = true;
+}
+function hideMenu() {
+  isMenuVisible.value = false;
+}
+// localStorage.setItem('username', this.$store.state.username);
+// let username = localStorage.getItem('username');
 
-let username = localStorage.getItem('username');
+function logout() {
+  request
+    .get("/api/logout")
+    .then((response) => {
+      if (response.data.code === 1) {
+        localStorage.removeItem("username");
+        // this.$store.state.isLogged = false;
+        // 清除cookie
+        // 清楚登录信息
+      }
+    })
+    .catch((error) => {
+      // this.$router.push('/error');
+      ElMessage.error("errorMessage");
+    });
+}
 </script>
 
 <style scoped>
@@ -47,5 +79,28 @@ let username = localStorage.getItem('username');
   font-weight: normal; /* 字体粗细 */
   margin-right: 10px; /* 用户名和右边界的间距 */
 }
-
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: 30px;
+  list-style: none;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+.item {
+  display: block;
+  margin-top: 30px;
+  cursor: pointer;
+}
+.item:hover {
+  color: blue;
+}
 </style>
