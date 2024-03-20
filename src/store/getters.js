@@ -1,7 +1,7 @@
 const getters = {
     isLoggedIn: state => state.user.isLoggedIn,
     getToken: state => state.user.token,
-    isUpload: state => state.file.isUpload,
+    isUpload: state => state.file.isUploaded,
     file: state => state.file.file,
     breadcrumb: state => state.breadcrumb.breadcrumb,
     isPrivate: state => state.breadcrumb.isPrivate,

@@ -2,6 +2,7 @@ import file from './modules/file';
 import user from './modules/user';
 import getters from './getters';
 import breadcrumb from './modules/breadcrumb';
+import states from './modules/states';
 import {createStore} from 'vuex';
 import VuexPersistence from "vuex-persist";
 
@@ -16,7 +17,8 @@ const store = createStore({
     modules: {
         file,
         user,
-        breadcrumb
+        breadcrumb,
+        states
     },
     plugins: [vuexLocal.plugin]
 })

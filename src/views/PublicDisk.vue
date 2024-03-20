@@ -4,7 +4,9 @@
     <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
          @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
-      <span class="fileName" v-if="editingItemId!==item.id">{{ item.fileName }}</span>
+      <span class="fileName" v-if="editingItemId!==item.id">{{
+          item.fileName.length < 10 ? item.fileName : item.fileName.slice(0, 10) + "..."
+        }}</span>
       <el-input v-else
                 class="input"
                 size='small'
@@ -31,19 +33,27 @@
     <div v-if="showMenu" class="custom-context-menu" :style="{top:menuPosition.y+'px',left:menuPosition.x+'px'}">
       <ul>
         <li @click="downloadItem">
-          <el-icon><Download /></el-icon>
+          <el-icon>
+            <Download/>
+          </el-icon>
           下载
         </li>
         <li @click="moveFile">
-          <el-icon><Switch /></el-icon>
+          <el-icon>
+            <Switch/>
+          </el-icon>
           移动
         </li>
         <li @click="rename">
-          <el-icon><Edit /></el-icon>
+          <el-icon>
+            <Edit/>
+          </el-icon>
           重命名
         </li>
         <li @click="deleteItem">
-          <el-icon><Delete /></el-icon>
+          <el-icon>
+            <Delete/>
+          </el-icon>
           删除
         </li>
       </ul>
@@ -53,7 +63,7 @@
 
 <script setup>
 import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
-import store from "@/store";
+import store from "@/store"
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";

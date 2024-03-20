@@ -11,4 +11,7 @@
 .el-breadcrumb__separator {
   margin: 0 3px !important;
 }
+.el-progress__text{
+  min-width: 0 !important;
+}
 </style>
