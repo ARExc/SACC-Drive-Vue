@@ -14,9 +14,9 @@
 </template>
 
 <script setup>
-import Side from "@/views/Side.vue";
-import Header from "@/views/Header.vue";
-import UploadBox from "@/views/UploadBox.vue";
+import Side from "@/views/layout/Side.vue";
+import Header from "@/views/layout/Header.vue";
+import UploadBox from "@/views/layout/UploadBox.vue";
 import {ref, watch} from 'vue'
 import store from "@/store";
 

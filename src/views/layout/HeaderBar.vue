@@ -7,8 +7,8 @@
 
 <script setup>
 
-import ActionArea from "@/views/ActionArea.vue";
-import Breadcrumb from "@/views/Breadcrumb.vue";
+import ActionArea from "@/views/layout/ActionArea.vue";
+import Breadcrumb from "@/views/layout/Breadcrumb.vue";
 </script>
 
 <style scoped>
