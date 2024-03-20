@@ -48,8 +48,8 @@ Mock.mock(
         "code": 1,
         "errorMsg": "null",
         "data": {
-            "total": 88,
-            "records|5": [ // 生成5个记录，如需更多可调整数字
+            "total": 100,
+            "records|100": [ // 生成5个记录，如需更多可调整数字
                 {   "id": "@guid", // 使用Mock.js的@guid方法生成唯一ID
                     "status|1-60": 1, // 随机生成1到60之间的整数
                     "folderType|0-1": 1,// 0：文件 1：文件夹

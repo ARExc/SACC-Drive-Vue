@@ -17,28 +17,33 @@
       :style="{ top: menuPosition.y + 'px', left: menuPosition.x + 'px' }"
     >
       <ul>
-        <li @click="recoverItem()">恢复</li>
-        <li @click="deleteItem()">彻底删除</li>
+        <li @click="recoverItem()"><el-icon><FolderChecked /></el-icon>恢复</li>
+        <li @click="deleteItem()"><el-icon><Delete /></el-icon>彻底删除</li>
       </ul>
     </div>
   </div>
-  <el-pagination background layout="prev, pager, next" :total=total hide-on-single-page  :default-page-size="elmPageSize" />
+  <el-pagination 
+  background 
+  layout="prev, pager, next" :total="total" hide-on-single-page  :page-size = "elmPageSize" :pager-count="pageCount" />
 </template>
 
 <script setup>
 import { createHydrationRenderer, onMounted, reactive, ref, watch} from "vue";
 import router from "@/router/index";
 import request from "@/utility/request";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from 'element-plus'
 const showMenu = ref(false);
 const menuPosition = ref({ x: 0, y: 0 });
 let records = ref([]);
 let pageNo = ref();
 let pageSize = ref();
-let total = ref();
+let total = ref(10);
 let selectedFileId = ref();
+let pageCount = ref(10);
 const container = ref();
-let elmPageSize = ref((container.offsetWidth/166)*(container.offsetHeight/100)); 
+// let elmPageSize = ref((container.offsetWidth/166)*(container.offsetHeight/100)); 
+let elmPageSize = ref(4);
+pageCount.value = total/elmPageSize;
 onMounted(
   getRecycleList
 )
@@ -47,7 +52,8 @@ function getRecycleList() {
     .then((response) => {
       if (response.data.code === 1) {
       records.value = response.data.data.records;
-      total.value = response.data.data.total;}
+      total.value = response.data.data.total;
+}
     })
     .catch((error) => {
       // this.$router.push('/error');
@@ -87,7 +93,17 @@ let src = (file) => {
   }
 };
 function deleteItem() {
-  request
+  ElMessageBox.confirm(
+    '要彻底删除该文件吗？',
+    '请确认',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      request
     .delete("/api/recycle/delFile", {
       fileIds: selectedFileId,
     })
@@ -103,9 +119,26 @@ function deleteItem() {
       // this.$router.push('/error');
       ElMessage.error("errorMessage");
     });
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消操作',
+      })
+    })
 }
 function recoverItem() {
-  request
+  ElMessageBox.confirm(
+    '要恢复该文件吗？',
+    '请确认',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      request
     .post("/api/recycle/recoverFile", {
       fileIds: selectedFileId,
     })
@@ -121,13 +154,22 @@ function recoverItem() {
       // this.$router.push('/error');
       ElMessage.error("errorMessage");
     });
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消操作',
+      })
+    })
 }
+
 </script>
 <style scoped>
-.container {
+/* .container {
   height: 100%;
   display: flex;
-}
+  overflow:auto;
+} */
 
 .main {
   display: flex;
@@ -186,9 +228,10 @@ function recoverItem() {
     auto-fill,
     minmax(120px, 1fr)
   ); /* 创建多列，每列最小宽度120px，最大1fr */
-  grid-gap: 20px; /* 设置网格间的间隙 */
+  grid-gap: 35px; /* 设置网格间的间隙 */
   padding: 20px; /* 设置内边距 */
   background-color: #fff; /* 设置背景色为白色 */
+  overflow:auto;
 }
 #createTime{
   font-size: 12px;
@@ -196,5 +239,9 @@ function recoverItem() {
 }
 #fileSize{
   font-size: 12px;
+}
+.el-icon{
+  margin-right: 10px;
+  vertical-align: middle;
 }
 </style>
