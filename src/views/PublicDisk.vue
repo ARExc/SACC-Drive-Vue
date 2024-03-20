@@ -4,7 +4,9 @@
     <div class="folder-item" v-for="item in items" :key="item.id" @click="preview(item)"
          @contextmenu="showContextMenu($event, item)">
       <img :src="src(item)" alt="File Icon">
-      <span class="fileName" v-if="editingItemId!==item.id">{{ item.fileName }}</span>
+      <span class="fileName" v-if="editingItemId!==item.id">{{
+          item.fileName.length < 10 ? item.fileName : item.fileName.slice(0, 10) + "..."
+        }}</span>
       <el-input v-else
                 class="input"
                 size='small'
@@ -61,7 +63,7 @@
 
 <script setup>
 import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
-import store from "@/store";
+import store from "@/store"
 import request from "@/utility/request";
 import HeaderBar from "@/views/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";

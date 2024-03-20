@@ -2,8 +2,8 @@
   <div class="fileInfo">
     <img src="../assets/logo.png" alt="File" class="fileImage">
     <div class="fileDetails">
-      <div class="fileName">文件名: example.txt</div>
-      <div class="fileSize">文件大小: 2MB</div>
+      <div class="fileName">文件名: {{ fileName }}</div>
+      <div class="fileSize">文件大小: {{ fileSize }} MB</div>
     </div>
   </div>
   <el-progress
@@ -15,15 +15,22 @@
       :duration="10"
   />
   <div class="actions">
-    <button class="pauseBtn">暂停</button>
-    <button class="cancelBtn">取消</button>
+    <button class="pauseBtn" @click="suspend">暂停</button>
+    <button class="cancelBtn" @click="cancel">取消</button>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {computed} from 'vue'
+import store from '@/store'
 
-let progress = ref(50)
+let progress = computed(() => store.state.states.progress);//自动追踪 store.state.states.progress 的变化并更新其值
+let fileName = computed(() => store.state.file.fileName);
+let fileSize = computed(() => store.state.file.fileSize);
+
+const suspend = () => {
+  store.commit('states/setStartUpload', false);
+}
 </script>
 
 <style scoped>

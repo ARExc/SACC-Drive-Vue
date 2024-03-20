@@ -18,9 +18,9 @@ import UploadBox from "@/views/UploadBox.vue";
 import {ref, watch} from 'vue'
 import store from "@/store";
 
-let isStartUpload = ref(store.state.file.isStartUpload);
+let isStartUpload = ref(store.state.states.isStartUpload);
 
-watch(() => store.state.file.isStartUpload, (newVal) => {
+watch(() => store.state.states.isStartUpload, (newVal) => {
   // console.log('Home.vue中的isStartUpload:', isStartUpload.value);
   isStartUpload.value = newVal;
 }, {deep: true});

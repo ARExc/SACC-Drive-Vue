@@ -41,7 +41,26 @@ Mock.mock(RegExp('/api/priv/file/newFolder'), 'post', {
     "errorMsg": "null",
     "data": {}
 });
-
+Mock.mock(RegExp('/api/priv/file/checkChunks'), 'post', {
+    "code": 1,
+    "errorMsg": "null",
+    "data": {
+        "id": 2,
+        "status": 1,
+        "fileMd5": "asdfcasfcew213r2cd31534121c2ercx12431",
+        "chunkNumber": 2,
+        "chunkSize": "10MB",
+        "fileName": "文件1",
+        "chunkTotal": 15
+    }
+});
+Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
+    "code": 0,
+    "errorMsg": "string",
+    "data": {
+        "status": 0
+    }
+});
 
 Mock.mock(
     RegExp('/api/recycle/getRecycleList'), 'get', {
@@ -50,7 +69,8 @@ Mock.mock(
         "data": {
             "total": 88,
             "records|5": [ // 生成5个记录，如需更多可调整数字
-                {   "id": "@guid", // 使用Mock.js的@guid方法生成唯一ID
+                {
+                    "id": "@guid", // 使用Mock.js的@guid方法生成唯一ID
                     "status|1-60": 1, // 随机生成1到60之间的整数
                     "folderType|0-1": 1,// 0：文件 1：文件夹
                     "createTime": "@datetime", // 生成随机日期时间
