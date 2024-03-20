@@ -9,27 +9,51 @@
   <el-progress
       :percentage="progress"
       :stroke-width="15"
-      status="success"
+      :status="progressStatus"
       striped
       striped-flow
       :duration="10"
   />
   <div class="actions">
-    <button class="pauseBtn" @click="suspend">暂停</button>
+    <button class="pauseBtn" @click="suspend" v-if="showButton">暂停</button>
+    <button class="resumeBtn" @click="resume" v-if="!showButton">继续</button>
     <button class="cancelBtn" @click="cancel">取消</button>
   </div>
 </template>
 
 <script setup>
-import {computed} from 'vue'
+import {computed, ref, watch} from 'vue'
 import store from '@/store'
 
-let progress = computed(() => store.state.states.progress);//自动追踪 store.state.states.progress 的变化并更新其值
+//用computed而不是watch来自动追踪 store.state.states.progress 的变化并更新其值
+let progress = computed(() => store.state.states.progress);
 let fileName = computed(() => store.state.file.fileName);
 let fileSize = computed(() => store.state.file.fileSize);
+let progressStatus = ref('success');
+watch(() => store.state.states.isPause, (newVal) => {
+  if (newVal) {
+    progressStatus.value = 'warning';
+  } else {
+    progressStatus.value = 'success';
+  }
+});
+watch(() => store.state.states.isCancel, (newVal) => {
+  if (newVal) {
+    progressStatus.value = 'exception';
+  }
+});
 
+const showButton = ref(true);
 const suspend = () => {
-  store.commit('states/setStartUpload', false);
+  store.commit('states/setIsPause', true);
+  showButton.value = false;
+}
+const resume = () => {
+  store.commit('states/setIsPause', false);
+  showButton.value = true;
+}
+const cancel = () => {
+  store.commit('states/setIsCancel', true);
 }
 </script>
 
@@ -69,7 +93,7 @@ const suspend = () => {
   margin-top: 10px; /* 与进度条间距 */
 }
 
-.pauseBtn, .cancelBtn {
+.pauseBtn, .cancelBtn, .resumeBtn {
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -84,6 +108,11 @@ const suspend = () => {
 
 .cancelBtn {
   background-color: #d9534f; /* 取消按钮颜色 */
+  color: #fff;
+}
+
+.resumeBtn {
+  background-color: #007bf1; /* 继续按钮颜色 */
   color: #fff;
 }
 </style>

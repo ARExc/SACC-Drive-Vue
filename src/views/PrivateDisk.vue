@@ -86,7 +86,7 @@ watchEffect(() => {
 });
 //上传文件成功后，将文件添加到私有仓库中
 watch(() => store.getters.file, (newVal) => {
-  // console.log('私有仓库中的newVal:', newVal);
+  console.log('私有仓库中的newVal:', newVal);
   if (newVal) {
     items.value.push({
       id: newVal.id,

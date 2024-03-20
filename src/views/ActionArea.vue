@@ -25,35 +25,38 @@ let file = ref(null);
 const uploadFile = (e) => {
   file = e.target.files[0];//上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
   let fileSizeInMB = +(file.size / 1024 / 1024).toFixed(2);
-  console.log('fileSizeInMB:', fileSizeInMB);
+  console.log('fileSizeInMB:', fileSizeInMB + 'MB');
   if (file) {
-    store.commit('states/setStartUpload', true)
     store.commit('file/setFileName', file.name.length < 10 ? file.name : file.name.slice(0, 20) + '...');
     store.commit('file/setFileSize', fileSizeInMB);
-    if (fileSizeInMB < 10) {
+    if (fileSizeInMB < 2) {
       ElMessage.success('正在上传');
       instantaneousTransmission(file).then(result => {
         if (result) {
-          store.commit('states/setStartUpload', false)
           ElMessage.success('秒传成功');
           // window.location.reload();
         } else {
-          sliceFile(file);
-          ElMessage.success('上传成功');
+          store.commit('states/setStartUpload', true)
+          sliceFile(file).then(res => {
+            store.commit('states/setStartUpload', false)
+            store.commit('states/setProgress', 0)
+            ElMessage.success('上传成功');
+          }).catch(err => {
+            ElMessage.error('上传失败');
+          });
         }
       });
     } else {
-      ElMessage.warning('文件大小超过2GB');
+      store.commit('states/setStartUpload', true)
       sliceFile(file).then(res => {
         store.commit('states/setStartUpload', false)
-        store.commit('states/setProgress',0)
+        store.commit('states/setProgress', 0)
         ElMessage.success('上传成功');
       }).catch(err => {
         ElMessage.error('上传失败');
       });
     }
   }
-//bug:上传成功后，无法再次连续上传相同文件
 }
 
 //新建文件夹
