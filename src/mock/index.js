@@ -61,7 +61,13 @@ Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
         "status": 0
     }
 });
-
+Mock.mock(RegExp('/api/priv/file/delFiles/*'), 'delete', {
+    "code": 0,
+    "errorMsg": "string",
+    "data": {
+        "status": 0
+    }
+});
 Mock.mock(
     RegExp('/api/recycle/getRecycleList'), 'get', {
         "code": 1,

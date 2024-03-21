@@ -22,6 +22,7 @@ function sliceFile(file) {
                     console.log('这个文件分片已存在');
                     console.log(res.data.data);
                 } else {
+                    //分片不存在，上传分片
                     request.post('/api/priv/file/upload', {
                         md5: hash,
                         chunkNumber: currentChunk,
@@ -29,6 +30,7 @@ function sliceFile(file) {
                         chunkSize: chunkSize,
                         file: blob
                     }).then(res => {
+                        // 上传成功，继续处理下一个分片，增加进度条数字
                         store.commit('states/setProgress', (currentChunk) / chunkCount * 100);
                         // console.log('进度:', currentChunk / chunkCount * 100 + '%');
                         console.log('分片上传成功');
@@ -39,6 +41,7 @@ function sliceFile(file) {
                 if (currentChunk < chunkCount) {
                     loadNext(); // 继续处理下一个分片
                 } else {
+                    //处理最后一个分片
                     const finalHash = spark.end(false);//传递false时，SparkMD5对象不会在调用end()后重置，这意味着你可以继续添加数据进行计算
                     console.log('最后的MD5:', finalHash);
                     request.post('/api/priv/file/upload', {
@@ -46,15 +49,18 @@ function sliceFile(file) {
                         fileName: file.name
                     }).then(res => {
                         console.log('文件完整性验证成功');
-                        store.commit('file/setUpload', true);
+                        // store.commit('file/setUpload', true);
                         const newFile = createFileDto(file)
+                        //向vuex中添加一个file，用于在Disk页面中显示新的文件
                         store.commit('file/setFile', newFile);
-                        resolve(finalHash);
+                        resolve(res);
                     }).catch(err => {
+                        //上传失败
                         reject(err);
                     });
                 }
             }).catch(err => {
+                //检查md5值失败
                 reject(err);
             });
         };
@@ -62,10 +68,15 @@ function sliceFile(file) {
         const loadNext = () => {
             if (isCancelled.value) {
                 console.log("上传被取消");
-                store.commit('states/setStartUpload', false);
+                //把取消上传的状态设置为false，使下次上传时的样式正常
                 store.commit('states/setIsCancel', false);
+                //把进度条的进度设置为0
                 store.commit('states/setProgress', 0);
-                // debugger;
+                //取消上传进度条的显示
+                store.commit('states/setStartUpload', false);
+                setTimeout(() => {
+                    window.location.reload();
+                },800);
                 return;
             }
             if (isPaused.value) {
@@ -89,7 +100,6 @@ function sliceFile(file) {
             }
         };
         loadNext(); // 开始处理第一个分片
-        // reject('上传被取消');
     });
 }
 

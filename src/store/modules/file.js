@@ -1,17 +1,11 @@
 const state = {
-
-    isUploaded: false,
     file: null,
     fileName: '',
     fileSize: 0,
-    isNew: false,
+    isCreatesNewFolder: false,
 }
 
 const mutations = {
-
-    setUpload(state, isUpload) {
-        state.isUploaded = isUpload;
-    },
     setFile(state, file) {
         state.file = file;
     },
@@ -21,8 +15,8 @@ const mutations = {
     setFileSize(state, fileSize) {
         state.fileSize = fileSize;
     },
-    setIsNew(state, isNew) {
-        state.isNew = isNew;
+    setIsCreateNewFolder(state, isNew) {
+        state.isCreatesNewFolder = isNew;
     }
 }
 

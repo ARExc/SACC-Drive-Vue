@@ -1,6 +1,6 @@
 <template>
   <div class="fileInfo">
-    <img src="../assets/logo.png" alt="File" class="fileImage">
+    <img src="../../assets/logo.png" alt="File" class="fileImage">
     <div class="fileDetails">
       <div class="fileName">文件名: {{ fileName }}</div>
       <div class="fileSize">文件大小: {{ fileSize }} MB</div>

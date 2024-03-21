@@ -11,7 +11,7 @@
 
 <script setup>
 import {ref, watch} from 'vue';
-import router from "@/router/index";
+import router from "@/router";
 import {useRoute} from "vue-router";
 import store from "@/store";
 

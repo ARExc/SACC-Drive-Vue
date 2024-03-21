@@ -65,8 +65,9 @@
 import {nextTick, onMounted, ref, watch, watchEffect} from 'vue'
 import store from "@/store"
 import request from "@/utility/request";
-import HeaderBar from "@/views/HeaderBar.vue";
+import HeaderBar from "@/views/layout/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";
+import createIconSrc from "@/utility/createIconSrc";
 
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
@@ -94,17 +95,17 @@ watch(() => store.getters.file, (newVal) => {
       fileCategory: newVal.fileCategory,
       folderType: newVal.folderType
     })
-    store.commit('file/setUpload', false)
+    // store.commit('file/setUpload', false)
   }
 }, {deep: true});
 
 //新建文件夹
-watch(() => store.state.file.isNew, (newVal) => {
+watch(() => store.state.file.isCreatesNewFolder, (newVal) => {
   // console.log(newVal)
   if (newVal) {
     console.log('新建文件夹成功')
     isNewFolder.value = true
-    store.commit('file/setIsNew', false)
+    store.commit('file/setIsCreateNewFolder', false)
   }
 }, {deep: true})
 //按下回车时，处理新建文件夹的逻辑
@@ -138,33 +139,16 @@ const preview = (item) => {
 
 //根据类型显示不同的图标
 let src = (item) => {
-  if (item.folderType === 1) {
-    return require('@/assets/icon/folder.png')//这里的require函数调用告诉构建工具（比如Webpack），它需要处理（即包含在最终的构建结果中）这些图片资源。
-  } else if (item.folderType === 0) {
-    //1：视频 2：音频 3：文档 4：图片 5：其他
-    if (item.fileCategory === 1) {
-      return require('@/assets/icon/video.png')
-    } else if (item.fileCategory === 2) {
-      return require('@/assets/icon/music.png')
-    } else if (item.fileCategory === 3) {
-      return require('@/assets/icon/document.png')
-    } else if (item.fileCategory === 4) {
-      return require('@/assets/icon/picture.png')
-    } else {
-      return require('@/assets/icon/file.png')
-    }
-  } else {
-    return require('@/assets/icon/file.png')
-  }
+  return createIconSrc(item)
 };
 let tempId = ref(null)
 
 //右键菜单
 function showContextMenu(e, item) {
-  // console.log('右键菜单:' + item.id)
+  // console.log('右键菜单:' + item.fileName)
   tempId.value = item.id
   e.preventDefault();
-  currentItem.value = e
+  currentItem.value = item;
   showMenu.value = true
   menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
@@ -179,7 +163,7 @@ onMounted(() => {
 
 //下载文件
 function downloadItem() {
-  // console.log('下载' + currentItem.value)
+  console.log('下载' + currentItem.value.id)
   let code = '';
   request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
     // console.log(res)
@@ -193,6 +177,8 @@ function downloadItem() {
 }
 
 function moveFile() {
+  console.log('移动' + currentItem.value.id)
+  store.commit('states/setStartMove', true);
   // console.log('移动')
   showMenu.value = false
 }
@@ -226,7 +212,14 @@ function handleRename() {
 
 
 function deleteItem() {
-  // console.log('删除')
+  console.log('删除')
+  // items.value.pop()
+  request.delete(`/api/priv/file/delFiles/${currentItem.value.id}`).then(res => {
+    console.log(res)
+    window.location.reload()
+  }).catch(err => {
+    console.log(err)
+  });
   showMenu.value = false
 }
 
