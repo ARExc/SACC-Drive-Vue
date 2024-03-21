@@ -1,5 +1,6 @@
 <template>
-  <div class="container" ref="container">
+    <div class="recycle" ref="container">
+      <div class="container" >
     <div
       class="file-item"
       v-for="file in records"
@@ -22,12 +23,21 @@
       </ul>
     </div>
   </div>
+    </div>
   <el-pagination 
   background 
-  layout="prev, pager, next" :total="total" hide-on-single-page  :page-size = "elmPageSize" :pager-count="pageCount" />
+  layout="prev, pager, next" 
+  :small = false
+  v-model:total="total" 
+  :page-sizes="[10, 20, 30, 40]" 
+  v-model:page-size = "elmPageSize" 
+  v-model:current-page="pageNo" 
+ 
+:pager-count="pageCount" />
 </template>
 
 <script setup>
+//@current-change="getRecycleList"
 import { createHydrationRenderer, onMounted, reactive, ref, watch} from "vue";
 import router from "@/router/index";
 import request from "@/utility/request";
@@ -35,24 +45,37 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 const showMenu = ref(false);
 const menuPosition = ref({ x: 0, y: 0 });
 let records = ref([]);
-let pageNo = ref();
-let pageSize = ref();
-let total = ref(10);
+let pageNo = ref(1);
+let total = ref();
 let selectedFileId = ref();
-let pageCount = ref(10);
-const container = ref();
-// let elmPageSize = ref((container.offsetWidth/166)*(container.offsetHeight/100)); 
-let elmPageSize = ref(4);
-pageCount.value = total/elmPageSize;
-onMounted(
-  getRecycleList
+let pageCount = ref(5);
+let container =ref();
+let elmPageSize = ref();
+watch([pageNo,elmPageSize],()=>{
+  getRecycleList()
+}
+)
+//let elmPageSize = ref((container.offsetWidth/166)*(container.offsetHeight/100)); 
+onMounted(()=>{
+  elmPageSize = Math.ceil((container.value.offsetWidth/166)*(container.value.offsetHeight/100)); 
+  console.log(Math.ceil((container.value.offsetWidth/166)*(container.value.offsetHeight/100)))
+  //console.log((container.value.offsetWidth/166)*(container.value.offsetHeight/100))
+  getRecycleList()
+}
 )
 function getRecycleList() {
-  request.get("/api/recycle/getRecycleList")
+  //this.pageNo = val;
+  request.get("/api/recycle/getRecycleList",{
+    params:{
+      pageNo:pageNo.value,
+      pageSize:elmPageSize.value
+    }
+  })
     .then((response) => {
       if (response.data.code === 1) {
       records.value = response.data.data.records;
       total.value = response.data.data.total;
+      pageCount.value = total/elmPageSize;
 }
     })
     .catch((error) => {
@@ -171,10 +194,10 @@ function recoverItem() {
   overflow:auto;
 } */
 
-.main {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+.recycle {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .custom-context-menu {
