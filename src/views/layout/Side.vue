@@ -2,7 +2,7 @@
   <div class="side">
     <div class="sign">
       <div class="round">
-        <img src="../../public/sacc.png" alt="">
+        <img src="../../../public/sacc.png" alt="">
       </div>
       <div>
         <span class="title">SACC<br>在线网盘系统</span>
@@ -39,7 +39,7 @@
 import {ref} from 'vue'
 import {DeleteFilled, HomeFilled } from '@element-plus/icons-vue'
 import {useStore} from 'vuex'
-import router from '@/router/index'
+import router from '@/router'
 
 const store = useStore()
 // const router=useRouter()
@@ -63,7 +63,7 @@ const toPublic = () => {
 
 @font-face {
   font-family: 'YouSheBiaoTiYuan';
-  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
+  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
 }
 
 .side {
