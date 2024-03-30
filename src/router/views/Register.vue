@@ -28,10 +28,15 @@ export default {
       nickName: '',
       studentId: '',
       password: '',
+      errorMessage: '',
     };
   },
   methods: {
     submitForm() {
+      if (this.password.length < 8) {
+        ElMessage.error('密码至少需要8位');
+        return;
+      }
       var password = document.getElementById("password").value;
       var upperCaseLetters = /[A-Z]/g;
       var lowerCaseLetters = /[a-z]/g;

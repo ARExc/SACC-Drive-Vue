@@ -1,15 +1,14 @@
 <template>
   <header class="header">
-    <div class="round">
+    <div class="round" @mouseenter="showMenu" @mouseleave="hideMenu">
       <img src="../../../public/sacc.png" alt="user avatar" />
     </div>
     <div id="username" @mouseenter="showMenu" @mouseleave="hideMenu">
       {{ username }}
       <ul v-show="isMenuVisible" class="menu">
-        <router-link to="/resetPwd" class="item">修改密码</router-link>
+        <router-link to="/resetPwd" class="item"> <el-icon><Edit /></el-icon>修改密码</router-link>
         <!-- <li class="item" @click="logout">退出登录</li> -->
-        <router-link to="/Login" class="item" @click="logout">退出登录</router-link
-        >
+        <div class="item" @click="logout"><el-icon><SwitchButton /></el-icon>退出登录</div>
       </ul>
     </div>
   </header>
@@ -18,7 +17,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import request from "@/utility/request";
-import { ElMessage } from "element-plus";
+import { ElMessage,ElMessageBox } from "element-plus";
 localStorage.setItem("username", "admin");
 let username = localStorage.getItem("username");
 let isMenuVisible = ref(false);
@@ -30,23 +29,36 @@ function hideMenu() {
 }
 // localStorage.setItem('username', this.$store.state.username);
 // let username = localStorage.getItem('username');
-
 function logout() {
-  request
+  ElMessageBox.confirm(
+    '确定要退出登录吗？',
+    '请确认',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      request
     .get("/api/logout")
     .then((response) => {
       if (response.data.code === 1) {
         localStorage.removeItem("username");
-        // this.$store.state.isLogged = false;
+        this.$store.state.isLogged = false;
         // 清除cookie
+        this.$store.commit('setToken', '');
+        localStorage.removeItem("token");
+        this.$router.push("/Login");
         // 清楚登录信息
       }
     })
+  })
     .catch((error) => {
       // this.$router.push('/error');
       ElMessage.error("errorMessage");
     });
-}
+    }
 </script>
 
 <style scoped>
@@ -67,13 +79,16 @@ function logout() {
   overflow: hidden; /* 隐藏超出圆形边框的图片部分 */
   margin-right: 10px; /* 头像和用户名之间的间距 */
   background-color: #fff; /* 头像背景色 */
+  cursor: pointer;
 }
 
 .round img {
   width: 100%; /* 使图片填满容器 */
   height: auto; /* 保持图片的原始宽高比 */
 }
-
+.username{
+  cursor: pointer;
+}
 .header span {
   font-size: 16px; /* 用户名字体大小，根据需要调整 */
   font-weight: normal; /* 字体粗细 */
@@ -102,5 +117,9 @@ function logout() {
 }
 .item:hover {
   color: blue;
+}
+.el-icon{
+  margin-right: 10px;
+  vertical-align: middle;
 }
 </style>

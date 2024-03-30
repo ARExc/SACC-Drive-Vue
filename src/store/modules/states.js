@@ -1,8 +1,9 @@
 const state = {
     progress: 0,
     isStartUpload: false,
+    isStartMove: false,
     isPause: false,
-    isCancel:false
+    isCancel:false,
 }
 const mutations = {
     setProgress(state, progress) {
@@ -10,6 +11,9 @@ const mutations = {
     },
     setStartUpload(state, isStartUpload) {
         state.isStartUpload = isStartUpload;
+    },
+    setStartMove(state, isStartMove) {
+        state.isStartMove = isStartMove;
     },
     setIsPause(state, isSuspend) {
         state.isPause = isSuspend;

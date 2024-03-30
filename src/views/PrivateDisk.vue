@@ -145,10 +145,10 @@ let tempId = ref(null)
 
 //右键菜单
 function showContextMenu(e, item) {
-  // console.log('右键菜单:' + item.id)
+  // console.log('右键菜单:' + item.fileName)
   tempId.value = item.id
   e.preventDefault();
-  currentItem.value = e
+  currentItem.value = item;
   showMenu.value = true
   menuPosition.value = {x: e.pageX, y: e.pageY}//event.pageX和event.pageY是事件对象的属性，它们提供了事件发生时鼠标指针相对于整个文档的水平和垂直位置
 }
@@ -163,7 +163,7 @@ onMounted(() => {
 
 //下载文件
 function downloadItem() {
-  // console.log('下载' + currentItem.value)
+  console.log('下载' + currentItem.value.id)
   let code = '';
   request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
     // console.log(res)
@@ -177,6 +177,8 @@ function downloadItem() {
 }
 
 function moveFile() {
+  console.log('移动' + currentItem.value.id)
+  store.commit('states/setStartMove', true);
   // console.log('移动')
   showMenu.value = false
 }
@@ -210,7 +212,14 @@ function handleRename() {
 
 
 function deleteItem() {
-  // console.log('删除')
+  console.log('删除')
+  // items.value.pop()
+  request.delete(`/api/priv/file/delFiles/${currentItem.value.id}`).then(res => {
+    console.log(res)
+    window.location.reload()
+  }).catch(err => {
+    console.log(err)
+  });
   showMenu.value = false
 }
 
