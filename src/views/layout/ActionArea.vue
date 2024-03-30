@@ -8,10 +8,10 @@
 
 <script setup>
 import {ref} from "vue";
-import instantaneousTransmission from "@/utility/upload/instantaneous";
+import calculateWholeMd5 from "@/utility/upload/calculateWholeMd5";
 import {useStore} from "vuex";
 import {ElMessage} from "element-plus";
-import sliceFile from "@/utility/upload/sliceFile";
+import sliceFileAndUpload from "@/utility/upload/sliceFileAndUpload";
 
 const store = useStore();
 
@@ -30,36 +30,23 @@ const uploadFile = (e) => {
     store.commit('file/setFileName', file.name.length < 10 ? file.name : file.name.slice(0, 20) + '...');
     store.commit('file/setFileSize', fileSizeInMB);
 
-    //文件大小小于2GB的，秒传
-    if (fileSizeInMB < 2) {
-      instantaneousTransmission(file).then(result => {
-        if (result) {
-          ElMessage.success('秒传成功');
-          // window.location.reload();
-        } else {
-          //没有上传过的文件，再分片上传
-          //设置setStartUpload，用于显示上传进度条
-          store.commit('states/setStartUpload', true)
-
-          sliceFile(file).then(res => {
-            store.commit('states/setStartUpload', false)
-            store.commit('states/setProgress', 0)
-            ElMessage.success('上传成功');
-          }).catch(err => {
-            store.commit('states/setStartUpload', false)
-            store.commit('states/setProgress', 0)
-            ElMessage.error('上传失败');
-          });
-        }
-      });
-    } else { //文件大小大于2GB的，分片上传
+    //文件大小大于5GB的，拦截
+    if (fileSizeInMB > 5000) {
+      ElMessage.error('文件大小不能超过5GB')
+    } else {
+      store.commit('states/setProgress', 0)
       store.commit('states/setStartUpload', true)
-      sliceFile(file).then(res => {
-        store.commit('states/setProgress', 0)
-        store.commit('states/setStartUpload', false)
-        ElMessage.success('上传成功');
-      }).catch(err => {
-        ElMessage.error('上传失败');
+      calculateWholeMd5(file).then(result => {
+        //没有上传过的文件，再分片上传
+        //设置setStartUpload，用于显示上传进度条
+        sliceFileAndUpload(file, result).then(res => {
+          store.commit('states/setStartUpload', false)
+          ElMessage.success('上传成功');
+        }).catch(err => {
+          store.commit('states/setStartUpload', false)
+          ElMessage.error('上传失败');
+        });
+
       });
     }
   }
