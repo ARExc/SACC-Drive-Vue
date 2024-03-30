@@ -7,7 +7,6 @@
 </template>
 
 <script setup>
-
 import {ref} from "vue";
 import instantaneousTransmission from "@/utility/upload/instantaneous";
 import {useStore} from "vuex";
@@ -43,11 +42,12 @@ const uploadFile = (e) => {
           store.commit('states/setStartUpload', true)
 
           sliceFile(file).then(res => {
-
             store.commit('states/setStartUpload', false)
             store.commit('states/setProgress', 0)
             ElMessage.success('上传成功');
           }).catch(err => {
+            store.commit('states/setStartUpload', false)
+            store.commit('states/setProgress', 0)
             ElMessage.error('上传失败');
           });
         }

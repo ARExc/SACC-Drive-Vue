@@ -3,6 +3,7 @@ const state = {
     fileName: '',
     fileSize: 0,
     isCreatesNewFolder: false,
+    filePid: ''
 }
 
 const mutations = {
@@ -17,6 +18,9 @@ const mutations = {
     },
     setIsCreateNewFolder(state, isNew) {
         state.isCreatesNewFolder = isNew;
+    },
+    setFilePid(state, filePid) {
+        state.filePid = filePid;
     }
 }
 

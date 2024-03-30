@@ -131,8 +131,9 @@ const handleSubmit = () => {
 const preview = (item) => {
   // console.log('点击' + item.fileName)
   if (item.folderType === 1) {
-    // console.log('点击' + item.fileName)
+    console.log('点击' + item.id)
     // debugger;
+    store.commit('file/setFilePid',item.id)
     store.commit('breadcrumb/addBreadcrumb', item);
   }
 }

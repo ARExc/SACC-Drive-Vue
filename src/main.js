@@ -16,6 +16,5 @@ Object.entries(ElementPlusIconsVue).forEach(([key, component]) => {
     // 遍历 ElementPlusIconsVue 对象的键值对,注册组件到应用程序中
     app.component(key, component)
 })
-
 app.mount("#app");
 

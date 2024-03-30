@@ -28,6 +28,8 @@ const toFolder = (data) => {
     id: data.id,
   };
   let index = breadcrumbStore.value.findIndex((crumb) => crumb.id === folder.id);
+  store.commit('file/setFilePid', folder.id)
+  // console.log('Breadcrumb.vue中的toFolder,store.state.file.filePid:', store.state.file.filePid)
   store.commit('breadcrumb/removeBreadcrumb', index)
   setPath()
 }

@@ -8,6 +8,7 @@ function sliceFile(file) {
     return new Promise((resolve, reject) => {
         let isPaused = computed(() => store.state.states.isPause);
         let isCancelled = computed(() => store.state.states.isCancel);
+        let filePid = computed(() => store.getters.filePid);
         const chunkSize = 2 * 1024 * 1024; // 切片大小，2MB
         const chunkCount = Math.ceil(file.size / chunkSize); // 切片数量
         console.log('切片数量:', chunkCount);
@@ -53,7 +54,17 @@ function sliceFile(file) {
                         const newFile = createFileDto(file)
                         //向vuex中添加一个file，用于在Disk页面中显示新的文件
                         store.commit('file/setFile', newFile);
-                        resolve(res);
+                        request.post('/api/priv/file/margeFile',{
+                            md5: "string",
+                            fileName: newFile.fileName,
+                            chunkTotal: chunkCount,
+                            fileSize: newFile.fileSize,
+                            filePid: filePid.value,
+                        }).then(res => {
+                            resolve(res);
+                        }).catch(err => {
+                            reject(err);
+                        });
                     }).catch(err => {
                         //上传失败
                         reject(err);
