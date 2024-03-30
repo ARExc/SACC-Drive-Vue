@@ -32,8 +32,7 @@
   :page-sizes="[10, 20, 30, 40]" 
   v-model:page-size = "elmPageSize" 
   v-model:current-page="pageNo" 
- 
-:pager-count="pageCount" />
+  :pager-count="Math.ceil(pageCount)" />
 </template>
 
 <script setup>
@@ -58,7 +57,7 @@ watch([pageNo,elmPageSize],()=>{
 //let elmPageSize = ref((container.offsetWidth/166)*(container.offsetHeight/100)); 
 onMounted(()=>{
   elmPageSize = Math.ceil((container.value.offsetWidth/166)*(container.value.offsetHeight/100)); 
-  console.log(Math.ceil((container.value.offsetWidth/166)*(container.value.offsetHeight/100)))
+  //console.log(Math.ceil((container.value.offsetWidth/166)*(container.value.offsetHeight/100)))
   //console.log((container.value.offsetWidth/166)*(container.value.offsetHeight/100))
   getRecycleList()
 }
@@ -67,7 +66,7 @@ function getRecycleList() {
   //this.pageNo = val;
   request.get("/api/recycle/getRecycleList",{
     params:{
-      pageNo:pageNo.value,
+      pageNo:pageNo.value,  
       pageSize:elmPageSize.value
     }
   })

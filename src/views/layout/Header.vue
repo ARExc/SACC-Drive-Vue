@@ -8,8 +8,7 @@
       <ul v-show="isMenuVisible" class="menu">
         <router-link to="/resetPwd" class="item"> <el-icon><Edit /></el-icon>修改密码</router-link>
         <!-- <li class="item" @click="logout">退出登录</li> -->
-        <router-link to="/Login" class="item" @click="logout"><el-icon><SwitchButton /></el-icon>退出登录</router-link
-        >
+        <div class="item" @click="logout"><el-icon><SwitchButton /></el-icon>退出登录</div>
       </ul>
     </div>
   </header>
@@ -18,7 +17,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import request from "@/utility/request";
-import { ElMessage } from "element-plus";
+import { ElMessage,ElMessageBox } from "element-plus";
 localStorage.setItem("username", "admin");
 let username = localStorage.getItem("username");
 let isMenuVisible = ref(false);
@@ -30,23 +29,36 @@ function hideMenu() {
 }
 // localStorage.setItem('username', this.$store.state.username);
 // let username = localStorage.getItem('username');
-
 function logout() {
-  request
+  ElMessageBox.confirm(
+    '确定要退出登录吗？',
+    '请确认',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      request
     .get("/api/logout")
     .then((response) => {
       if (response.data.code === 1) {
         localStorage.removeItem("username");
-        // this.$store.state.isLogged = false;
+        this.$store.state.isLogged = false;
         // 清除cookie
+        this.$store.commit('setToken', '');
+        localStorage.removeItem("token");
+        this.$router.push("/Login");
         // 清楚登录信息
       }
     })
+  })
     .catch((error) => {
       // this.$router.push('/error');
       ElMessage.error("errorMessage");
     });
-}
+    }
 </script>
 
 <style scoped>
