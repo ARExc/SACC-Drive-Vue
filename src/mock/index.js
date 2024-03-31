@@ -91,6 +91,15 @@ Mock.mock(
         }
     }
 )
+
+Mock.mock(RegExp('/api/priv/file/finish'), 'post', {
+    "code": 0,
+    "errorMsg": "string",
+    "data": {
+        "status": 0
+    }
+});
+
 // 输出模拟的数据，实际使用时可以根据需要进行调用
 // console.log(JSON.stringify(data, null, 2));
 
