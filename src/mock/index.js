@@ -41,7 +41,24 @@ Mock.mock(RegExp('/api/priv/file/newFolder'), 'post', {
     "errorMsg": "null",
     "data": {}
 });
-Mock.mock(RegExp('/api/priv/file/checkChunks'), 'post', {
+
+
+//上传文件
+Mock.mock(RegExp('/api/priv/file/startUpload'), 'post', {
+    "code": 1,
+    "errorMsg": "string",
+    "data": {
+        "status": 0
+    }
+});
+Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
+    "code": 1,
+    "errorMsg": "string",
+    "data": {
+        "status": 0
+    }
+});
+Mock.mock(RegExp('/api/priv/file/check'), 'post', {
     "code": 1,
     "errorMsg": "null",
     "data": {
@@ -54,13 +71,8 @@ Mock.mock(RegExp('/api/priv/file/checkChunks'), 'post', {
         "chunkTotal": 15
     }
 });
-Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
-    "code": 0,
-    "errorMsg": "string",
-    "data": {
-        "status": 0
-    }
-});
+
+//回收站
 Mock.mock(RegExp('/api/priv/file/delFiles/*'), 'delete', {
     "code": 0,
     "errorMsg": "string",
@@ -92,13 +104,6 @@ Mock.mock(
     }
 )
 
-Mock.mock(RegExp('/api/priv/file/finish'), 'post', {
-    "code": 0,
-    "errorMsg": "string",
-    "data": {
-        "status": 0
-    }
-});
 
 // 输出模拟的数据，实际使用时可以根据需要进行调用
 // console.log(JSON.stringify(data, null, 2));

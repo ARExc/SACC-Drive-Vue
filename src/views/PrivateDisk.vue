@@ -133,7 +133,7 @@ const preview = (item) => {
   if (item.folderType === 1) {
     console.log('点击' + item.id)
     // debugger;
-    store.commit('file/setFilePid',item.id)
+    store.commit('file/setFilePid', item.id)
     store.commit('breadcrumb/addBreadcrumb', item);
   }
 }
@@ -165,12 +165,12 @@ onMounted(() => {
 //下载文件
 function downloadItem() {
   console.log('下载' + currentItem.value.id)
-  let code = '';
-  request.get(`/api/priv/file/createDownloadUrl/${currentItem.value.id}`).then(res => {
+  let downloadMeg = '';
+  request.get(`/api/priv/file/startDownload/${currentItem.value.id}`).then(res => {
     // console.log(res)
-    code = res.data.data.code;
+    downloadMeg = res.data.data;
   });
-  request.get(`/api/priv/file/download/${code}`).then(res => {
+  request.get(`/api/priv/file/download/${downloadMeg.code}`).then(res => {
     // console.log(res)
   });
 
