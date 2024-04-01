@@ -1,64 +1,81 @@
 <template>
   <header class="header">
+
     <div class="round" @mouseenter="showMenu" @mouseleave="hideMenu">
-      <img src="../../../public/sacc.png" alt="user avatar" />
+      <img src="../../../public/sacc.png" alt="user avatar"/>
+
     </div>
     <div id="username" @mouseenter="showMenu" @mouseleave="hideMenu">
       {{ username }}
       <ul v-show="isMenuVisible" class="menu">
-        <router-link to="/resetPwd" class="item"> <el-icon><Edit /></el-icon>修改密码</router-link>
+        <router-link to="/resetPwd" class="item">
+          <el-icon>
+            <Edit/>
+          </el-icon>
+          修改密码
+        </router-link>
         <!-- <li class="item" @click="logout">退出登录</li> -->
-        <div class="item" @click="logout"><el-icon><SwitchButton /></el-icon>退出登录</div>
+        <div class="item" @click="logout">
+          <el-icon>
+            <SwitchButton/>
+          </el-icon>
+          退出登录
+        </div>
       </ul>
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import request from "@/utility/request";
-import { ElMessage,ElMessageBox } from "element-plus";
+import {ref} from "vue";
+
+import request from "@/utility/api/request";
+import {ElMessage, ElMessageBox} from "element-plus";
+
 localStorage.setItem("username", "admin");
 let username = localStorage.getItem("username");
 let isMenuVisible = ref(false);
+
 function showMenu() {
   isMenuVisible.value = true;
 }
+
 function hideMenu() {
   isMenuVisible.value = false;
 }
+
 // localStorage.setItem('username', this.$store.state.username);
 // let username = localStorage.getItem('username');
 function logout() {
   ElMessageBox.confirm(
-    '确定要退出登录吗？',
-    '请确认',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
-    .then(() => {
-      request
-    .get("/api/logout")
-    .then((response) => {
-      if (response.data.code === 1) {
-        localStorage.removeItem("username");
-        this.$store.state.isLogged = false;
-        // 清除cookie
-        this.$store.commit('setToken', '');
-        localStorage.removeItem("token");
-        this.$router.push("/Login");
-        // 清楚登录信息
+      '确定要退出登录吗？',
+      '请确认',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       }
-    })
-  })
-    .catch((error) => {
-      // this.$router.push('/error');
-      ElMessage.error("errorMessage");
-    });
-    }
+  )
+      .then(() => {
+        request
+            .get("/api/logout")
+            .then((response) => {
+              if (response.data.code === 1) {
+                localStorage.removeItem("username");
+                this.$store.state.isLogged = false;
+                // 清除cookie
+                this.$store.commit('setToken', '');
+                localStorage.removeItem("token");
+                this.$router.push("/Login");
+                // 清楚登录信息
+              }
+            })
+      })
+      .catch((error) => {
+        // this.$router.push('/error');
+        ElMessage.error("errorMessage");
+      });
+}
 </script>
 
 <style scoped>
@@ -86,14 +103,17 @@ function logout() {
   width: 100%; /* 使图片填满容器 */
   height: auto; /* 保持图片的原始宽高比 */
 }
-.username{
+
+.username {
   cursor: pointer;
 }
+
 .header span {
   font-size: 16px; /* 用户名字体大小，根据需要调整 */
   font-weight: normal; /* 字体粗细 */
   margin-right: 10px; /* 用户名和右边界的间距 */
 }
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -110,15 +130,18 @@ function logout() {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }
+
 .item {
   display: block;
   margin-top: 30px;
   cursor: pointer;
 }
+
 .item:hover {
   color: blue;
 }
-.el-icon{
+
+.el-icon {
   margin-right: 10px;
   vertical-align: middle;
 }

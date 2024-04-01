@@ -1,5 +1,12 @@
 # sacc-drive
 
+This is the FrontEnd of the **SACC Drive** project.
+
+It is a web application that allows users to upload and download files.
+
+It is built using Vue.js and ElementPlus.
+
+
 ## Project setup
 ```
 npm install
