@@ -1,6 +1,6 @@
 <template>
-  <div class="register">
-    <img src="../../../public/sacc.png" alt="">
+  <div class="resetpwd">
+    <img src="../../public/sacc.png" alt="">
     <h2>SACC网盘系统</h2>
     <h3>SACC NETWORK DISK SYSTEM</h3>
     <form @submit.prevent="submitForm">
@@ -8,58 +8,66 @@
         <input type="text" id="studentId" v-model="studentId" placeholder="账号" required>
       </div>
       <div>
-        <input type="password" id="password" v-model="password" placeholder="密码" required>
+        <input type="password" id="password" v-model="password" placeholder="请输入密码" required>
       </div>
       <div>
-        <input type="text" id="nickName" v-model="nickName" placeholder="想个酷酷的昵称吧" required>
+        <input type="password" id="newpwd" v-model="newpwd" placeholder="请输入新密码" required>
       </div>
-      <button type="submit">注册</button>
+      <div>
+        <input type="password" id="check" placeholder="请确认新密码" required>
+      </div>
+      <button type="submit">确认修改</button>
     </form>
-    <router-link to="/Login" class="login">返回登陆界面</router-link>
+    <router-link to="/home/privateDisk" class="login">返回</router-link>
   </div>
 </template>
 
 <script>
-import request from '@/utility/request.js';
+import request from '@/utility/api/request.js';
 import {ElMessage} from 'element-plus';
+
 export default {
   data() {
     return {
-      nickName: '',
       studentId: '',
       password: '',
+      newpwd: '',
+      errorMessage: ''
     };
   },
   methods: {
     submitForm() {
-      var password = document.getElementById("password").value;
-      var upperCaseLetters = /[A-Z]/g;
-      var lowerCaseLetters = /[a-z]/g;
-      var numbers = /[0-9]/g;
-      if (!this.studentId || !this.nickName || !this.password) {
+      if (!this.studentId || !this.newpwd || !this.password) {
         ElMessage.error('您输入的注册信息有误')
         return
       }
-
-      if (password.match(upperCaseLetters) && password.match(lowerCaseLetters) && password.match(numbers)) {
+      var input1 = document.getElementById('newpwd').value;
+      var input2 = document.getElementById('check').value;
+      if (input1 === input2) {
       } else {
-        ElMessage.error('密码请包含大小写字母和数字')
+        ElMessage.error('您两次输入的新密码不一致')
         return;
       }
       this.registerUser();
     },
     registerUser() {
-      const response = request.post('/api/register', {
+      const response = request.post('/api/resetPwd', {
         studentId: this.studentId,
         password: this.password,
-        nickName: this.nickName,
+        newpwd: this.newpwd,
         errorMessage: this.errorMessage
       }).then(response => {
         if (response.status >= 200 && response.status < 300) {
-          this.$router.push('/Login');
+          ElMessage({
+            message: '修改密码成功，三秒后为您跳转登录界面',
+            type: 'success',
+          })
+          setTimeout(() => {
+            this.$router.push('/Login');
+          }, 3000);
         }
       }).catch(error => {
-        ElMessage.error('errorMessage')
+        ElMessage.error(errorMessage)
       });
     },
   }
@@ -68,13 +76,13 @@ export default {
 </script>
 
 <style scoped>
-.register {
+.resetpwd {
   width: 100%;
   height: 100vh;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-image: url('../../../public/bg.png');
+  background-image: url('../../public/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -147,7 +155,17 @@ form {
   background: rgba(255, 255, 255, 1);
 }
 
-#nickName {
+#newpwd {
+  width: 288px;
+  height: 45px;
+  opacity: 1;
+  border-radius: 16px;
+  border: none;
+  margin-bottom: 3vh;
+  background: rgba(255, 255, 255, 1);
+}
+
+#check {
   width: 288px;
   height: 45px;
   opacity: 1;
@@ -175,13 +193,13 @@ button {
 
 .login {
   position: absolute;
-  font-size: 18px;
+  font-size: 14px;
   letter-spacing: 2px;
-  top: 3vh;
-  left: 90vw;
+  top: 79vh;
+  left: 56vw;
 }
 
 a:hover {
   color: blue;
 }
-</style>./register.vue./register.vue
+</style>./resetPwd.vue./resetPwd.vue

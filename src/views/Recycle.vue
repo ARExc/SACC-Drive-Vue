@@ -28,7 +28,7 @@
 <script setup>
 import { createHydrationRenderer, onMounted, reactive, ref, watch} from "vue";
 import router from "@/router/index";
-import request from "@/utility/request";
+import request from "@/utility/api/request";
 import { ElMessage } from "element-plus";
 const showMenu = ref(false);
 const menuPosition = ref({ x: 0, y: 0 });

@@ -26,9 +26,9 @@
 </template>
 
 <script setup>
-import Side from "@/views/layout/Side.vue";
-import Header from "@/views/layout/Header.vue";
-import UploadBox from "@/views/layout/UploadBox.vue";
+import Side from "@/components/Side.vue"
+import Header from "@/components/Header.vue";
+import UploadBox from "@/components/UploadBox.vue";
 import {ref, watch} from 'vue'
 import store from "@/store";
 import {TakeawayBox} from "@element-plus/icons-vue";
@@ -144,8 +144,6 @@ function closeMoveBox() {
   opacity: 0;
 }
 .moveBoxTitle {
-
-
   //margin-top: 10px;
   //margin-bottom: 20px; /* 为标题和列表之间提供一些间距 */
   //text-align: center; /* 标题居中 */

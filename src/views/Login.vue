@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <img src="../../../public/sacc.png" alt="">
+    <img src="../../public/sacc.png" alt="">
     <h2>SACC网盘系统</h2>
     <h3>SACC NETWORK DISK SYSTEM</h3>
     <div class="form">
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import request from "@/utility/request";
-import router from "@/router/index";
+import request from "@/utility/api/request";
+import router from "@/router";
 export default {
   data() {
     return {
@@ -57,7 +57,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'YouSheBiaoTiYuan';
-  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
+  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
 }
 
 .login {
@@ -66,7 +66,7 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-image: url('../../../public/bg.png');
+  background-image: url('../../public/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

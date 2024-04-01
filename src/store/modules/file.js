@@ -1,4 +1,4 @@
-import request from "@/utility/request";
+import request from "@/utility/api/request";
 const state = {
     file: null,
     fileName: '',

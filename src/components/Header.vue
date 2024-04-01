@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <div class="round">
-      <img src="../../../public/sacc.png" alt="user avatar" />
+      <img src="../../public/sacc.png" alt="user avatar" />
     </div>
     <div id="username" @mouseenter="showMenu" @mouseleave="hideMenu">
       {{ username }}
@@ -17,7 +17,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import request from "@/utility/request";
+import request from "@/utility/api/request";
 import { ElMessage } from "element-plus";
 localStorage.setItem("username", "admin");
 let username = localStorage.getItem("username");

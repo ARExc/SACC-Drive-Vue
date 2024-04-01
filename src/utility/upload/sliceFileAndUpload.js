@@ -1,5 +1,5 @@
 import SparkMD5 from "spark-md5";
-import request from "@/utility/request";
+import request from "@/utility/api/request";
 import store from "@/store";
 import {computed} from "vue";
 import createFileDto from "@/utility/createFileDto";
