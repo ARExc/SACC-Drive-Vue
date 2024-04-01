@@ -25,7 +25,7 @@
         <el-menu-item index="/home/privateDisk" class="menu-item" @click="toPrivate">私有仓库</el-menu-item>
         <el-menu-item index="/home/publicDisk" class="menu-item" @click="toPublic">公有仓库</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="/Home/Recycle">
+        <el-menu-item index="/Home/Recycle">
         <el-icon><DeleteFilled /></el-icon>
         <template #title>回收站</template>
       </el-menu-item>

@@ -20,8 +20,10 @@
 </template>
 
 <script>
+
 import request from "@/utility/api/request";
-import router from "@/router";
+import {ElMessage} from 'element-plus';
+
 export default {
   data() {
     return {
@@ -31,22 +33,30 @@ export default {
     }
   },
   methods: {
-    login() {
 
-      // request.post('/api/login', {
-      //   studentId: this.studentId,
-      //   password: this.password,
-      // errorMessage:this.errorMessage
-      // }).then(response => {
-      //   if(response.status>=200&&response.status<300)
-      //   this.$store.commit('setToken', response.data.token);
-      //   this.$store.state.username = response.data.data.nickname;
-        
-      //   this.$router.push('/home');
-      // }).catch(error => {
-      //   // this.$router.push('/error');
-      //   ElMessage.error('errorMessage')
-      // });
+    login() {
+      if (!this.studentId || !this.password) {
+        ElMessage.error('账号和密码不能为空!')
+        return;
+      }
+      request.post('/api/login', {
+        studentId: this.studentId,
+        password: this.password,
+      }).then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          this.$store.commit('setToken', response.data.data.token);
+          this.$store.state.username = response.data.data.nickname;
+          localStorage.setItem('token', response.data.data.token);
+          this.$router.push('/home/privateDisk');
+        } else {
+          this.errorMessage = response.data.errorMsg || '登录失败，请重试';
+          ElMessage.error(errorMessage);
+        }
+      }).catch(error => {
+        // this.$router.push('/error');
+        this.errorMessage = error.response.data.errorMsg || '登录失败，请检查您的网络';
+        ElMessage.error(errorMessage)
+      });
 
       this.$router.push('/home/privateDisk');
 
