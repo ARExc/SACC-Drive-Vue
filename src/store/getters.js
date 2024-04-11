@@ -5,7 +5,7 @@ const getters = {
     breadcrumb: state => state.breadcrumb.breadcrumb,
     isPrivate: state => state.breadcrumb.isPrivate,
     isPublic: state => state.breadcrumb.isPublic,
-    currentFolder: state => state.breadcrumb.breadcrumb[state.breadcrumb.breadcrumb.length - 1],
-    filePid: state => state.file.filePid,
+    //有可能数组中没有元素
+    currentFolder: state => state.breadcrumb.breadcrumb.length - 1 > 0 ? state.breadcrumb.breadcrumb[state.breadcrumb.breadcrumb.length - 1] : null,
 }
 export default getters;

@@ -2,7 +2,7 @@
   <header class="header">
 
     <div class="round" @mouseenter="showMenu" @mouseleave="hideMenu">
-      <img src="../../../public/sacc.png" alt="user avatar"/>
+      <img src="../../public/sacc.png" alt="user avatar"/>
 
     </div>
     <div id="username" @mouseenter="showMenu" @mouseleave="hideMenu">
