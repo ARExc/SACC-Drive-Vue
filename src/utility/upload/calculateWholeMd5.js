@@ -10,7 +10,7 @@ const calculateWholeMd5 = (file) => {
         worker.onmessage = (e) => {
             worker.terminate(); // 清理资源
             if (e.data.hash) {
-                console.log('文件MD5:', e.data.hash);
+                // console.log('文件MD5:', e.data.hash);
                 store.commit('file/setFileMd5', e.data.hash)
                 resolve(e.data.hash);
             } else if (e.data.error) {

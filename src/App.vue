@@ -14,5 +14,4 @@
 .el-progress__text{
   min-width: 0 !important;
 }
-
 </style>

@@ -12,7 +12,8 @@
       :status="progressStatus"
       striped
       striped-flow
-      :duration="10"
+      :show-text="false"
+      :duration="20"
   />
   <div class="actions">
     <button class="pauseBtn" @click="suspend" v-if="showButton">暂停</button>
@@ -27,14 +28,20 @@ import store from '@/store'
 
 //用computed而不是watch来自动追踪 store.state.states.progress 的变化并更新其值
 let progress = computed(() => store.state.states.progress);
+
+watch(() => store.state.states.progress, (newVal) => {
+  if (newVal === 100) {
+    progressStatus.value = 'success';
+  }
+});
 let fileName = computed(() => store.state.file.fileName);
 let fileSize = computed(() => store.state.file.fileSize);
-let progressStatus = ref('success');
+let progressStatus = ref('');
 watch(() => store.state.states.isPause, (newVal) => {
   if (newVal) {
     progressStatus.value = 'warning';
   } else {
-    progressStatus.value = 'success';
+    progressStatus.value = 'active';
   }
 });
 watch(() => store.state.states.isCancel, (newVal) => {
