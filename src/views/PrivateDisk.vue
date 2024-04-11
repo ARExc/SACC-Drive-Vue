@@ -177,9 +177,12 @@ function downloadItem() {
   showMenu.value = false
 }
 
+//移动文件
 function moveFile() {
   console.log('移动' + currentItem.value.id)
   store.commit('states/setStartMove', true);
+  store.commit('file/setFilePid', store.getters.currentFolder ? store.getters.currentFolder.id : null);
+
   // console.log('移动')
   showMenu.value = false
 }
