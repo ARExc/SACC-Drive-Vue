@@ -166,10 +166,21 @@ onMounted(() => {
 function downloadItem() {
   console.log('下载' + currentItem.value.id)
   let downloadMeg = '';
+  let chunkTotal=0;
+  let buffer=new Uint8Array([]);
   request.get(`/api/priv/file/startDownload/${currentItem.value.id}`).then(res => {
     // console.log(res)
     downloadMeg = res.data.data;
+    for (let i = 0; i < chunkTotal; i++) {
+      request.get(`/api/priv/file/download/${downloadMeg.code}/${i}`).then(res => {
+        // console.log(res)
+        buffer = new Uint8Array([...buffer, ...res.data.data.buffer]);
+      });
+    }
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const file = new File([blob], "filename", { type: 'application/octet-stream' });
   });
+
   request.get(`/api/priv/file/download/${downloadMeg.code}`).then(res => {
     // console.log(res)
   });
@@ -182,7 +193,6 @@ function moveFile() {
   console.log('移动' + currentItem.value.id)
   store.commit('states/setStartMove', true);
   store.commit('file/setFilePid', store.getters.currentFolder ? store.getters.currentFolder.id : null);
-
   // console.log('移动')
   showMenu.value = false
 }
