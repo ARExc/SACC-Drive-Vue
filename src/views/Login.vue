@@ -1,8 +1,8 @@
 <template>
   <div class="login">
-   <div id="logo"> <img src="../../../public/sacc.png" alt="">
-    <h2>SACC-DRIVE</h2>
-    <h3>SACC NETWORK DISK SYSTEM</h3></div>
+    <img src="../../public/sacc.png" alt="">
+    <h2>SACC网盘系统</h2>
+    <h3>SACC NETWORK DISK SYSTEM</h3>
     <div class="form">
       <form @submit.prevent="login">
         <div>
@@ -20,9 +20,10 @@
 </template>
 
 <script>
-import request from "@/utility/request";
-import router from "@/router/index";
+
+import request from "@/utility/api/request";
 import {ElMessage} from 'element-plus';
+
 export default {
   data() {
     return {
@@ -32,22 +33,22 @@ export default {
     }
   },
   methods: {
-   
+
     login() {
       if (!this.studentId || !this.password) {
         ElMessage.error('账号和密码不能为空!')
         return;
       }
-        request.post('/api/login', {
-        studentId: this.studentId, 
+      request.post('/api/login', {
+        studentId: this.studentId,
         password: this.password,
       }).then(response => {
-        if(response.status>=200&&response.status<300){
-        this.$store.commit('setToken', response.data.data.token);
-        this.$store.state.username = response.data.data.nickname;
-        localStorage.setItem('token', response.data.data.token);
-        this.$router.push('/home/privateDisk');}
-        else{
+        if (response.status >= 200 && response.status < 300) {
+          this.$store.commit('setToken', response.data.data.token);
+          this.$store.state.username = response.data.data.nickname;
+          localStorage.setItem('token', response.data.data.token);
+          this.$router.push('/home/privateDisk');
+        } else {
           this.errorMessage = response.data.errorMsg || '登录失败，请重试';
           ElMessage.error(errorMessage);
         }
@@ -66,7 +67,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'YouSheBiaoTiYuan';
-  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');
+  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
 }
 .logo{
   position: relative;
@@ -78,7 +79,7 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-image: url('../../../public/bg.png');
+  background-image: url('../../public/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

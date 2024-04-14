@@ -2,7 +2,7 @@
   <div class="side">
     <div class="sign">
       <div class="round">
-        <img src="../../../public/sacc.png" alt="">
+        <img src="../../public/sacc.png" alt="">
       </div>
       <div>
         <span class="title">SACC<br>在线网盘系统</span>
@@ -59,6 +59,14 @@ const toPublic = () => {
 </script>
 
 <style scoped>
+
+
+@font-face {
+  font-family: 'YouSheBiaoTiYuan';
+  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
+}
+
+
 .side {
   height: 100%;
   background-color: #e6e6e6; /* 白色背景 */

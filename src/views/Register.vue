@@ -1,8 +1,10 @@
 <template>
   <div class="register">
-    <div id="logo"><img src="../../../public/sacc.png" alt="">
-    <h2>SACC-DRIVE</h2>
-    <h3>SACC NETWORK DISK SYSTEM</h3></div>
+
+    <img src="../../public/sacc.png" alt="">
+    <h2>SACC网盘系统</h2>
+    <h3>SACC NETWORK DISK SYSTEM</h3>
+
     <form @submit.prevent="submitForm">
       <div>
         <input type="text" id="studentId" v-model="studentId" placeholder="账号" required>
@@ -20,7 +22,7 @@
 </template>
 
 <script>
-import request from '@/utility/request.js';
+import request from '@/utility/api/request.js';
 import {ElMessage} from 'element-plus';
 export default {
   data() {
@@ -75,7 +77,7 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'YouSheBiaoTiYuan';
-  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');
+  src: url('../../public/YouSheBiaoTiYuan-2.otf') format('opentype');
 }
 
 .register {
@@ -84,7 +86,7 @@ export default {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background-image: url('../../../public/bg.png');
+  background-image: url('../../public/bg.png');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
