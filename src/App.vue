@@ -17,4 +17,7 @@
 .title-root:hover{
   background-color: #cccccc !important;
 }
+.el-sub-menu__title:hover{
+  background-color: #cccccc !important;
+}
 </style>
