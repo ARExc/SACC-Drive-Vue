@@ -1,8 +1,8 @@
 <template>
   <div class="login">
-    <img src="../../../public/sacc.png" alt="">
-    <h2>SACC网盘系统</h2>
-    <h3>SACC NETWORK DISK SYSTEM</h3>
+   <div id="logo"> <img src="../../../public/sacc.png" alt="">
+    <h2>SACC-DRIVE</h2>
+    <h3>SACC NETWORK DISK SYSTEM</h3></div>
     <div class="form">
       <form @submit.prevent="login">
         <div>
@@ -66,9 +66,12 @@ export default {
 <style scoped>
 @font-face {
   font-family: 'YouSheBiaoTiYuan';
-  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
+  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');
 }
-
+.logo{
+  position: relative;
+  width: 100%;
+}
 .login {
   width: 100%;
   height: 100vh;
@@ -79,14 +82,17 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 img {
+  margin-top: 2vh;
   width: 101px;
   height: 101px;
-  position: absolute;
-  top: 23vh;
-  left: 33vw;
+  float: left;
 }
 
 h2 {
@@ -94,9 +100,8 @@ h2 {
   font-weight: 400;
   line-height: 62.4px;
   font-family: 'YouSheBiaoTiYuan';
-  position: absolute;
-  top: 25vh;
-  left: 40vw;
+  margin-top: 20px;
+  float: left;
 }
 
 h3 {
@@ -105,50 +110,31 @@ h3 {
   line-height: 20.8px;
   letter-spacing: 1px;
   font-family: 'YouSheBiaoTiYuan';
-  position: absolute;
-  top: 32vh;
-  left: 41vw;
+  margin-top: 10px;
 }
 
 .form {
-  position: absolute;
-  top: 40vh;
-  left: 40vw;
   text-align: center;
+  margin-top: 20px;
 }
 
-#studentId {
+#studentId, #password {
   width: 288px;
   height: 45px;
   opacity: 1;
   border-radius: 14px;
   background: rgba(255, 255, 255, 1);
   border: none;
-  margin-bottom: 5vh;
-}
-
-#password {
-  width: 288px;
-  height: 45px;
-  opacity: 1;
-  border-radius: 16px;
-  border: none;
-  background: rgba(255, 255, 255, 1);
-  margin-bottom: 5vh;
-}
-
-input {
+  margin-bottom: 20px;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0px;
   line-height: 18.47px;
   color: rgba(166, 166, 166, 1);
-  vertical-align: top;
 }
 
 button {
-  margin: 0 auto;
   width: 140px;
   height: 46px;
   opacity: 1;
@@ -161,26 +147,41 @@ button {
   line-height: 26.38px;
   color: rgba(255, 255, 255, 1);
   text-align: center;
-  vertical-align: top;
+  margin-top: 20px;
 }
 
 .register {
-  position: absolute;
   font-size: 20px;
   letter-spacing: 2px;
+  position: absolute;
   top: 3vh;
-  left: 95vw;
+  right: 5vw;
 }
 
 .resetpwd {
-  position: absolute;
   font-size: 10px;
   letter-spacing: 2px;
+  position: absolute;
   top: 72vh;
-  left: 55vw;
+  right: 5vw;
 }
 
 a:hover {
   color: blue;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 36px; /* 较小屏幕上减小字体大小 */
+  }
+  h3 {
+    font-size: 14px;
+  }
+  #studentId, #password {
+    width: 80%; /* 较小屏幕上增加宽度 */
+  }
+  button {
+    width: 100px; /* 较小屏幕上调整按钮大小 */
+  }
 }
 </style>./login.vue./login.vue

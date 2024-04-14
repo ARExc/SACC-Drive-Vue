@@ -9,16 +9,15 @@
       </div>
     </div>
     <el-menu
-        text-color="#fff"
+        text-color="black"
         class="el-menu-vertical-demo"
-        background-color="rgb(15,44,84)"
         :collapse="isCollapse"
         :style="{ width: isCollapse ? '' : '200px' }"
         router
         default-active="/home/privateDisk"
     >
       <el-sub-menu index="1">
-        <template #title>
+        <template #title class="title-root">
           <el-icon><HomeFilled /></el-icon>
           <span>根目录</span>
         </template>
@@ -60,48 +59,63 @@ const toPublic = () => {
 </script>
 
 <style scoped>
-
-@font-face {
-  font-family: 'YouSheBiaoTiYuan';
-  src: url('../../../public/YouSheBiaoTiYuan-2.otf') format('opentype');  /* 指定字体文件的路径和格式 */
-}
-
 .side {
   height: 100%;
-  background-color: rgb(15, 44, 84);
+  background-color: #e6e6e6; /* 白色背景 */
   box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
 
 .title {
-  color: whitesmoke;
+  color: #333333;
   font-size: 18px;
-  font-weight:1;
+  font-weight: 1;
 }
 
 .sign {
   padding: 10px 10px 20px;
   display: flex;
   gap: 10px;
-  font-family: 'YouSheBiaoTiYuan',serif;
+  font-family: 'YouSheBiaoTiYuan', serif;
 }
 
 .el-menu {
   border-right: none;
+  background-color: #f8f8f8; /* 调整菜单背景颜色 */
+  border-radius: 10px;
 }
 
 .el-menu--vertical:not(.el-menu--collapse):not(.el-menu--popup-container) .el-sub-menu .el-menu-item {
   padding-left: 50px;
+  color: #333333;
+  background-color: #f5f5f5; /* 调整子菜单项背景颜色 */
+  border-radius: 10px; /* 子菜单项圆角 */
+}
+.el-menu--vertical:not(.el-menu--collapse):not(.el-menu--popup-container) .el-sub-menu .el-menu-item:hover {
+  background-color: #cccccc;
 }
 
-.el-menu .el-menu--vertical .el-menu-vertical-demo {
-  height: 100%;
+.el-menu .el-menu-item:hover {
+  background-color: #cccccc !important;
 }
-
 .menu-item {
-  background-color: rgb(2, 13, 22);
+  background-color: #f5f5f5;
+}.el-menu-item.is-active, .el-menu-item:focus, .el-menu-item:hover {
+    background-color: #cccccc;
+    color: #333333;           
+}
+.el-menu-item:hover {
+    background-color: #f5f5f5 ;
+    color: #333333;
 }
 
+/* --el-menu-hover-bg-color */
+/* el-menu {
+  --el-menu-hover-bg-color:#cccccc!important;
+} */
+/* :root {
+    --el-menu-hover-bg-color: #cccccc !important;
+} */
 img {
   width: 50px;
   transform: scale(0.9);

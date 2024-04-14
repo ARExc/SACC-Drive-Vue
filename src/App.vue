@@ -14,4 +14,7 @@
 .el-progress__text{
   min-width: 0 !important;
 }
+.title-root:hover{
+  background-color: #cccccc !important;
+}
 </style>
