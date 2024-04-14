@@ -166,10 +166,16 @@ onMounted(() => {
 function downloadItem() {
   console.log('下载' + currentItem.value.id)
   let downloadMeg = '';
+  let chunkTotal=0;
   request.get(`/api/priv/file/startDownload/${currentItem.value.id}`).then(res => {
     // console.log(res)
     downloadMeg = res.data.data;
+    for (let i = 0; i < chunkTotal; i++) {
+
+
+    }
   });
+
   request.get(`/api/priv/file/download/${downloadMeg.code}`).then(res => {
     // console.log(res)
   });
