@@ -61,15 +61,10 @@ const uploadFile = async (e) => {
 
       sliceFileAndUpload(file).then(res => {
         // console.log('此时应该是文件全部上传成功之后的阶段')
-        if (res.data.data.status === 1) {
-          store.commit('states/setStartUpload', false)//取消上传状态
-          ElMessage.success('上传成功');
-        } else {
-          store.commit('states/setStartUpload', false)
-          ElMessage.error('上传失败,请重试');
-        }
+        store.commit('states/setStartUpload', false)//取消上传状态
+        ElMessage.success('上传成功');
       }).catch(err => {
-        console.log('文件上传失败')
+        console.log('文件上传过程中失败', err)
         store.commit('states/setStartUpload', false)
         ElMessage.error('上传失败,请重试');
       });
