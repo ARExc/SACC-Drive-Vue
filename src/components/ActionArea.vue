@@ -15,7 +15,6 @@ import sliceFileAndUpload from "@/utility/upload/sliceFileAndUpload";
 
 const store = useStore();
 
-
 let file = ref(null);
 const inputFile = ref(null);
 
@@ -27,6 +26,7 @@ const trigger = () => {
 //上传文件
 const uploadFile = async (e) => {
   file = e.target.files[0];//获取上传文件列表的第一个元素
+  e.target.value = '';// 重置input，允许重新上传相同文件
   store.commit('file/setFilePid', store.getters.currentFolder ? store.getters.currentFolder.id : null);
   // console.log("文件夹id" + store.state.file.filePid)
   //上传文件数组会在用户通过文件选择对话框选择了新的文件并确认后刷新
@@ -47,11 +47,13 @@ const uploadFile = async (e) => {
       store.commit('states/setStartUpload', true)
 
       //先计算整个文件的md5值，用于校验，然后再分片上传
-      calculateWholeMd5(file).catch(err => {
+      calculateWholeMd5(file).then(() => {
+        console.log("md5值计算成功!")
+      }).catch(err => {
+        console.log('md5值计算失败' + err.message)
         ElMessage.error('计算校验和失败');
         setTimeout(() => {
           store.commit('states/setIsCancel', false);
-          store.commit('states/setProgress', 0);
           store.commit('states/setStartUpload', false);
           window.location.reload();
         }, 500);
@@ -59,15 +61,13 @@ const uploadFile = async (e) => {
 
       //让md5值的计算在后台运行，不影响上传
 
-      sliceFileAndUpload(file).then(res => {
-        // console.log('此时应该是文件全部上传成功之后的阶段')
-        store.commit('states/setStartUpload', false)//取消上传状态
-        ElMessage.success('上传成功');
-      }).catch(err => {
-        console.log('文件上传过程中失败', err)
+      try {
+        await sliceFileAndUpload(file);
+      } catch (error) {
         store.commit('states/setStartUpload', false)
+        console.log('上传失败' + error.message)
         ElMessage.error('上传失败,请重试');
-      });
+      }
     }
   }
 }

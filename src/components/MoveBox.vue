@@ -25,7 +25,7 @@ function closeMoveBox() {
 const folders = ref([]);
 request.get('/api/priv/file/getFileList').then(res => {
   folders.value = res.data.data.records.filter(item => item.folderType === 1);
-  console.log(folders.value);
+  // console.log(folders.value);
 }).catch(err => {
   console.error(err);
 });
@@ -33,13 +33,12 @@ request.get('/api/priv/file/getFileList').then(res => {
 function onFolderClick(folder) {
   request.get('/api/priv/file/getFileList').then(res => {
     folders.value = res.data.data.records.filter(item => item.folderType === 1);
-    console.log(folders.value);
+    // console.log(folders.value);
   }).catch(err => {
     console.error(err);
   });
 
   console.log("Clicked folder:", folder);
-  // 这里可以添加更多逻辑，比如导航到该文件夹等
 }
 
 </script>
