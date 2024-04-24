@@ -41,7 +41,7 @@ watch(() => store.state.states.isPause, (newVal) => {
   if (newVal) {
     progressStatus.value = 'warning';
   } else {
-    progressStatus.value = 'active';
+    progressStatus.value = 'success';
   }
 });
 watch(() => store.state.states.isCancel, (newVal) => {

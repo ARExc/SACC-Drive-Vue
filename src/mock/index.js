@@ -23,12 +23,15 @@ Mock.mock('http://localhost:8080/api/priv/file/getFileList', 'get', {
         ]
     }
 });
-Mock.mock(RegExp('/api/priv/file/createDownloadUrl/*'), 'get', {
+Mock.mock(RegExp('/api/priv/file/startDownload/*'), 'get', {
     // console.log('url:',options.url);
     "code": 1,
     "errorMsg": "null",
     "data": {
-        "code": "@guid",
+        "chunkTotal": 0,
+        "fileName": "string",
+        "fileSize": 0,
+        "code": "string"
     }
 });
 Mock.mock(RegExp('/api/priv/file/download/*'), 'get', {

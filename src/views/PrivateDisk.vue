@@ -36,25 +36,25 @@
           <el-icon>
             <Download/>
           </el-icon>
-          下载
+          <span>下载</span>
         </li>
         <li @click="moveFile">
           <el-icon>
             <Switch/>
           </el-icon>
-          移动
+          <span>移动</span>
         </li>
         <li @click="rename">
           <el-icon>
             <Edit/>
           </el-icon>
-          重命名
+          <span>重命名</span>
         </li>
         <li @click="deleteItem">
           <el-icon>
             <Delete/>
           </el-icon>
-          删除
+          <span>删除</span>
         </li>
       </ul>
     </div>
@@ -68,6 +68,8 @@ import request from "@/utility/api/request";
 import HeaderBar from "@/components/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";
 import createIconSrc from "@/utility/createIconSrc";
+import {fileTypeFromBuffer} from 'file-type';
+
 
 const showMenu = ref(false)
 const menuPosition = ref({x: 0, y: 0})
@@ -119,8 +121,7 @@ const handleSubmit = () => {
   request.post('/api/priv/file/newFolder', {
     filePid: filePid,
     fileName: input.value
-  }).then(res => {
-    // console.log(res)
+  }).then(() => {
     window.location.reload();
   }).catch(err => {
     console.log(err)
@@ -162,28 +163,41 @@ onMounted(() => {
   })
 });
 
-//下载文件
-function downloadItem() {
-  console.log('下载' + currentItem.value.id)
-  let downloadMeg = '';
-  let chunkTotal=0;
-  let buffer=new Uint8Array([]);
-  request.get(`/api/priv/file/startDownload/${currentItem.value.id}`).then(res => {
-    // console.log(res)
-    downloadMeg = res.data.data;
-    for (let i = 0; i < chunkTotal; i++) {
-      request.get(`/api/priv/file/download/${downloadMeg.code}/${i}`).then(res => {
-        // console.log(res)
-        buffer = new Uint8Array([...buffer, ...res.data.data.buffer]);
-      });
-    }
-    const blob = new Blob([buffer], { type: 'application/octet-stream' });
-    const file = new File([blob], "filename", { type: 'application/octet-stream' });
-  });
+//检测文件类型
+const detectFileType = async (buffer) => {
+  const result = await fileTypeFromBuffer(buffer);
+  return result ? result.mime : 'application/octet-stream';  // 如果无法确定类型，返回默认值
+};
 
-  request.get(`/api/priv/file/download/${downloadMeg.code}`).then(res => {
-    // console.log(res)
-  });
+//下载文件
+async function downloadItem() {
+  console.log('下载' + currentItem.value.id)
+  let downloadMeg = await request.get(`/api/priv/file/startDownload/${currentItem.value.id}`);
+  downloadMeg = downloadMeg.data.data
+  console.log(downloadMeg);
+  let chunkTotal = downloadMeg.chunkTotal;//获取文件的总块数
+  let buffer = new Uint8Array([]);
+
+  for (let i = 0; i < chunkTotal; i++) {
+    let chunk = await request.get(`http://127.0.0.1:4523/m1/4012263-3648422-default/api/priv/file/download/1/1`).data.data.buffer;
+    chunk = new Uint8Array(chunk);
+    let newBuffer = new Uint8Array(buffer.length + chunk.length);
+    newBuffer.set(buffer, 0);
+    newBuffer.set(chunk, buffer.length);
+    buffer = newBuffer;
+  }
+  const mimeType = await detectFileType(buffer);
+  console.log(mimeType);
+  const blob = new Blob([buffer], {type: mimeType});
+  const file = new File([blob], downloadMeg.filename, {type: mimeType});
+  const url = window.URL.createObjectURL(file);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = downloadMeg.filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
 
   showMenu.value = false
 }
@@ -287,6 +301,7 @@ window.addEventListener('click', () => {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   padding: 5px;
+  white-space: nowrap; /* 防止文字折行 */
 }
 
 .custom-context-menu ul {

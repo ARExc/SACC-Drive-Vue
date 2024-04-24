@@ -25,12 +25,6 @@ request.interceptors.response.use(
     },
     (err) => {
         // for debug
-        if (err.response.status === 401){
-            localStorage.removeItem('token');
-            router.push('/Login'); 
-        }
-        
-
         return Promise.reject(err);
     }
 );
