@@ -14,7 +14,7 @@
                 v-model="item.fileName"
                 :ref="el => setInputRef(el, item)"
                 @blur="editingItemId= null"
-                @keyup.enter="handleRename"
+                @keyup.enter="handleRename(item)"
       />
       <!--      <span>{{ item.id }}</span>-->
       <!--      <span>{{ item.createTime }}</span>-->
@@ -69,6 +69,7 @@ import HeaderBar from "@/components/HeaderBar.vue";
 import {Delete, Download, Edit, Switch} from "@element-plus/icons-vue";
 import createIconSrc from "@/utility/createIconSrc";
 import {fileTypeFromBuffer} from 'file-type';
+import {ElMessage} from "element-plus";
 
 
 const showMenu = ref(false)
@@ -124,6 +125,7 @@ const handleSubmit = () => {
   }).then(() => {
     window.location.reload();
   }).catch(err => {
+    ElMessage.error('新建文件夹失败')
     console.log(err)
   })
 }
@@ -206,7 +208,7 @@ async function downloadItem() {
 function moveFile() {
   console.log('移动' + currentItem.value.id)
   store.commit('states/setStartMove', true);
-  store.commit('file/setFilePid', store.getters.currentFolder ? store.getters.currentFolder.id : null);
+  store.commit('file/setFile', currentItem.value);
   // console.log('移动')
   showMenu.value = false
 }
@@ -232,20 +234,30 @@ function setInputRef(el, item) {
 }
 
 //重命名完成后，清除编辑状态
-function handleRename() {
-  // console.log("重命名为:", item.fileName);
-  editingItemId.value = null;
-  window.location.reload()
-}
+function handleRename(item) {
+  console.log("重命名为:", item.fileName);
+  request.put(`/api/priv/file/rename`, {
+    fileId: item.id,
+    fileName: item.fileName
+  }).then(res => {
+    // if(res.data.code!==1)
+    editingItemId.value = null;
+    window.location.reload()
+  }).catch(err => {
+    ElMessage.error('重命名失败')
+    console.log(err)
+  });
 
+}
 
 function deleteItem() {
   console.log('删除')
   // items.value.pop()
-  request.delete(`/api/priv/file/delFiles/${currentItem.value.id}`).then(res => {
+  request.delete(`/api/priv/file/delFiles/?fileIds=${currentItem.value.id}`).then(res => {
     console.log(res)
     window.location.reload()
   }).catch(err => {
+    ElMessage.error('删除文件失败')
     console.log(err)
   });
   showMenu.value = false
