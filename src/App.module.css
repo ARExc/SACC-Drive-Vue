@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    height: 100vh;
+}
+.sidebar{
+    background-color: #ff6400;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
