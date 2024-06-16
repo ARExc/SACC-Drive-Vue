@@ -4,6 +4,7 @@ const request = axios.create({
   baseURL: 'http://localhost:3000',
   timeout: 1000
 });
+
 request.interceptors.request.use(
   config => {
     const token = localStorage.getItem('token');

@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./styles/Header.module.scss";
-import imagePath from "../../public/sacc.png";
+import imagePath from "../assets/sacc.png";
 
 const Header: React.FC = () => {
   return (

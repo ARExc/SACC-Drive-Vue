@@ -36,7 +36,7 @@ const Sidebar: React.FC = () => {
     <>
       <div className="sign">
         <div className={style.round}>
-          <img src="/sacc.png" alt="sacc图标"/>
+          <img src="/src/assets/sacc.png" alt="sacc图标"/>
         </div>
         <div>
           <span className="title">SACC<br/>在线网盘系统</span>

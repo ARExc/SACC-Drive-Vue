@@ -1,10 +1,11 @@
-import style from './App.module.css';
-import Sidebar from "./components/Sidebar.tsx";
-import Header from "./components/Header.tsx";
-import HeaderBar from "./components/HeaderBar.tsx";
+import style from './styles/Home.module.css';
+import Sidebar from "../components/Sidebar.tsx";
+import Header from "../components/Header.tsx";
+import HeaderBar from "../components/HeaderBar.tsx";
 import Disk from "@/components/Disk.tsx";
 
-const App = () => (
+
+const Home = () => (
     <>
         <div className={style.container}>
             <div className={style.sidebar}>
@@ -19,4 +20,4 @@ const App = () => (
     </>
 );
 
-export default App
+export default Home
