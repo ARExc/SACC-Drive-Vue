@@ -1,4 +1,11 @@
-.action{
-  background-color: darkgray;
+.action {
+  .button {
+    &:first-child {
+      margin-left: 10px;
+    }
+    margin-right: 10px;
+  }
+
 }
+
 

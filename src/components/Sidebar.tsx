@@ -33,13 +33,13 @@ const Sidebar: React.FC = () => {
     console.log('click ', e);
   };
   return (
-    <>
-      <div className="sign">
+    <div className={style.side}>
+      <div className={style.sign}>
         <div className={style.round}>
           <img src="/src/assets/sacc.png" alt="sacc图标"/>
         </div>
         <div>
-          <span className="title">SACC<br/>在线网盘系统</span>
+          <span className={style.title}>SACC<br/>在线网盘系统</span>
         </div>
       </div>
       <Menu
@@ -48,7 +48,7 @@ const Sidebar: React.FC = () => {
         mode="inline"
         items={items}
       />
-    </>
+    </div>
   );
 };
 

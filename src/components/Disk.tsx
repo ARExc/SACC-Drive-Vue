@@ -9,11 +9,10 @@ const Disk = () => {
   useEffect(() => {
 
     getFileList({}).then(res => {
-      console.log(res.data.data.records)
+      // console.log(res.data.data.records)
       setItems(res.data.data.records)
       // eslint-disable-next-line no-debugger
       // debugger;
-
     }).catch(err => {
       console.log(err)
 
@@ -33,9 +32,9 @@ const Disk = () => {
     <div className={style.folder}>
       {items.map(item => {
         return (
-          <div className={style.folderItem}>
+          <div className={style.folderItem} key={item.id}>
             <img src={createIcon(item)} alt="File Icon"/>
-            <div key={item.id} className={style.fileName}>{item.fileName}</div>
+            <div className={style.fileName}>{item.fileName}</div>
           </div>
         )
       })}

@@ -19,6 +19,48 @@
 }
 
 .round img {
+  transform: translateY(-10px);
   width: 100%; /* 使图片填满容器 */
   height: auto; /* 保持图片的原始宽高比 */
+}
+.header span {
+  font-size: 16px; /* 用户名字体大小，根据需要调整 */
+  font-weight: normal; /* 字体粗细 */
+  margin-right: 10px; /* 用户名和右边界的间距 */
+}
+.menu {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: absolute;
+  width: 150px;
+  height: 100px;
+  right: 10px;
+  list-style: none;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;//对opacity和visibility属性应用过渡效果
+  opacity: 0;
+  visibility: hidden;
+
+  &.visible {//父元素同时具有.visible类时应用这些样式
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.item {
+  display: block;
+  margin: 20px auto 0;
+  cursor: pointer;
+}
+
+.item:hover {
+  color: blue;
 }
