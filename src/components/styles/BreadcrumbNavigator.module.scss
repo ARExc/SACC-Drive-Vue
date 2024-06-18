@@ -1,0 +1,19 @@
+.bread {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+
+  &::after {
+    content: '>';
+    margin: 0 10px;
+  }
+
+  &:last-child {
+    color: #f00;
+
+    &::after {
+      content: '';
+      margin: 0;
+    }
+  }
+}

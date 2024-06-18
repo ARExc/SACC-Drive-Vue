@@ -17,7 +17,7 @@ Mock.mock('http://localhost:3000/api/getFileList', 'get', {
       'fileCover': '@integer(0, 1)',
       'fileUrl': '@url',
       'lastUpdateTime': '@datetime',
-      'fileType': '@integer(0, 1)',
+      'folderType': '@integer(0, 1)',
       'fileCategory': '@integer(0, 5)',
       'status': '@integer(0, 1)'
     }]

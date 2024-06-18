@@ -2,12 +2,19 @@ import React, {useState} from "react";
 import style from "./styles/Header.module.scss";
 import imagePath from "../assets/sacc.png";
 import {EditOutlined, RollbackOutlined} from "@ant-design/icons";
+import TransmissionList from "@/components/TransmissionList.tsx";
+import {Popover} from "antd";
 
 const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <header className={style.header}>
+    <header className={style.header} >
+      <div className={style.transmit} >
+        <Popover trigger="click" content={(<TransmissionList/>)} className={style.icon}>
+          <img src="src/assets/swap.svg" alt=""/>
+        </Popover>
+      </div>
       <div className={style.round}
            onMouseEnter={() => setIsVisible(true)}
            onMouseLeave={() => setIsVisible(false)}

@@ -1,15 +1,32 @@
-import {FileListData} from "@/types";
 import {create} from "zustand";
 
-interface fileState {
-  file: FileListData | null,
-  setFile: (file: FileListData) => void
+interface fileInfo {
+  fileName: string,
+  fileSize: number,
 }
 
-const useFileStore = create<fileState>(
-  (set) => ({
-  file: null,
-  setFile: (file: FileListData) => set({file})
-}))
+
+interface fileModule {
+  // file: FileListData | null,
+  // setFile: (file: FileListData) => void
+  fileInfo: fileInfo,
+  filePid: string,
+  setFileInfo: (fileInfo: fileInfo) => void,
+  setFilePid: (filePid: string) => void
+}
+
+const useFileStore = create<fileModule>(
+  set => ({
+    // file: null,
+    // setFile: (file: FileListData) => set({file})
+    fileInfo: {
+      fileName: '',
+      fileSize: 0
+    },
+    filePid: '',
+    setFileInfo: (fileInfo: fileInfo) => set({fileInfo}),
+    setFilePid: (filePid: string) => set({filePid})
+
+  }))
 
 export default useFileStore;
