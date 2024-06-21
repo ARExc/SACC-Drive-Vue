@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { persist } from "zustand/middleware";
+import {createJSONStorage, persist} from "zustand/middleware";
 import {FolderDataInBreadcrumb} from "@/types";
 
 
@@ -24,8 +24,7 @@ const useBreadcrumbStore = create<BreadcrumbInfo>()(//此处必须使用柯里�
     }),
     {
       name: "breadcrumb-storage", // key to use in localStorage
-      // Optionally, you can define a custom getStorage function
-      // getStorage: () => sessionStorage, // (optional) by default, 'localStorage' is used
+      storage: createJSONStorage<BreadcrumbInfo>(() => sessionStorage) , // 使用createJSONStorage创建一个类型为PersistStorage<T>存储对象，T指定了存储对象中保存的数据的类型
     }
   )
 );

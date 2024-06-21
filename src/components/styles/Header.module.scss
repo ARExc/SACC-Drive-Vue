@@ -7,7 +7,6 @@
   color: #333; /* 文字颜色 */
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
-
 .round {
   width: 50px; /* 头像大小，可根据需要调整 */
   height: 50px; /* 头像大小，保持与宽度一致以形成圆形 */
@@ -24,11 +23,6 @@
   height: auto; /* 保持图片的原始宽高比 */
 }
 
-.header span {
-  font-size: 16px; /* 用户名字体大小，根据需要调整 */
-  font-weight: normal; /* 字体粗细 */
-  margin-right: 10px; /* 用户名和右边界的间距 */
-}
 
 .menu {
   padding: 0;
@@ -84,4 +78,27 @@
   height: 70%;
   cursor: pointer;
 }
+
+.badgeContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.count {
+  position: absolute;
+  top: -20px;
+  right: -35px;
+  background-color: red;
+  border: white solid 1px;
+  border-radius: 50% ;
+  color: white;
+  width: 10px;
+  height: 10px;
+  display: flex; /* 使用 flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  padding: 4px;
+  font-size: 12px;
+}
+
 

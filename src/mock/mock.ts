@@ -23,4 +23,31 @@ Mock.mock('http://localhost:3000/api/getFileList', 'get', {
     }]
   }
 });
-
+//上传文件
+Mock.mock(RegExp('/api/priv/file/startUpload'), 'post', {
+  "code": 1,
+  "errorMsg": "string",
+  "data": {
+    "status": 1
+  }
+});
+Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
+  "code": 1,
+  "errorMsg": "string",
+  "data": {
+    "status": 0
+  }
+});
+Mock.mock(RegExp('/api/priv/file/check'), 'post', {
+  "code": 1,
+  "errorMsg": "null",
+  "data": {
+    "id": 2,
+    "status": 1,
+    "fileMd5": "asdfcasfcew213r2cd31534121c2ercx12431",
+    "chunkNumber": 2,
+    "chunkSize": "10MB",
+    "fileName": "文件1",
+    "chunkTotal": 15
+  }
+});

@@ -1,12 +1,12 @@
-const calculateWholeMd5 = (file: File) => {
+const md5Promise = (file: File) => {
   return new Promise((resolve, reject) => {
-    console.log(file)
-    const worker = new Worker(new URL('/src/workers/md5Worker.ts', import.meta.url));
+    // console.log(file)
+    const worker = new Worker(new URL('../worker/md5Worker.ts', import.meta.url), {type: 'module'});
     worker.postMessage({file});
     worker.onmessage = (e) => {
       worker.terminate();
       if (e.data.hash) {
-        // console.log('文件MD5:', e.data.hash);
+        console.log('文件MD5:', e.data.hash);
         resolve(e.data.hash);
       } else if (e.data.error) {
         //文件读取失败
@@ -21,4 +21,4 @@ const calculateWholeMd5 = (file: File) => {
   });
 };
 
-export default calculateWholeMd5;
+export default md5Promise;

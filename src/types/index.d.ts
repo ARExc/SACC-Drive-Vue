@@ -7,3 +7,5 @@ export interface ApiResponse<T = object> {
 export * from './login';
 
 export * from './file';
+
+export * from './upload';

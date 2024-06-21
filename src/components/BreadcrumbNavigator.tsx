@@ -1,6 +1,6 @@
 import {Breadcrumb, ConfigProvider} from "antd";
 import style from "./styles/BreadcrumbNavigator.module.scss";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import useBreadcrumbStore from "@/store/breadcrumbStore.ts";
 import {useEffect} from "react";
 import {FolderDataInBreadcrumb} from "@/types";
@@ -9,8 +9,9 @@ const BreadcrumbNavigator = () => {
 
   const {breadcrumb, removeBreadcrumb, clearBreadcrumb} = useBreadcrumbStore();
   const navigate = useNavigate();
-  const location = useLocation();//访问当前的 URL 位置对象
-  const pathSnippets = location.pathname.split('/').filter(i => i);//使用filter去掉空串
+  //不允许用户直接更改url，只能通过点击面包屑导航来更改
+  // const location = useLocation();//访问当前的 URL 位置对象
+  // const pathSnippets = location.pathname.split('/').filter(i => i);//使用filter去掉空串
   // console.log("pathSnippets", pathSnippets)
   //当面包屑导航改变时，重新设置路径
   useEffect(() => {
@@ -23,7 +24,7 @@ const BreadcrumbNavigator = () => {
       pathname: '/home',
       search: `?path=${query}`,
     });
-  }, [breadcrumb]);
+  }, [breadcrumb, navigate]);
 
   const toHome = () => {
     clearBreadcrumb();
