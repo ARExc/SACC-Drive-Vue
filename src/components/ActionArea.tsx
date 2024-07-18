@@ -16,6 +16,7 @@ const ActionArea = () => {
   const {addUploadFile, addFileCount, subtractFileCount, removeFile, changeState} = useUploadStore();
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    //TODO:多文件上传
     const files: FileList | null = e.target.files;//获取用户选择的所有文件，此处是引用传递，需要复制一份
     if (files !== null) {
       const fileArr = Array.from(files);
@@ -25,14 +26,14 @@ const ActionArea = () => {
       //用于在传输列表中显示文件名，文件大小，上传进度等信息，一次性显示所有文件，只是状态不同
       for (let i = 0; i < fileArr.length; i++) {
         const file = fileArr[i];
-        const fileId = uuidv4();//生成uuid，用于文件上传状态控制
+        const uuid = uuidv4();//生成uuid，用于文件上传状态控制
         const fileSizeInMB = +(file.size / 1024 / 1024).toFixed(2) !== 0 ? +(file.size / 1024 / 1024).toFixed(2) : 0.01;
         if (fileSizeInMB > 5120) {
           alert('文件大小不能超过5GB，' + file.name + '上传失败');
           continue;
         }
         addUploadFile({
-          id: fileId,
+          id: uuid,
           fileName: file.name,
           fileSize: fileSizeInMB,
           progress: 0,
@@ -41,18 +42,23 @@ const ActionArea = () => {
         addFileCount(1);//增加传输列表中的文件数
         uploadQueue.push({
           file,
-          id: fileId,
+          id: uuid,
         });
       }
       for (let i = 0; i < fileArr.length; i++) {
         const {file, id} = uploadQueue[i];//取出每一个文件
 
-        const processFile = async (file: File) => {
+        const processFile = async (file: File, id: string) => {
           try {
-            await verifyPromise(file);
+            await verifyPromise(file, id);
+
             console.log(`${file.name} processed successfully`);
+
+            //传输列表文件数-1
             subtractFileCount();
-            removeFile(file.name);//TODO:上传成功后删除传输列表中的文件，如果有重名的，自动重命名
+
+            removeFile(file.name);
+
             changeState(id, 'completed');
             if (uploadQueue[i + 1]) {
               changeState(uploadQueue[i + 1].id, 'uploading');
@@ -62,7 +68,8 @@ const ActionArea = () => {
             changeState(id, 'error');
           }
         };
-        await processFile(file);
+
+        await processFile(file, id);
       }
     }
   }
@@ -81,7 +88,7 @@ const ActionArea = () => {
             inputRef.current!.click();
           }}>
             上传文件
-            <input type="file" multiple style={{display: 'none'}} ref={inputRef} onChange={upload}/>
+            <input type="file" style={{display: 'none'}} ref={inputRef} onChange={upload}/>
           </Button>
           <Button type="default" shape="round" className={style.button}>
             新建文件夹

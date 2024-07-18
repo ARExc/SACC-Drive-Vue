@@ -1,13 +1,12 @@
 import {startUpload} from "@/api/upload/startUpload.ts";
 import {upload} from "@/api/upload/upload.ts";
 import axios from "axios";
+import useUploadStore from "@/store/uploadStore.ts";
 
-async function uploadPromise(file: File): Promise<string | Error | null> {
+async function uploadPromise(file: File, uuid: string): Promise<string | Error | null> {
 
   const chunkSize = 10 * 1024 * 1024; // 切片大小，10MB一片
   const chunkCount = Math.ceil(file.size / chunkSize); // 切片数量
-  const isCancelled = {value: false}; // 用于标记上传是否被取消
-  const isPaused = {value: false}; // 用于标记上传是否被暂停
 
   try {
 
@@ -29,25 +28,31 @@ async function uploadPromise(file: File): Promise<string | Error | null> {
 
     // 递归函数处理每个分片
     const uploadChunk = async (currentChunk: number) => {
+      const {updateProgress, getStateById} = useUploadStore.getState();
+      const fileState = getStateById(uuid);
+      console.log('fileState:', fileState);
 
       //取消上传
-      if (isCancelled.value) {
+      if (fileState === "canceled") {
         console.log('上传被取消');
+        updateProgress(uuid, 0);
         return;
       }
 
-      //TODO: 暂停上传
-      if (isPaused.value) {
+      //暂停上传
+      if (fileState === "paused") {
         console.log('上传暂停');
-        // 使用事件驱动机制来恢复，在主线程中发送恢复上传的消息
         await new Promise((resolve) => {
-          const resumeListener = () => {
-            isPaused.value = false;
-            self.removeEventListener('message', resumeListener);
-            resolve(null);
-          };
-          self.addEventListener('message', resumeListener);
+          const interval = setInterval(() => {
+            const state = getStateById(uuid);
+            if (state !== "paused") {
+              clearInterval(interval);
+              resolve(null);
+            }
+          }, 500);//每500ms检查一次状态，如果状态不是暂停，就清除定时器
         });
+        await uploadChunk(currentChunk);//暂停后继续上传
+        return;//一旦return，这个promise就兑现了
       }
 
       const start = currentChunk * chunkSize;
@@ -66,6 +71,8 @@ async function uploadPromise(file: File): Promise<string | Error | null> {
         console.log('Chunk upload failed', currentChunk);
         throw new Error(uploadRes.data.errorMsg);
       }
+      // 更新进度条
+      updateProgress(uuid, Math.round((currentChunk / chunkCount) * 100));
 
       console.log(file.name + '文件分片上传成功', currentChunk);
 

@@ -28,7 +28,7 @@ Mock.mock(RegExp('/api/priv/file/startUpload'), 'post', {
   "code": 1,
   "errorMsg": "string",
   "data": {
-    "code": 1
+    "code": 1111
   }
 });
 Mock.mock(RegExp('/api/priv/file/upload'), 'post', {

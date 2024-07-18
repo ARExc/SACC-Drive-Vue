@@ -2,8 +2,7 @@ import uploadPromise from "@/util/uploadPromise.ts";
 import md5Promise from "@/util/md5Promise.ts";
 import {check} from "@/api/upload/check.ts";
 
-
-const verifyPromise = async (file: File) => {
+const verifyPromise = async (file: File, uuid: string) => {
 
   try {
     const valueArr = await Promise.all([
@@ -19,9 +18,10 @@ const verifyPromise = async (file: File) => {
               // window.location.reload();
             }, 500);
             return err;
-          }), uploadPromise(file)
+          }),
+      uploadPromise(file, uuid)
           .then((r) => {
-            console.log("文件上传成功",r);
+            console.log("文件上传成功", r);
             return r;
           }).catch(err => {
             console.log('文件上传失败' + err.message)
@@ -34,7 +34,7 @@ const verifyPromise = async (file: File) => {
     ]);//返回的是一个包含了所有已兑现的值的数组
 
     const [md5, identifier] = valueArr;
-    console.log(md5, identifier)
+    console.log(valueArr)
     if (typeof md5 === "string" && md5 && typeof identifier === "string") {
       console.log('文件MD5:', md5);
 
@@ -45,10 +45,11 @@ const verifyPromise = async (file: File) => {
         throw new Error(checkRes.data.errorMsg);
       }
       console.log('File integrity check succeeded');
-      return ({success: 'File uploaded and verified successfully'});
+      return ;
     }
   } catch (err) {
     console.error(err);
+    throw err;
   }
 }
 export default verifyPromise;

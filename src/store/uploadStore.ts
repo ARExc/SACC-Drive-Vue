@@ -12,10 +12,13 @@ interface UploadState {
   addFileCount: (count: number) => void;
   subtractFileCount: () => void;
   changeState: (id: string, status: UploadFile['status']) => void;
+  getStateById: (id: string) => UploadFile['status'];
   startNextFile: () => void;
 }
 
+
 export const useUploadStore = create<UploadState>()((set, get) => ({
+  //参数中的set用于在create函数中修改状态，get用于在create函数中获取自己的状态
   uploadFiles: [],
   fileCount: 0,
   addUploadFile: (file) => set(
@@ -50,6 +53,11 @@ export const useUploadStore = create<UploadState>()((set, get) => ({
             file.id === id ? {...file, status} : file//解构file对象，修改其中的status属性
         )
       })),
+  getStateById: (id) => {
+    const {uploadFiles} = get();
+    const file = uploadFiles.find(file => file.id === id);
+    return file ? file.status : 'error';
+  },
   startNextFile: () => {
     const {uploadFiles, changeState} = get();
     const nextFile = uploadFiles.find(file => file.status === 'waiting');//find方法返回的是第一个满足条件的元素
