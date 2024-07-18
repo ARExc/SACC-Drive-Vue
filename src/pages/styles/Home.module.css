@@ -1,0 +1,14 @@
+.container{
+    display: flex;
+    height: 100vh;
+}
+.sidebar{
+    background-color: #ff6400;
+    z-index: 1000;
+}
+.main{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

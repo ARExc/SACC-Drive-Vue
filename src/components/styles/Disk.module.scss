@@ -1,0 +1,80 @@
+.display {
+  height: 100%;
+  display: block;
+}
+
+.folder {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 创建多列，每列最小宽度120px，最大1fr */
+  grid-gap: 20px; /* 设置网格间的间隙 */
+  padding: 20px; /* 设置内边距 */
+  background-color: #FFF; /* 设置背景色为白色 */
+}
+
+.folderItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 110px; /* 设置固定高度 */
+
+  transition: transform 0.3s ease; /* 平滑过渡效果 */
+}
+
+.folderItem:hover {
+  background-color: #f9f9f9; /* 设置背景色 */
+  transform: translateY(-5px); /* 悬停时上移 */
+}
+
+.folderItem img {
+  width: 100%; /* 图标宽度 */
+  max-width: 60px; /* 图标最大宽度 */
+  height: auto; /* 保持图标的原始宽高比 */
+}
+
+.custom-context-menu {
+  position: fixed;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 5px;
+  white-space: nowrap; /* 防止文字折行 */
+}
+
+.custom-context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-context-menu ul li {
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.el-icon {
+  margin-right: 10px;
+}
+
+.custom-context-menu ul li:hover {
+  background-color: #f0f0f0;
+}
+
+.input {
+  padding: 0 8px;
+  max-width: 80%; /* 确保输入框宽度不会超过父容器 */
+  box-sizing: border-box; /* 包括padding和border在内的宽度计算 */
+}
+
+img {
+  margin: 10px 0;
+}
+
+.fileName {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

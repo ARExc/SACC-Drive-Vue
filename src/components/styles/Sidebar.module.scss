@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'YouSheBiaoTiYuan';
+  src: url("/src/assets/YouSheBiaoTiYuan-2.otf") format('opentype');  /* 指定字体文件的路径和格式 */
+}
+
+.side{
+  height: 100%;
+  background-color: #e6e6e6; /* 白色背景 */
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+.round {
+  width: 50px; /* 头像大小，可根据需要调整 */
+  height: 50px; /* 头像大小，保持与宽度一致以形成圆形 */
+  border-radius: 50%; /* 创建圆形边框 */
+  overflow: hidden; /* 隐藏超出圆形边框的图片部分 */
+  background-color: #fff; /* 头像背景色 */
+  cursor: pointer;
+}
+
+.round img {
+  transform: translateY(-10px);
+  width: 100%; /* 使图片填满容器 */
+  height: auto; /* 保持图片的原始宽高比 */
+}
+.sign{
+  padding: 10px 10px 10px;
+  display: flex;
+  gap: 10px;
+  font-family: 'YouSheBiaoTiYuan', serif;
+}
+.title{
+  color: #333333;
+  font-size: 18px;
+  font-weight: 1;
+}
