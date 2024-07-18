@@ -28,7 +28,7 @@ Mock.mock(RegExp('/api/priv/file/startUpload'), 'post', {
   "code": 1,
   "errorMsg": "string",
   "data": {
-    "status": 1
+    "code": 1
   }
 });
 Mock.mock(RegExp('/api/priv/file/upload'), 'post', {
@@ -51,3 +51,11 @@ Mock.mock(RegExp('/api/priv/file/check'), 'post', {
     "chunkTotal": 15
   }
 });
+
+Mock.mock('/api/login', 'post', {
+  "code": 1,
+  "errorMsg": "null",
+  "data": {
+
+  }
+})

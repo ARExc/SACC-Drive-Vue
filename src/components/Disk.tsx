@@ -10,6 +10,7 @@ const Disk = () => {
   const {breadcrumb, addBreadcrumb} = useBreadcrumbStore();
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({x: 0, y: 0});
+
   useEffect(() => {
     getFileList({}).then(res => {
       setItems(res.data.data.records);

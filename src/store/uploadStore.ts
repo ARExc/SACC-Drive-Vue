@@ -1,17 +1,6 @@
 import {create} from "zustand";
+import {UploadFile} from "@/types";
 
-interface UploadFile {
-  id: string;
-  fileName: string;
-  fileSize: number;
-  progress: number;
-  status: 'uploading'
-    | 'completed'
-    | 'canceled'
-    | 'paused'
-    | 'waiting'
-    | 'error';
-}
 
 interface UploadState {
   uploadFiles: UploadFile[];
@@ -20,34 +9,35 @@ interface UploadState {
   updateProgress: (id: string, progress: number) => void;
   markAsCompleted: (id: string) => void;
   removeFile: (id: string) => void;
-  addFileCount: (count:number) => void;
+  addFileCount: (count: number) => void;
   subtractFileCount: () => void;
   changeState: (id: string, status: UploadFile['status']) => void;
+  startNextFile: () => void;
 }
 
-export const useUploadStore = create<UploadState>()((set) => ({
+export const useUploadStore = create<UploadState>()((set, get) => ({
   uploadFiles: [],
   fileCount: 0,
   addUploadFile: (file) => set(
-    (state) => ({
-      uploadFiles: [...state.uploadFiles, file]
-    })),
+      (state) => ({
+        uploadFiles: [...state.uploadFiles, file]
+      })),
   updateProgress: (id, progress) =>
-    set((state) => ({
-      uploadFiles: state.uploadFiles.map((file) =>
-        file.id === id ? {...file, progress} : file
-      ),
-    })),
+      set((state) => ({
+        uploadFiles: state.uploadFiles.map((file) =>
+            file.id === id ? {...file, progress} : file
+        ),
+      })),
   markAsCompleted: (id) =>
-    set((state) => ({
-      uploadFiles: state.uploadFiles.map((file) =>
-        file.id === id ? {...file, status: 'completed'} : file
-      ),
-    })),
+      set((state) => ({
+        uploadFiles: state.uploadFiles.map((file) =>
+            file.id === id ? {...file, status: 'completed'} : file
+        ),
+      })),
   removeFile: (id) =>
-    set((state) => ({
-      uploadFiles: state.uploadFiles.filter((file) => file.id !== id),
-    })),
+      set((state) => ({
+        uploadFiles: state.uploadFiles.filter((file) => file.id !== id),
+      })),
   addFileCount: (count) => set(state => ({
     fileCount: state.fileCount + count
   })),
@@ -55,10 +45,18 @@ export const useUploadStore = create<UploadState>()((set) => ({
     fileCount: state.fileCount - 1
   })),
   changeState: (id, status) =>
-    set((state) => ({
-      uploadFiles: state.uploadFiles.map((file) =>
-        file.id === id ? {...file, status} : file
-      )
-    })),
+      set((state) => ({
+        uploadFiles: state.uploadFiles.map((file) =>
+            file.id === id ? {...file, status} : file//解构file对象，修改其中的status属性
+        )
+      })),
+  startNextFile: () => {
+    const {uploadFiles, changeState} = get();
+    const nextFile = uploadFiles.find(file => file.status === 'waiting');//find方法返回的是第一个满足条件的元素
+    if (nextFile) {
+      changeState(nextFile.id, 'uploading');
+      // 这里可以调用实际的上传函数，传递 nextFile.id 和其他必要信息
+    }
+  }
 }));
 export default useUploadStore;

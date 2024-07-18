@@ -16,3 +16,17 @@ export interface startUploadDto {
    */
   fileSize: number;
 }
+
+
+export interface UploadFile {
+  id: string;
+  fileName: string;
+  fileSize: number;
+  progress: number;
+  status: 'uploading'
+      | 'completed'
+      | 'canceled'
+      | 'paused'
+      | 'waiting'
+      | 'error';
+}
