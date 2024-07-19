@@ -7,7 +7,7 @@ import verifyPromise from "@/util/verifyPromise.ts";
 
 interface FileQueue {
   file: File;
-  id: string;
+  uuid: string;
 }
 
 const ActionArea = () => {
@@ -42,15 +42,16 @@ const ActionArea = () => {
         addFileCount(1);//增加传输列表中的文件数
         uploadQueue.push({
           file,
-          id: uuid,
+          uuid: uuid,
         });
       }
       for (let i = 0; i < fileArr.length; i++) {
-        const {file, id} = uploadQueue[i];//取出每一个文件
+        const {file, uuid} = uploadQueue[i];//取出每一个文件
 
-        const processFile = async (file: File, id: string) => {
+        const processFile = async (file: File, uuid: string) => {
           try {
-            await verifyPromise(file, id);
+
+            await verifyPromise(file, uuid);
 
             console.log(`${file.name} processed successfully`);
 
@@ -59,17 +60,17 @@ const ActionArea = () => {
 
             removeFile(file.name);
 
-            changeState(id, 'completed');
+            changeState(uuid, 'completed');
             if (uploadQueue[i + 1]) {
-              changeState(uploadQueue[i + 1].id, 'uploading');
+              changeState(uploadQueue[i + 1].uuid, 'uploading');
             }
           } catch (error) {
             console.error(`Error processing ${file.name}:`, error);
-            changeState(id, 'error');
+            changeState(uuid, 'error');
           }
         };
 
-        await processFile(file, id);
+        await processFile(file, uuid);
       }
     }
   }

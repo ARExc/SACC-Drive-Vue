@@ -1,104 +1,107 @@
 .header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center; /* 确保内容垂直居中 */
-  padding: 10px 20px; /* 添加一些内边距以增加可读性 */
-  background-color: white;
-  color: #333; /* 文字颜色 */
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; /* 确保内容垂直居中 */
+    padding: 10px 20px; /* 添加一些内边距以增加可读性 */
+    background-color: white;
+    color: #333; /* 文字颜色 */
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
+
 .round {
-  width: 50px; /* 头像大小，可根据需要调整 */
-  height: 50px; /* 头像大小，保持与宽度一致以形成圆形 */
-  border-radius: 50%; /* 创建圆形边框 */
-  overflow: hidden; /* 隐藏超出圆形边框的图片部分 */
-  margin-right: 10px; /* 头像和用户名之间的间距 */
-  background-color: #fff; /* 头像背景色 */
-  cursor: pointer;
+    width: 50px; /* 头像大小，可根据需要调整 */
+    height: 50px; /* 头像大小，保持与宽度一致以形成圆形 */
+    border-radius: 50%; /* 创建圆形边框 */
+    overflow: hidden; /* 隐藏超出圆形边框的图片部分 */
+    margin-right: 10px; /* 头像和用户名之间的间距 */
+    background-color: #fff; /* 头像背景色 */
+    cursor: pointer;
 }
 
 .round img {
-  transform: translateY(-10px);
-  width: 100%; /* 使图片填满容器 */
-  height: auto; /* 保持图片的原始宽高比 */
+    transform: translateY(-10px);
+    width: 100%; /* 使图片填满容器 */
+    height: auto; /* 保持图片的原始宽高比 */
 }
 
 
 .menu {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  position: absolute;
-  width: 150px;
-  height: 100px;
-  right: 10px;
-  list-style: none;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 1;
+    position: absolute;
+    width: 120px;
+    height: 90px;
+    right: 10px;
+    list-style: none;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; //对opacity和visibility属性应用过渡效果
-  opacity: 0;
-  visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; //对opacity和visibility属性应用过渡效果
+    opacity: 0;
+    visibility: hidden;
 
-  &.visible { //父元素同时具有.visible类时应用这些样式
-    opacity: 1;
-    visibility: visible;
-  }
+    &.visible { //父元素同时具有.visible类时应用这些样式
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .item {
+        display: block;
+        //margin: 10px 0;
+        cursor: pointer;
+    }
+
+    .item:hover {
+        color: blue;
+    }
 }
 
-.item {
-  display: block;
-  margin: 20px auto 0;
-  cursor: pointer;
-}
-
-.item:hover {
-  color: blue;
-}
 
 .transmit {
-  display: flex;
-  margin-right: auto;
-  margin-left: 10px;
-  width: 30px;
-  height: 30px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #f0f0f0;
+    display: flex;
+    margin-right: auto;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f0f0f0;
 }
 
 .icon {
-  width: 70%;
-  height: 70%;
-  cursor: pointer;
+    width: 70%;
+    height: 70%;
+    cursor: pointer;
 }
 
 .badgeContainer {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .count {
-  position: absolute;
-  top: -20px;
-  right: -35px;
-  background-color: red;
-  border: white solid 1px;
-  border-radius: 50% ;
-  color: white;
-  width: 10px;
-  height: 10px;
-  display: flex; /* 使用 flexbox 布局 */
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  padding: 4px;
-  font-size: 12px;
+    position: absolute;
+    top: -20px;
+    right: -35px;
+    background-color: red;
+    border: white solid 1px;
+    border-radius: 50%;
+    color: white;
+    width: 10px;
+    height: 10px;
+    display: flex; /* 使用 flexbox 布局 */
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    padding: 4px;
+    font-size: 12px;
 }
 
 

@@ -7,7 +7,7 @@ export interface FileListData {
 }
 
 export interface FileListItem {
-  id: number;
+  id: string;
   filePid: string;
   fileName: string;
   fileSize: number;

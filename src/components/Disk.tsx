@@ -6,18 +6,24 @@ import useBreadcrumbStore from "@/store/breadcrumbStore.ts";
 import ContextMenu from "@/components/ContextMenu.tsx";
 
 const Disk = () => {
-  const [items, setItems] = useState<FileListItem[]>([])
+  const [items, setItems] = useState<FileListItem[]>([]);//文件列表
+  const [currentItem, setCurrentItem] = useState<FileListItem>();//当前右键的文件
   const {breadcrumb, addBreadcrumb} = useBreadcrumbStore();
   const [menuVisible, setMenuVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({x: 0, y: 0});
 
   useEffect(() => {
-    getFileList({}).then(res => {
+    getFileList({
+      category: 1,
+      fileName: "",
+      filePid: "",
+      pageNo: 1,
+      pageSize: 1
+    }).then(res => {
       setItems(res.data.data.records);
     }).catch(err => {
       console.log(err);
     });
-
   }, [breadcrumb]);
 
   const createIcon = (item: FileListItem) => {
@@ -37,13 +43,14 @@ const Disk = () => {
       })
     }
   }
-  const handleContextMenu = (e: React.MouseEvent) => {
+  const handleContextMenu = (e: React.MouseEvent, item: FileListItem) => {
     e.preventDefault();
     setMenuPosition({
       x: e.clientX,
       y: e.clientY
     });
     setMenuVisible(true);
+    setCurrentItem(item);
   }
 
   // 点击其他地方关闭右键菜单
@@ -52,24 +59,25 @@ const Disk = () => {
   })
 
   return (
-    <div className={style.folder}>
-      {items.map(item => {
-        return (
-          <div className={style.folderItem} key={item.id} onClick={() => previewFolder(item)}
-               onContextMenu={handleContextMenu}>
-            <img src={createIcon(item)} alt="File Icon"/>
-            <div
-              className={style.fileName}>{item.fileName.length < 10 ? item.fileName : item.fileName.slice(0, 10) + "..."}
-            </div>
-          </div>
-        )
-      })}
-      <ContextMenu
-        x={menuPosition.x}
-        y={menuPosition.y}
-        show={menuVisible}
-      ></ContextMenu>
-    </div>
+      <div className={style.folder}>
+        {items.map(item => {
+          return (
+              <div className={style.folderItem} key={item.id} onClick={() => previewFolder(item)}
+                   onContextMenu={(e) => handleContextMenu(e, item)}>
+                <img src={createIcon(item)} alt="File Icon"/>
+                <div
+                    className={style.fileName}>{item.fileName.length < 10 ? item.fileName : item.fileName.slice(0, 10) + "..."}
+                </div>
+              </div>
+          )
+        })}
+        <ContextMenu
+            x={menuPosition.x}
+            y={menuPosition.y}
+            show={menuVisible}
+            currentItem={currentItem!}
+        ></ContextMenu>
+      </div>
   );
 }
 export default Disk;

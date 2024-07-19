@@ -1,4 +1,5 @@
 import Mock from 'mockjs';
+
 Mock.mock('http://localhost:3000/api/disk', 'get', {
   'records|1-10': [{
     'id|+1': 1
@@ -52,10 +53,10 @@ Mock.mock(RegExp('/api/priv/file/check'), 'post', {
   }
 });
 
-Mock.mock('/api/login', 'post', {
+Mock.mock('http://localhost:3000/api/login', 'post', {
   "code": 1,
   "errorMsg": "null",
   "data": {
-
+    "token": "string"
   }
 })

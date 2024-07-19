@@ -9,3 +9,5 @@ export * from './login';
 export * from './file';
 
 export * from './upload';
+
+export * from './download';

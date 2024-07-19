@@ -6,3 +6,9 @@ export interface LoginData {
 export interface LoginRes {
   token: string;
 }
+
+export interface RegisterData {
+  username: string;
+  nickname: string;
+  password: string;
+}
